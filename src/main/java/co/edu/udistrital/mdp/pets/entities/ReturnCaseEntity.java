@@ -1,7 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.Date;
+import java.util.Date;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data

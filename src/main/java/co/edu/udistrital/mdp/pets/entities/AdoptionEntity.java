@@ -2,7 +2,8 @@ package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.Date;
+import java.util.Date;
+
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
@@ -12,10 +13,10 @@ public class AdoptionEntity extends BaseEntity {
     private Date officialDate;
     private Boolean contractSigned;
 
-    @OneToOne
+    /*@OneToOne
     @JoinColumn(name = "adoption_request_id")
     @PodamExclude
-    private AdoptionRequestEntity adoptionRequest;
+    private AdoptionRequestEntity adoptionRequest;*/
 
     //@OneToOne(mappedBy = "adoption")
     //@PodamExclude
