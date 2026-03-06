@@ -12,13 +12,12 @@ public class ReviewEntity extends BaseEntity{
     private String comment;
     private Boolean isSuccessStory;
 
-    /*@ManyToOne
+    @ManyToOne
     @JoinColumn(name = "adopter_id")
     @PodamExclude
-    private AdopterEntity adopter;*/
+    private AdopterEntity<?> adopter;
 
-    //@ManyToOne
-    //@JoinColumn(name = "pet_id")
-    //@PodamExclude
-    //private PetEntity pet;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private ShelterEntity shelter;
 }

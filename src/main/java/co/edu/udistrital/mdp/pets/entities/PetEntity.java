@@ -1,8 +1,9 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import java.sql.Date;
+import java.util.List;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -18,4 +19,14 @@ public class PetEntity extends BaseEntity {
           private String specificNeeds;
           private boolean isRescued;
           private String status;
+
+          @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
+          private MedicalHistoryEntity medicalHistory;
+
+          @ManyToOne
+          @JoinColumn(name = "shelter_id")
+          private ShelterEntity shelter;
+
+          @OneToMany(mappedBy = "pet")
+          private List<AdoptionEntity> adoptionRequests;
 }

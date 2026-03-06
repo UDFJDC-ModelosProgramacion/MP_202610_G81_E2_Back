@@ -1,7 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -18,5 +17,6 @@ public class ShelterMediaEntity extends BaseEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
+    @JoinColumn(name = "shelter_id")
     private ShelterEntity shelter;
 }

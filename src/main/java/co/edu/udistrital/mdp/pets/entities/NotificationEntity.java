@@ -2,8 +2,7 @@ package co.edu.udistrital.mdp.pets.entities;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,5 +20,6 @@ public class NotificationEntity extends BaseEntity {
 
     @PodamExclude
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 }

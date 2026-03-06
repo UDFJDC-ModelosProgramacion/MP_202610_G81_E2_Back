@@ -8,17 +8,13 @@ import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
-public class AdoptionEntity extends BaseEntity {
+public class AdoptionEntity<TrialCohabitation> extends BaseEntity {
 
     private Date officialDate;
     private Boolean contractSigned;
 
-    /*@OneToOne
-    @JoinColumn(name = "adoption_request_id")
+    @OneToOne
+    @JoinColumn(name = "trial_id")
     @PodamExclude
-    private AdoptionRequestEntity adoptionRequest;*/
-
-    //@OneToOne(mappedBy = "adoption")
-    //@PodamExclude
-    //private ReturnCaseEntity returnCase;
+    private TrialCohabitation trialcohabitation;
 }

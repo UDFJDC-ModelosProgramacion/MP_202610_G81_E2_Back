@@ -1,10 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -31,4 +27,7 @@ public class ShelterEntity extends BaseEntity {
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<ShelterMediaEntity> mediaItems = new ArrayList<>();
+
+    @OneToMany(mappedBy = "shelter")
+    private List<ReviewEntity> reviews;
 }

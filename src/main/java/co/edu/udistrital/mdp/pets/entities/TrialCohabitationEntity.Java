@@ -1,9 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -28,7 +25,6 @@ public class TrialCohabitation extends AdoptionProcess{
     @PodamExclude
     private Adoption finalAdoption;
 
-    
-
-
+    @OneToOne(mappedBy = "trialcohabitation")
+    private Adoption adoption;
 }

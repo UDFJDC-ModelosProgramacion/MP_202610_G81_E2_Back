@@ -1,9 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -11,23 +8,27 @@ import Java.time.localDateTime;
 import java.util.Date;
 
 @Data
-@BaseEntity
+@Entity
 public class AdoptionRequestEntity extends BaseEntity{
      private LocalDate requestDate;
-     private String approvalStatus;
+     private String status;
+     private String message;
 
      @ManyToOne
      @JoinColumn(name = "adopter_id" )
      @PodamExclude
-     private Adopter adopter;
+     private AdopterEntity adopter;
 
-     @OneToOne
-     @JoinColumn(name = "TrialCohabitation")
+     @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
      @PodamExclude
      private TrialCohabitation trialPeriod;
 
+     @OneToOne(mappedBy = "adoptionRequest")
+     private AdoptionProcessEntity adoptionProcess;
+
      @ManyToOne
      @JoinColumn(name = "pet_id")
-     private Pet pet;
+     @PodamExclude
+     private PetEntity pet;
 
 }
