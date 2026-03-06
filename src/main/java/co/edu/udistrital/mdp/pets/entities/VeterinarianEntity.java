@@ -1,11 +1,15 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -28,7 +32,4 @@ public class VeterinarianEntity extends UserEntity {
         inverseJoinColumns = @JoinColumn(name = "speciality_id")
     )
     private List<VetSpecialityEntity> specialities;
-
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<VetSpecialityEntity> specialties = new ArrayList<>();
 }

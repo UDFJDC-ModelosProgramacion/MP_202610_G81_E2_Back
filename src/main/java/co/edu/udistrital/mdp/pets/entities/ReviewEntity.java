@@ -15,7 +15,7 @@ public class ReviewEntity extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "adopter_id")
     @PodamExclude
-    private AdopterEntity<?> adopter;
+    private AdopterEntity adopter;
 
     @ManyToOne
     @JoinColumn(name = "shelter_id")
