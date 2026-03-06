@@ -1,15 +1,16 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.*;
+import java.time.LocalDate;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
-import Java.time.localDateTime;
-import java.util.Date;
 
 @Data
-@BaseEntity
-public class TrialCohabitation extends AdoptionProcess{
+@Entity
+public class TrialCohabitationEntity extends AdoptionProcessEntity {
     private LocalDate startDate;
     private LocalDate endDate;
     private String periodicNotes;
@@ -20,11 +21,7 @@ public class TrialCohabitation extends AdoptionProcess{
     @PodamExclude
     private AdoptionRequestEntity adoptionRequest;
 
-    @OneToOne
-    @JoinColumn(name = "Adoption")
+    @OneToOne(mappedBy = "trialCohabitation")
     @PodamExclude
-    private Adoption finalAdoption;
-
-    @OneToOne(mappedBy = "trialcohabitation")
-    private Adoption adoption;
+    private AdoptionEntity adoption;
 }

@@ -4,12 +4,11 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
-import Java.time.localDateTime;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
-public class AdoptionRequestEntity extends BaseEntity{
+public class AdoptionRequestEntity extends BaseEntity {
      private LocalDate requestDate;
      private String status;
      private String message;
@@ -21,7 +20,7 @@ public class AdoptionRequestEntity extends BaseEntity{
 
      @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
      @PodamExclude
-     private TrialCohabitation trialPeriod;
+     private TrialCohabitationEntity trialPeriod;
 
      @OneToOne(mappedBy = "adoptionRequest")
      private AdoptionProcessEntity adoptionProcess;
