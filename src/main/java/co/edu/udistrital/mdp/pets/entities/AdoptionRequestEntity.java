@@ -2,9 +2,7 @@ package co.edu.udistrital.mdp.pets.entities;
 
 import java.util.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -15,13 +13,20 @@ public class AdoptionRequestEntity extends BaseEntity {
     private String status;
     private String message;
 
-    @ManyToOne
-    @JoinColumn(name = "adopter_id")
-    @PodamExclude
-    private AdopterEntity adopter;
+     @ManyToOne
+     @JoinColumn(name = "adopter_id" )
+     @PodamExclude
+     private AdopterEntity adopter;
 
-    @ManyToOne
-    @JoinColumn(name = "pet_id")
-    @PodamExclude
-    private PetEntity pet;
+     @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
+     @PodamExclude
+     private TrialCohabitationEntity trialPeriod;
+
+     @OneToOne(mappedBy = "adoptionRequest")
+     private AdoptionProcessEntity adoptionProcess;
+
+     @ManyToOne
+     @JoinColumn(name = "pet_id")
+     @PodamExclude
+     private PetEntity pet;
 }
