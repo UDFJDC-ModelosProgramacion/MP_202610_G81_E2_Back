@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -15,7 +15,7 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
 
     private String status;
 
-    @OneToOne(mappedBy = "adoptionProcessEntity", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @PodamExclude
     private ReturnCaseEntity returnCase;
 }
