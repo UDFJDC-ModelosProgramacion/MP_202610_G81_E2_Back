@@ -23,6 +23,6 @@ public class TrialCohabitationEntity extends BaseEntity {
     @PodamExclude
     private AdoptionEntity finalAdoption;
 
-    @OneToOne(mappedBy = "trialcohabitation")
+    @OneToOne(mappedBy = "trialCohabitation")
     private AdoptionEntity adoption;
 }

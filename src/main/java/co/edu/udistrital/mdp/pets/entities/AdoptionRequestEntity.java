@@ -22,7 +22,7 @@ public class AdoptionRequestEntity extends BaseEntity {
      @PodamExclude
      private TrialCohabitationEntity trialPeriod;
 
-     @OneToOne(mappedBy = "adoptionRequest")
+     @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
      private AdoptionProcessEntity adoptionProcess;
 
      @ManyToOne

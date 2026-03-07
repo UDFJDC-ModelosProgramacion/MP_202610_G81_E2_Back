@@ -14,7 +14,7 @@ public class AdoptionEntity extends BaseEntity {
     private Boolean contractSigned;
 
     @OneToOne
-    @JoinColumn(name = "trial_id")
+    @JoinColumn(name = "trial_cohabitation_id")
     @PodamExclude
     private TrialCohabitationEntity trialCohabitation;
 
