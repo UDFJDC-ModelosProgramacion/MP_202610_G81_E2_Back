@@ -1,33 +1,26 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
-import uk.co.jemos.podam.common.PodamExclude;
 import java.time.LocalDate;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
 public class AdoptionRequestEntity extends BaseEntity {
-     private LocalDate requestDate;
-     private String status;
-     private String message;
 
-     @ManyToOne
-     @JoinColumn(name = "adopter_id" )
-     @PodamExclude
-     private AdopterEntity adopter;
+    private LocalDate requestDate;
 
-     @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
-     @PodamExclude
-     private TrialCohabitationEntity trialPeriod;
+    private String status;
 
-     @OneToOne(mappedBy = "adoptionRequest")
-     private AdoptionProcessEntity adoptionProcess;
+    private String comments;
 
-     @ManyToOne
-     @JoinColumn(name = "pet_id")
-     @PodamExclude
-     private PetEntity pet;
+    @ManyToOne
+    @JoinColumn(name = "adopter_id")
+    @PodamExclude
+    private AdopterEntity adopter;
 
+    @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
+    @PodamExclude
+    private AdoptionProcessEntity adoptionProcess;
 }
