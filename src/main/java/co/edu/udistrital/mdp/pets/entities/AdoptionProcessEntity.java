@@ -1,10 +1,9 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
-
 import lombok.Data;
-import uk.co.jemos.podam.common.PodamExclude;
 import java.time.LocalDate;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -15,7 +14,12 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
 
     private String status;
 
-    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne
+    @JoinColumn(name = "adoption_request_id")
+    @PodamExclude
+    private AdoptionRequestEntity adoptionRequest;
+
+    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
     @PodamExclude
     private ReturnCaseEntity returnCase;
 }
