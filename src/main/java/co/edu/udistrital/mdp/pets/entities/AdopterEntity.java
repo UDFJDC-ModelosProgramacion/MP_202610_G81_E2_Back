@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.util.List;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -16,6 +17,7 @@ public class AdopterEntity extends UserEntity {
     private String housingType;
 
     @OneToMany(mappedBy = "adopter")
+    @PodamExclude
     private List<AdoptionRequestEntity> adoptionRequests;
 
     @OneToMany(mappedBy = "adopter")
