@@ -1,0 +1,32 @@
+package co.edu.udistrital.mdp.pets.entities;
+
+import java.sql.Date;
+import java.util.List;
+
+import jakarta.persistence.*;
+import lombok.Data;
+
+@Data
+@Entity
+public class PetEntity extends BaseEntity {
+          private String name;
+          private String species;
+          private String breed;
+          private Date bornDate;
+          private String sex;
+          private String size;
+          private String temperament;
+          private String specificNeeds;
+          private boolean isRescued;
+          private String status;
+
+          @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
+          private MedicalHistoryEntity medicalHistory;
+
+          @ManyToOne
+          @JoinColumn(name = "shelter_id")
+          private ShelterEntity shelter;
+
+          @OneToMany(mappedBy = "pet")
+          private List<AdoptionEntity> adoptionRequests;
+}
