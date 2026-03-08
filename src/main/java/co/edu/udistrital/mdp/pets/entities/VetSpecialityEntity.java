@@ -15,5 +15,5 @@ public class VetSpecialityEntity extends BaseEntity {
     private String description;
 
     @ManyToMany(mappedBy = "specialities")
-    private List<VeterinarianEntity> veterinarians;
+    private List<VeterinarianEntity> veterinarians = new ArrayList<>();
 }

@@ -1,7 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -23,9 +23,9 @@ public class MedicalHistoryEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "medicalHistory")
     @PodamExclude
-    private List<MedicalEventEntity> medicalEvents;
+    private List<MedicalEventEntity> medicalEvents = new ArrayList<>();
 
     @OneToMany(mappedBy = "medicalHistory")
     @PodamExclude
-    private List<VaccineEntryEntity> vaccineEntries;
+    private List<VaccineEntryEntity> vaccineEntries = new ArrayList<>();
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import java.util.List;
+import java.util.ArrayList;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
@@ -18,8 +18,8 @@ public class AdopterEntity extends UserEntity {
 
     @OneToMany(mappedBy = "adopter")
     @PodamExclude
-    private List<AdoptionRequestEntity> adoptionRequests;
+    private List<AdoptionRequestEntity> adoptionRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "adopter")
-    private List<ReviewEntity> reviews;
+    private List<ReviewEntity> reviews = new ArrayList<>();
 }

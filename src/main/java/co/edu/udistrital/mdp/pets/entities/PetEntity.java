@@ -1,7 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -30,5 +30,5 @@ public class PetEntity extends BaseEntity {
     private ShelterEntity shelter;
 
     @OneToMany(mappedBy = "pet")
-    private List<AdoptionEntity> adoptionRequests;
+    private List<AdoptionEntity> adoptionRequests = new ArrayList<>();
 }
