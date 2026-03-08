@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -29,10 +30,6 @@ public class VeterinarianEntity extends UserEntity {
 
     @PodamExclude
     @ManyToMany
-    @JoinTable(
-        name = "vet_speciality_relation",
-        joinColumns = @JoinColumn(name = "vet_id"),
-        inverseJoinColumns = @JoinColumn(name = "speciality_id")
-    )
-    private List<VetSpecialityEntity> specialities;
+    @JoinTable(name = "vet_speciality_relation", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
+    private List<VetSpecialityEntity> specialities = new ArrayList<>();
 }

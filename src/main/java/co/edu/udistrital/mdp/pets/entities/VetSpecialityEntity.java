@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import jakarta.persistence.*;
 import lombok.Data;
