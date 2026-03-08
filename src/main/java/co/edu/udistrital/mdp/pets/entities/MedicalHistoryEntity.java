@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -15,5 +16,6 @@ public class MedicalHistoryEntity extends BaseEntity {
 
           @OneToOne
           @JoinColumn(name = "pet_id")
+          @PodamExclude
           private PetEntity pet;
 }

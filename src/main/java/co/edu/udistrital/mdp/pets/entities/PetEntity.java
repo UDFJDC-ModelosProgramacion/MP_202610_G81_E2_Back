@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @Entity
@@ -25,6 +26,7 @@ public class PetEntity extends BaseEntity {
 
           @ManyToOne
           @JoinColumn(name = "shelter_id")
+          @PodamExclude
           private ShelterEntity shelter;
 
           @OneToMany(mappedBy = "pet")

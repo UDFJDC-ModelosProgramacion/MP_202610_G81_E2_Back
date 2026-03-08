@@ -10,6 +10,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,8 +24,10 @@ public class VeterinarianEntity extends UserEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
+    @PodamExclude
     private ShelterEntity shelter;
 
+    @PodamExclude
     @ManyToMany
     @JoinTable(
         name = "vet_speciality_relation",
