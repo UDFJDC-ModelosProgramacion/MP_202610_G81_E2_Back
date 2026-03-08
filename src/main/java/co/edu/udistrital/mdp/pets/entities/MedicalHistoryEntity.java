@@ -1,6 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -13,8 +13,8 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @Entity
 public class MedicalHistoryEntity extends BaseEntity {
-    private Date createdDate;
-    private Date lastUpdated;
+    private LocalDate createdDate;
+    private LocalDate lastUpdated;
 
     @OneToOne
     @JoinColumn(name = "pet_id")
