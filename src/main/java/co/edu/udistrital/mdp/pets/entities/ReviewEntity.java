@@ -1,6 +1,8 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import uk.co.jemos.podam.common.PodamExclude;
 
@@ -19,5 +21,6 @@ public class ReviewEntity extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "shelter_id")
+    @PodamExclude
     private ShelterEntity shelter;
 }

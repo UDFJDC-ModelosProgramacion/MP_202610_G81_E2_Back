@@ -28,6 +28,6 @@ public class DateStrategy implements AttributeStrategy<Date> {
 
 	@Override
 	public Date getValue(Class<?> attrType, List<Annotation> attrAnnotations) {
-		return null;
+		return getValue();
 	}
 }
