@@ -4,12 +4,12 @@ import java.lang.annotation.Annotation;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import uk.co.jemos.podam.common.AttributeStrategy;
 
 public class DateStrategy implements AttributeStrategy<Date> {
-	Random r = new Random();
+	private final SecureRandom r = new SecureRandom();
 
 	public Date getValue() {
 		Calendar c = Calendar.getInstance();

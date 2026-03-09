@@ -9,9 +9,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class MedicalHistoryEntity extends BaseEntity {
     private LocalDate createdDate;

@@ -6,9 +6,11 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class PetEntity extends BaseEntity {
     private String name;
