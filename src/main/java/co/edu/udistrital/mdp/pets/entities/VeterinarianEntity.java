@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -23,13 +25,11 @@ public class VeterinarianEntity extends UserEntity {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne
+    @PodamExclude
     private ShelterEntity shelter;
 
+    @PodamExclude
     @ManyToMany
-    @JoinTable(
-        name = "vet_speciality_relation",
-        joinColumns = @JoinColumn(name = "vet_id"),
-        inverseJoinColumns = @JoinColumn(name = "speciality_id")
-    )
-    private List<VetSpecialityEntity> specialities;
+    @JoinTable(name = "vet_speciality_relation", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
+    private List<VetSpecialityEntity> specialities = new ArrayList<>();
 }
