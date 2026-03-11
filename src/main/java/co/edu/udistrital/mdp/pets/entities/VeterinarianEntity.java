@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -32,4 +34,16 @@ public class VeterinarianEntity extends UserEntity {
     @ManyToMany
     @JoinTable(name = "vet_speciality_relation", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
     private List<VetSpecialityEntity> specialities = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @PodamExclude
+    @OneToMany(mappedBy = "veterinarian", fetch = FetchType.LAZY)
+    private List<MedicalHistoryEntity> medicalHistories = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @PodamExclude
+    @OneToMany(mappedBy = "veterinarian", fetch = FetchType.LAZY)
+    private List<MedicalEventEntity> medicalEvents = new ArrayList<>();
 }
