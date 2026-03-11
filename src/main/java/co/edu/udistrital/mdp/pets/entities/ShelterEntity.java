@@ -12,8 +12,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 public class ShelterEntity extends BaseEntity {
-
     private String shelterName;
+    private String nit;
+    private String phoneNumber;
+    private String address;
+    private String status;
     private String city;
     private String locationDetails;
     private String description;
