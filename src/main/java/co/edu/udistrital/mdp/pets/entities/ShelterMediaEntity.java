@@ -1,24 +1,26 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-public class VaccineEntryEntity extends BaseEntity {
-    private String vaccineName;
-    private LocalDate adminDate;
-    private LocalDate nextDueDate;
+public class ShelterMediaEntity extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "medical_history_id")
+    private String mediaUrl;
+    private String mediaType;
+    private String description;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @PodamExclude
-    private MedicalHistoryEntity medicalHistory;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id")
+    private ShelterEntity shelter;
 }
