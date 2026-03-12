@@ -152,4 +152,56 @@ public class ShelterServiceTest {
         assertThrows(IllegalOperationException.class, () -> shelterService.deleteShelter(shelter.getId()));
         verify(shelterRepository, never()).deleteById(anyLong());
     }
+
+    @Test
+    void testSearchShelters() {
+        when(shelterRepository.findAll()).thenReturn(Arrays.asList(shelter));
+        List<ShelterEntity> list = shelterService.searchShelters();
+        assertNotNull(list);
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    void testSearchSheltersByNameSuccess() {
+        when(shelterRepository.findByShelterName("Shelter Test")).thenReturn(Arrays.asList(shelter));
+        List<ShelterEntity> result = shelterService.searchSheltersByName("Shelter Test");
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
+    void testCreateShelterMissingName() {
+        shelter.setShelterName(null);
+        assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
+    }
+
+    @Test
+    void testCreateShelterMissingPhoneNumber() {
+        shelter.setPhoneNumber(null);
+        assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
+    }
+
+    @Test
+    void testCreateShelterMissingAddress() {
+        shelter.setAddress("   ");
+        assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
+    }
+
+    @Test
+    void testUpdateShelterDuplicateName() {
+        ShelterEntity updatedShelter = new ShelterEntity();
+        updatedShelter.setNit(shelter.getNit());
+        updatedShelter.setStatus("Activo");
+        updatedShelter.setShelterName("Another Name");
+
+        ShelterEntity another = new ShelterEntity();
+        another.setId(99L);
+        another.setShelterName("Another Name");
+
+        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
+        when(shelterRepository.findByShelterName("Another Name")).thenReturn(Arrays.asList(another));
+
+        assertThrows(IllegalOperationException.class,
+                () -> shelterService.updateShelter(shelter.getId(), updatedShelter));
+    }
 }

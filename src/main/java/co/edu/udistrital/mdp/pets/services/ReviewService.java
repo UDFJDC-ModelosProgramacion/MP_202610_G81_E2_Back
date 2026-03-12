@@ -66,5 +66,7 @@ public class ReviewService {
         if(review.getShelter() != null){
             throw new IllegalArgumentException("Cannot delete review with associated Sheleter");
         }
+
+        reviewRepository.delete(review);
     }
 }

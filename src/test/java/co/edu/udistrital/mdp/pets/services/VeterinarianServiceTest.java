@@ -92,6 +92,30 @@ public class VeterinarianServiceTest {
     }
 
     @Test
+    void testSearchVeterinarians() {
+        when(veterinarianRepository.findAll()).thenReturn(Collections.singletonList(veterinarian));
+        List<VeterinarianEntity> list = veterinarianService.searchVeterinarians();
+        assertNotNull(list);
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    void testSearchVeterinariansBySpeciality() {
+        when(veterinarianRepository.findBySpecialitiesId(10L)).thenReturn(Collections.singletonList(veterinarian));
+        List<VeterinarianEntity> list = veterinarianService.searchVeterinariansBySpeciality(10L);
+        assertNotNull(list);
+        assertEquals(1, list.size());
+    }
+
+    @Test
+    void testSearchVeterinariansByShelter() {
+        when(veterinarianRepository.findByShelterId(5L)).thenReturn(Collections.singletonList(veterinarian));
+        List<VeterinarianEntity> list = veterinarianService.searchVeterinariansByShelter(5L);
+        assertNotNull(list);
+        assertEquals(1, list.size());
+    }
+
+    @Test
     void testUpdateVeterinarianSuccess() throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity updatedVeterinarian = new VeterinarianEntity();
         updatedVeterinarian.setId(veterinarian.getId());

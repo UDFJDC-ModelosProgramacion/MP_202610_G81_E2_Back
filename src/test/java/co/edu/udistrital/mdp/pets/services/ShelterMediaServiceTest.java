@@ -87,6 +87,14 @@ public class ShelterMediaServiceTest {
     }
 
     @Test
+    void testSearchShelterMediasByShelterId() {
+        when(shelterMediaRepository.findByShelterId(shelter.getId())).thenReturn(java.util.Collections.singletonList(mediaEntity));
+        java.util.List<ShelterMediaEntity> result = shelterMediaService.searchShelterMediasByShelterId(shelter.getId());
+        assertNotNull(result);
+        assertEquals(1, result.size());
+    }
+
+    @Test
     void testUpdateShelterMediaSuccess() throws EntityNotFoundException {
         ShelterMediaEntity updatedMedia = new ShelterMediaEntity();
         updatedMedia.setDescription("Nueva descripción");
@@ -121,6 +129,15 @@ public class ShelterMediaServiceTest {
     void testDeleteShelterMediaFailsProfilePhotoNoBackup() {
         when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
         when(shelterMediaRepository.countByShelterIdAndMediaType(shelter.getId(), "Foto de Perfil")).thenReturn(1);
+
+        assertThrows(IllegalOperationException.class, () -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
+        verify(shelterMediaRepository, never()).deleteById(anyLong());
+    }
+
+    @Test
+    void testDeleteShelterMediaFailsProfilePhotoNullShelter() {
+        mediaEntity.setShelter(null);
+        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
 
         assertThrows(IllegalOperationException.class, () -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
         verify(shelterMediaRepository, never()).deleteById(anyLong());
