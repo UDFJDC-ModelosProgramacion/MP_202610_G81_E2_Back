@@ -58,7 +58,6 @@ public class ShelterService {
         return shelterRepository.save(shelter);
     }
 
-    @SuppressWarnings("null")
     @Transactional(readOnly = true)
     public ShelterEntity searchShelter(Long id) throws EntityNotFoundException {
         log.info("Searching shelter with id: {}", id);
@@ -112,12 +111,11 @@ public class ShelterService {
         return shelterRepository.save(existing);
     }
 
-    @SuppressWarnings("null")
     @Transactional
     public void deleteShelter(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter with id: {}", id);
-        @SuppressWarnings("unused")
-        ShelterEntity existing = searchShelter(id);
+        
+        searchShelter(id); // Valida que exista el refugio
 
         List<PetEntity> pets = petRepository.findByShelterId(id);
         if (pets != null && !pets.isEmpty()) {

@@ -22,7 +22,6 @@ public class VeterinarianService {
     @Autowired
     private UserRepository userRepository;
 
-    @SuppressWarnings("null")
     @Transactional
     public VeterinarianEntity createVeterinarian(VeterinarianEntity veterinarian)
             throws IllegalOperationException, EntityNotFoundException {
@@ -45,7 +44,6 @@ public class VeterinarianService {
         return veterinarianRepository.save(veterinarian);
     }
 
-    @SuppressWarnings("null")
     @Transactional(readOnly = true)
     public VeterinarianEntity searchVeterinarian(Long id) throws EntityNotFoundException {
         log.info("Searching veterinarian with id: {}", id);
@@ -91,7 +89,6 @@ public class VeterinarianService {
         return veterinarianRepository.save(existing);
     }
 
-    @SuppressWarnings("null")
     @Transactional
     public void deleteVeterinarian(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting veterinarian with id: {}", id);

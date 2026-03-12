@@ -4,149 +4,221 @@ import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterMediaEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.pets.repositories.ShelterMediaRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class ShelterMediaServiceTest {
+@DataJpaTest
+@Transactional
+@Import(ShelterMediaService.class)
+class ShelterMediaServiceTest {
 
-    @Mock
-    private ShelterMediaRepository shelterMediaRepository;
-
-    @InjectMocks
+    @Autowired
     private ShelterMediaService shelterMediaService;
 
+    @Autowired
+    private TestEntityManager entityManager;
+
     private PodamFactory factory = new PodamFactoryImpl();
-    private ShelterMediaEntity mediaEntity;
-    private ShelterEntity shelter;
+
+    private List<ShelterMediaEntity> mediaList = new ArrayList<>();
+    private List<ShelterEntity> shelterList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-        shelter = factory.manufacturePojo(ShelterEntity.class);
-        shelter.setId(1L);
-
-        mediaEntity = factory.manufacturePojo(ShelterMediaEntity.class);
-        mediaEntity.setId(10L);
-        mediaEntity.setMediaUrl("image.jpg");
-        mediaEntity.setMediaType("Foto de Perfil");
-        mediaEntity.setShelter(shelter);
+        clearData();
+        insertData();
     }
 
-    @SuppressWarnings("null")
-    @Test
-    void testCreateShelterMediaSuccess() throws IllegalOperationException {
-        when(shelterMediaRepository.save(any(ShelterMediaEntity.class))).thenReturn(mediaEntity);
+    private void clearData() {
+        entityManager.getEntityManager().createQuery("delete from ShelterMediaEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from ShelterEntity").executeUpdate();
+    }
 
-        ShelterMediaEntity result = shelterMediaService.createShelterMedia(mediaEntity, 1024); // 1KB
+    private void insertData() {
+        for (int i = 0; i < 3; i++) {
+            ShelterEntity shelterEntity = factory.manufacturePojo(ShelterEntity.class);
+            entityManager.persist(shelterEntity);
+            shelterList.add(shelterEntity);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            ShelterMediaEntity mediaEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+            mediaEntity.setMediaUrl("image" + i + ".jpg");
+            mediaEntity.setMediaType("Foto de Galería");
+            mediaEntity.setShelter(shelterList.get(0));
+            entityManager.persist(mediaEntity);
+            mediaList.add(mediaEntity);
+        }
+    }
+
+    @Test
+    void testCreateShelterMedia() throws IllegalOperationException {
+        ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+        newEntity.setMediaUrl("nueva_imagen.jpg");
+        newEntity.setMediaType("Foto de Galería");
+        newEntity.setShelter(shelterList.get(0));
+
+        ShelterMediaEntity result = shelterMediaService.createShelterMedia(newEntity, 1024);
         assertNotNull(result);
-        assertEquals("image.jpg", result.getMediaUrl());
+
+        ShelterMediaEntity entity = entityManager.find(ShelterMediaEntity.class, result.getId());
+        assertEquals(newEntity.getId(), entity.getId());
+        assertEquals(newEntity.getMediaUrl(), entity.getMediaUrl());
+        assertEquals(newEntity.getMediaType(), entity.getMediaType());
     }
 
     @Test
     void testCreateShelterMediaInvalidFormat() {
-        mediaEntity.setMediaUrl("document.pdf");
-        assertThrows(IllegalOperationException.class, () -> shelterMediaService.createShelterMedia(mediaEntity, 1024));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+            newEntity.setMediaUrl("document.pdf");
+            newEntity.setShelter(shelterList.get(0));
+            shelterMediaService.createShelterMedia(newEntity, 1024);
+        });
     }
 
     @Test
     void testCreateShelterMediaExceedsSize() {
-        long largeSize = 6 * 1024 * 1024; // 6MB
-        assertThrows(IllegalOperationException.class, () -> shelterMediaService.createShelterMedia(mediaEntity, largeSize));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+            newEntity.setMediaUrl("image.jpg");
+            newEntity.setShelter(shelterList.get(0));
+            long largeSize = 6 * 1024 * 1024; // 6MB
+            shelterMediaService.createShelterMedia(newEntity, largeSize);
+        });
     }
 
     @Test
     void testCreateShelterMediaNoUrl() {
-        mediaEntity.setMediaUrl("");
-        assertThrows(IllegalOperationException.class, () -> shelterMediaService.createShelterMedia(mediaEntity, 1024));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+            newEntity.setMediaUrl("");
+            newEntity.setShelter(shelterList.get(0));
+            shelterMediaService.createShelterMedia(newEntity, 1024);
+        });
     }
 
-    @SuppressWarnings("null")
     @Test
-    void testSearchShelterMediaSuccess() throws EntityNotFoundException {
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
-        ShelterMediaEntity result = shelterMediaService.searchShelterMedia(mediaEntity.getId());
-        assertNotNull(result);
-        assertEquals(mediaEntity.getId(), result.getId());
+    void testCreateShelterMediaNullUrl() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
+            newEntity.setMediaUrl(null);
+            newEntity.setShelter(shelterList.get(0));
+            shelterMediaService.createShelterMedia(newEntity, 1024);
+        });
     }
 
-    @SuppressWarnings("null")
+    @Test
+    void testSearchShelterMedia() throws EntityNotFoundException {
+        ShelterMediaEntity entity = mediaList.get(0);
+        ShelterMediaEntity resultEntity = shelterMediaService.searchShelterMedia(entity.getId());
+        assertNotNull(resultEntity);
+        assertEquals(entity.getId(), resultEntity.getId());
+        assertEquals(entity.getMediaUrl(), resultEntity.getMediaUrl());
+        assertEquals(entity.getMediaType(), resultEntity.getMediaType());
+    }
+
     @Test
     void testSearchShelterMediaNotFound() {
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> shelterMediaService.searchShelterMedia(mediaEntity.getId()));
+        assertThrows(EntityNotFoundException.class, () -> {
+            shelterMediaService.searchShelterMedia(0L);
+        });
     }
 
-    @SuppressWarnings("null")
     @Test
     void testSearchShelterMediasByShelterId() {
-        when(shelterMediaRepository.findByShelterId(shelter.getId())).thenReturn(java.util.Collections.singletonList(mediaEntity));
-        java.util.List<ShelterMediaEntity> result = shelterMediaService.searchShelterMediasByShelterId(shelter.getId());
+        List<ShelterMediaEntity> result = shelterMediaService.searchShelterMediasByShelterId(shelterList.get(0).getId());
         assertNotNull(result);
-        assertEquals(1, result.size());
+        assertEquals(3, result.size());
     }
 
     @Test
-    void testUpdateShelterMediaSuccess() throws EntityNotFoundException {
+    void testUpdateShelterMedia() throws EntityNotFoundException {
+        ShelterMediaEntity entity = mediaList.get(0);
         ShelterMediaEntity updatedMedia = new ShelterMediaEntity();
         updatedMedia.setDescription("Nueva descripción");
 
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
-        when(shelterMediaRepository.save(any(ShelterMediaEntity.class))).thenReturn(mediaEntity);
-
-        ShelterMediaEntity result = shelterMediaService.updateShelterMedia(mediaEntity.getId(), updatedMedia);
+        ShelterMediaEntity result = shelterMediaService.updateShelterMedia(entity.getId(), updatedMedia);
         assertNotNull(result);
-        assertEquals("Nueva descripción", mediaEntity.getDescription()); // existing gets updated
-    }
 
-    @SuppressWarnings("null")
-    @Test
-    void testDeleteShelterMediaSuccessNotProfilePhoto() throws EntityNotFoundException, IllegalOperationException {
-        mediaEntity.setMediaType("Video Tour");
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
-
-        assertDoesNotThrow(() -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
-        verify(shelterMediaRepository, times(1)).deleteById(mediaEntity.getId());
-    }
-
-    @SuppressWarnings("null")
-    @Test
-    void testDeleteShelterMediaSuccessProfilePhotoWithBackup() throws EntityNotFoundException, IllegalOperationException {
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
-        when(shelterMediaRepository.countByShelterIdAndMediaType(shelter.getId(), "Foto de Perfil")).thenReturn(2);
-
-        assertDoesNotThrow(() -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
-        verify(shelterMediaRepository, times(1)).deleteById(mediaEntity.getId());
-    }
-
-    @SuppressWarnings("null")
-    @Test
-    void testDeleteShelterMediaFailsProfilePhotoNoBackup() {
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
-        when(shelterMediaRepository.countByShelterIdAndMediaType(shelter.getId(), "Foto de Perfil")).thenReturn(1);
-
-        assertThrows(IllegalOperationException.class, () -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
-        verify(shelterMediaRepository, never()).deleteById(anyLong());
+        ShelterMediaEntity resp = entityManager.find(ShelterMediaEntity.class, entity.getId());
+        assertEquals("Nueva descripción", resp.getDescription());
     }
 
     @Test
-    void testDeleteShelterMediaFailsProfilePhotoNullShelter() {
-        mediaEntity.setShelter(null);
-        when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
+    void testUpdateShelterMediaNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            ShelterMediaEntity updatedMedia = new ShelterMediaEntity();
+            updatedMedia.setDescription("Nueva descripción");
+            shelterMediaService.updateShelterMedia(0L, updatedMedia);
+        });
+    }
 
-        assertThrows(IllegalOperationException.class, () -> shelterMediaService.deleteShelterMedia(mediaEntity.getId()));
-        verify(shelterMediaRepository, never()).deleteById(anyLong());
+    @Test
+    void testDeleteShelterMediaNotProfilePhoto() throws EntityNotFoundException, IllegalOperationException {
+        ShelterMediaEntity entity = mediaList.get(0);
+        entity.setMediaType("Video Tour");
+        entityManager.merge(entity);
+
+        shelterMediaService.deleteShelterMedia(entity.getId());
+        ShelterMediaEntity deleted = entityManager.find(ShelterMediaEntity.class, entity.getId());
+        assertNull(deleted);
+    }
+
+    @Test
+    void testDeleteShelterMediaProfilePhotoWithBackup() throws EntityNotFoundException, IllegalOperationException {
+        ShelterMediaEntity entity1 = mediaList.get(0);
+        entity1.setMediaType("Foto de Perfil");
+        entityManager.merge(entity1);
+
+        ShelterMediaEntity entity2 = mediaList.get(1);
+        entity2.setMediaType("Foto de Perfil");
+        entityManager.merge(entity2);
+
+        shelterMediaService.deleteShelterMedia(entity1.getId());
+        ShelterMediaEntity deleted = entityManager.find(ShelterMediaEntity.class, entity1.getId());
+        assertNull(deleted);
+    }
+
+    @Test
+    void testDeleteShelterMediaProfilePhotoNoBackup() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity entity = mediaList.get(0);
+            entity.setMediaType("Foto de Perfil");
+            entityManager.merge(entity);
+            shelterMediaService.deleteShelterMedia(entity.getId());
+        });
+    }
+
+    @Test
+    void testDeleteShelterMediaProfilePhotoNullShelter() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterMediaEntity entity = mediaList.get(0);
+            entity.setMediaType("Foto de Perfil");
+            entity.setShelter(null);
+            entityManager.merge(entity);
+            shelterMediaService.deleteShelterMedia(entity.getId());
+        });
+    }
+
+    @Test
+    void testDeleteShelterMediaNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            shelterMediaService.deleteShelterMedia(0L);
+        });
     }
 }

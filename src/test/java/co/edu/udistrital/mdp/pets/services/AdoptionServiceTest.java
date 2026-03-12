@@ -3,126 +3,166 @@ package co.edu.udistrital.mdp.pets.services;
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
-import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
-import jakarta.persistence.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class AdoptionServiceTest {
+@DataJpaTest
+@Transactional
+@Import(AdoptionService.class)
+class AdoptionServiceTest {
 
-    @Mock
-    private AdoptionRepository adoptionRepository;
-
-    @InjectMocks
+    @Autowired
     private AdoptionService adoptionService;
 
+    @Autowired
+    private TestEntityManager entityManager;
+
     private PodamFactory factory = new PodamFactoryImpl();
-    private AdoptionEntity adoption;
+
+    private List<AdoptionEntity> adoptionList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-        adoption = factory.manufacturePojo(AdoptionEntity.class);
-        adoption.setTrialCohabitation(null);
-        adoption.setPet(null);
+        clearData();
+        insertData();
+    }
+
+    private void clearData() {
+        entityManager.getEntityManager().createQuery("delete from AdoptionEntity").executeUpdate();
+    }
+
+    private void insertData() {
+        for (int i = 0; i < 3; i++) {
+            AdoptionEntity adoptionEntity = factory.manufacturePojo(AdoptionEntity.class);
+            entityManager.persist(adoptionEntity);
+            adoptionList.add(adoptionEntity);
+        }
     }
 
     @Test
-    void testCreateAdoptionSuccess() {
-        when(adoptionRepository.save(any(AdoptionEntity.class))).thenReturn(adoption);
+    void testCreateAdoption() throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity newEntity = factory.manufacturePojo(AdoptionEntity.class);
 
-        AdoptionEntity result = adoptionService.createAdoption(adoption);
+        AdoptionEntity result = adoptionService.createAdoption(newEntity);
         assertNotNull(result);
-        assertEquals(adoption.getId(), result.getId());
+
+        AdoptionEntity entity = entityManager.find(AdoptionEntity.class, result.getId());
+        assertEquals(newEntity.getId(), entity.getId());
+        assertEquals(newEntity.getOfficialDate(), entity.getOfficialDate());
+        assertEquals(newEntity.getContractSigned(), entity.getContractSigned());
     }
 
     @Test
     void testCreateAdoptionNull() {
-        assertThrows(IllegalArgumentException.class, () -> adoptionService.createAdoption(null));
+        assertThrows(IllegalOperationException.class, () -> adoptionService.createAdoption(null));
     }
 
     @Test
-    void testSearchAdoptionSuccess() {
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.of(adoption));
-        AdoptionEntity result = adoptionService.searchAdoption(adoption.getId());
-        assertNotNull(result);
-        assertEquals(adoption.getId(), result.getId());
+    void testSearchAdoption() throws EntityNotFoundException {
+        AdoptionEntity entity = adoptionList.get(0);
+        AdoptionEntity resultEntity = adoptionService.searchAdoption(entity.getId());
+        assertNotNull(resultEntity);
+        assertEquals(entity.getId(), resultEntity.getId());
+        assertEquals(entity.getOfficialDate(), resultEntity.getOfficialDate());
+        assertEquals(entity.getContractSigned(), resultEntity.getContractSigned());
     }
 
     @Test
     void testSearchAdoptionNotFound() {
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> adoptionService.searchAdoption(adoption.getId()));
+        assertThrows(EntityNotFoundException.class, () -> {
+            adoptionService.searchAdoption(0L);
+        });
     }
 
     @Test
     void testSearchAdoptions() {
-        List<AdoptionEntity> list = Arrays.asList(adoption);
-        when(adoptionRepository.findAll()).thenReturn(list);
-        List<AdoptionEntity> result = adoptionService.searchAdoptions();
-        assertNotNull(result);
-        assertEquals(1, result.size());
+        List<AdoptionEntity> list = adoptionService.searchAdoptions();
+        assertEquals(adoptionList.size(), list.size());
+        for (AdoptionEntity entity : list) {
+            boolean found = false;
+            for (AdoptionEntity storedEntity : adoptionList) {
+                if (entity.getId().equals(storedEntity.getId())) {
+                    found = true;
+                }
+            }
+            assertTrue(found);
+        }
     }
 
     @Test
-    void testUpdateAdoptionSuccess() {
-        AdoptionEntity updatedAdoption = new AdoptionEntity();
-        updatedAdoption.setOfficialDate(adoption.getOfficialDate());
-        updatedAdoption.setContractSigned(!adoption.getContractSigned());
+    void testUpdateAdoption() throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity entity = adoptionList.get(0);
+        AdoptionEntity pojoEntity = factory.manufacturePojo(AdoptionEntity.class);
+        pojoEntity.setId(entity.getId());
 
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.of(adoption));
-        when(adoptionRepository.save(any(AdoptionEntity.class))).thenReturn(updatedAdoption);
+        adoptionService.updateAdoption(entity.getId(), pojoEntity);
 
-        AdoptionEntity result = adoptionService.updateAdoption(adoption.getId(), updatedAdoption);
-        assertNotNull(result);
-        assertEquals(updatedAdoption.getContractSigned(), result.getContractSigned());
+        AdoptionEntity resp = entityManager.find(AdoptionEntity.class, entity.getId());
+        assertEquals(pojoEntity.getOfficialDate(), resp.getOfficialDate());
+        assertEquals(pojoEntity.getContractSigned(), resp.getContractSigned());
     }
 
     @Test
     void testUpdateAdoptionNotFound() {
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> adoptionService.updateAdoption(adoption.getId(), adoption));
+        assertThrows(EntityNotFoundException.class, () -> {
+            AdoptionEntity pojoEntity = factory.manufacturePojo(AdoptionEntity.class);
+            pojoEntity.setId(0L);
+            adoptionService.updateAdoption(0L, pojoEntity);
+        });
     }
 
     @Test
-    void testDeleteAdoptionSuccess() {
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.of(adoption));
+    void testDeleteAdoption() throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity entity = adoptionList.get(1);
+        adoptionService.deleteAdoption(entity.getId());
+        AdoptionEntity deleted = entityManager.find(AdoptionEntity.class, entity.getId());
+        assertNull(deleted);
+    }
 
-        assertDoesNotThrow(() -> adoptionService.deleteAdoption(adoption.getId()));
-        verify(adoptionRepository, times(1)).delete(adoption);
+    @Test
+    void testDeleteAdoptionNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            adoptionService.deleteAdoption(0L);
+        });
     }
 
     @Test
     void testDeleteAdoptionWithTrialCohabitation() {
-        TrialCohabitationEntity trial = new TrialCohabitationEntity();
-        adoption.setTrialCohabitation(trial);
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.of(adoption));
-
-        assertThrows(IllegalArgumentException.class, () -> adoptionService.deleteAdoption(adoption.getId()));
-        verify(adoptionRepository, never()).delete(any());
+        assertThrows(IllegalOperationException.class, () -> {
+            AdoptionEntity entity = adoptionList.get(0);
+            TrialCohabitationEntity trial = factory.manufacturePojo(TrialCohabitationEntity.class);
+            entityManager.persist(trial);
+            entity.setTrialCohabitation(trial);
+            entityManager.merge(entity);
+            adoptionService.deleteAdoption(entity.getId());
+        });
     }
 
     @Test
     void testDeleteAdoptionWithPet() {
-        PetEntity pet = new PetEntity();
-        adoption.setPet(pet);
-        when(adoptionRepository.findById(adoption.getId())).thenReturn(Optional.of(adoption));
-
-        assertThrows(IllegalArgumentException.class, () -> adoptionService.deleteAdoption(adoption.getId()));
-        verify(adoptionRepository, never()).delete(any());
+        assertThrows(IllegalOperationException.class, () -> {
+            AdoptionEntity entity = adoptionList.get(0);
+            PetEntity pet = factory.manufacturePojo(PetEntity.class);
+            entityManager.persist(pet);
+            entity.setPet(pet);
+            entityManager.merge(entity);
+            adoptionService.deleteAdoption(entity.getId());
+        });
     }
 }
