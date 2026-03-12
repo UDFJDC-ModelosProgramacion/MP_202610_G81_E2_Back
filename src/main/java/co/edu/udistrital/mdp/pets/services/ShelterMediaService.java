@@ -40,6 +40,7 @@ public class ShelterMediaService {
         return shelterMediaRepository.save(mediaItems);
     }
 
+    @SuppressWarnings("null")
     @Transactional(readOnly = true)
     public ShelterMediaEntity searchShelterMedia(Long id) throws EntityNotFoundException {
         log.info("Searching shelter media with id: {}", id);
@@ -53,6 +54,7 @@ public class ShelterMediaService {
         return shelterMediaRepository.findByShelterId(shelterId);
     }
 
+    @SuppressWarnings("null")
     @Transactional
     public ShelterMediaEntity updateShelterMedia(Long id, ShelterMediaEntity updatedMedia)
             throws EntityNotFoundException {
@@ -66,6 +68,7 @@ public class ShelterMediaService {
         return shelterMediaRepository.save(existing);
     }
 
+    @SuppressWarnings("null")
     @Transactional
     public void deleteShelterMedia(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter media with id: {}", id);

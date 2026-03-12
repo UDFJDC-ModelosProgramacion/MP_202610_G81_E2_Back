@@ -1,75 +1,76 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
+import uk.co.jemos.podam.api.PodamFactory;
+import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @DataJpaTest
 class ShelterEntityTest {
 
     @Autowired
-    private ShelterRepository shelterRepository;
+    private TestEntityManager entityManager;
 
-    private ShelterEntity shelter;
+    private PodamFactory factory = new PodamFactoryImpl();
+
+    private ShelterEntity shelterEntity;
 
     @BeforeEach
     void setUp() {
-        shelter = new ShelterEntity();
-        shelter.setShelterName("Refugio Pelitos Felices");
-        shelter.setCity("Bogotá");
-        shelter.setLocationDetails("Calle 100 # 15-30, Barrio El Refugio");
-        shelter.setDescription("Refugio dedicado al cuidado y adopción de mascotas");
-        shelter.setWebsiteUrl("https://pelitosfelices.co");
+        shelterEntity = factory.manufacturePojo(ShelterEntity.class);
     }
 
     @Test
-    void testPersistShelterEntity() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertNotNull(saved);
-        assertNotNull(saved.getId());
-    }
+    void testCreateShelter() {
+        ShelterEntity saved = entityManager.persistAndFlush(shelterEntity);
+        ShelterEntity found = entityManager.find(ShelterEntity.class, saved.getId());
 
-    @Test
-    void testShelterNameIsPersisted() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertEquals("Refugio Pelitos Felices", saved.getShelterName());
-    }
-
-    @Test
-    void testShelterCityIsPersisted() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertEquals("Bogotá", saved.getCity());
-    }
-
-    @Test
-    void testShelterLocationDetailsIsPersisted() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertEquals("Calle 100 # 15-30, Barrio El Refugio", saved.getLocationDetails());
-    }
-
-    @Test
-    void testShelterDescriptionIsPersisted() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertEquals("Refugio dedicado al cuidado y adopción de mascotas", saved.getDescription());
-    }
-
-    @Test
-    void testShelterWebsiteUrlIsPersisted() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        assertEquals("https://pelitosfelices.co", saved.getWebsiteUrl());
-    }
-
-    @Test
-    void testFindShelterById() {
-        ShelterEntity saved = shelterRepository.save(shelter);
-        ShelterEntity found = shelterRepository.findById(saved.getId()).orElse(null);
         assertNotNull(found);
-        assertEquals(saved.getId(), found.getId());
-        assertEquals(saved.getShelterName(), found.getShelterName());
+        assertEquals(shelterEntity.getShelterName(), found.getShelterName());
+        assertEquals(shelterEntity.getCity(), found.getCity());
+        assertEquals(shelterEntity.getLocationDetails(), found.getLocationDetails());
+        assertEquals(shelterEntity.getDescription(), found.getDescription());
+        assertEquals(shelterEntity.getWebsiteUrl(), found.getWebsiteUrl());
+    }
+
+    @Test
+    void testShelterWithPets() {
+        ShelterEntity saved = entityManager.persistAndFlush(shelterEntity);
+
+        PetEntity pet1 = factory.manufacturePojo(PetEntity.class);
+        pet1.setShelter(saved);
+        entityManager.persistAndFlush(pet1);
+
+        PetEntity pet2 = factory.manufacturePojo(PetEntity.class);
+        pet2.setShelter(saved);
+        entityManager.persistAndFlush(pet2);
+
+        entityManager.clear();
+
+        ShelterEntity found = entityManager.find(ShelterEntity.class, saved.getId());
+        assertNotNull(found);
+    }
+
+    @Test
+    void testShelterWithMedia() {
+        ShelterEntity saved = entityManager.persistAndFlush(shelterEntity);
+
+        ShelterMediaEntity media = factory.manufacturePojo(ShelterMediaEntity.class);
+        media.setShelter(saved);
+        saved.getMediaItems().add(media);
+        entityManager.persistAndFlush(saved);
+
+        entityManager.clear();
+
+        ShelterEntity found = entityManager.find(ShelterEntity.class, saved.getId());
+        assertNotNull(found);
+        assertFalse(found.getMediaItems().isEmpty());
+        assertEquals(1, found.getMediaItems().size());
     }
 }

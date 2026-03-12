@@ -15,7 +15,6 @@ import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -42,6 +41,7 @@ public class SpecialityServiceTest {
         speciality.setVeterinarians(new ArrayList<>());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testCreateSpecialitySuccess() throws IllegalOperationException {
         when(specialityRepository.findByNameIgnoreCase(speciality.getName().trim())).thenReturn(Optional.empty());
@@ -64,6 +64,7 @@ public class SpecialityServiceTest {
         assertThrows(IllegalOperationException.class, () -> specialityService.createSpeciality(speciality));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchSpecialitySuccess() throws EntityNotFoundException {
         when(specialityRepository.findById(speciality.getId())).thenReturn(Optional.of(speciality));
@@ -72,12 +73,14 @@ public class SpecialityServiceTest {
         assertEquals(speciality.getId(), result.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchSpecialityNotFound() {
         when(specialityRepository.findById(speciality.getId())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> specialityService.searchSpeciality(speciality.getId()));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testUpdateSpecialitySuccess() throws EntityNotFoundException, IllegalOperationException {
         VetSpecialityEntity updated = new VetSpecialityEntity();
@@ -91,6 +94,7 @@ public class SpecialityServiceTest {
         assertNotNull(result);
     }
     
+    @SuppressWarnings("null")
     @Test
     void testUpdateSpecialityDuplicateName() {
         VetSpecialityEntity updated = new VetSpecialityEntity();
@@ -106,6 +110,7 @@ public class SpecialityServiceTest {
         assertThrows(IllegalOperationException.class, () -> specialityService.updateSpeciality(speciality.getId(), updated));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteSpecialitySuccess() throws EntityNotFoundException, IllegalOperationException {
         when(specialityRepository.findById(speciality.getId())).thenReturn(Optional.of(speciality));
@@ -114,6 +119,7 @@ public class SpecialityServiceTest {
         verify(specialityRepository, times(1)).deleteById(speciality.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteSpecialityWithVeterinarians() {
         speciality.getVeterinarians().add(new VeterinarianEntity());

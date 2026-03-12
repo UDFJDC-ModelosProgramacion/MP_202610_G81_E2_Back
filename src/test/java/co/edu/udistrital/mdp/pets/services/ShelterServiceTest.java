@@ -49,6 +49,7 @@ public class ShelterServiceTest {
         shelter.setStatus("Activo");
     }
 
+    @SuppressWarnings("null")
     @Test
     void testCreateShelterSuccess() throws IllegalOperationException {
         when(shelterRepository.findByNit(shelter.getNit())).thenReturn(Optional.empty());
@@ -73,6 +74,7 @@ public class ShelterServiceTest {
         assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchShelterSuccess() throws EntityNotFoundException {
         when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
@@ -81,6 +83,7 @@ public class ShelterServiceTest {
         assertEquals(shelter.getId(), result.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchShelterNotFound() {
         when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.empty());
@@ -95,6 +98,7 @@ public class ShelterServiceTest {
         assertTrue(result.isEmpty());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testUpdateShelterSuccess() throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity updatedShelter = new ShelterEntity();
@@ -111,6 +115,7 @@ public class ShelterServiceTest {
         assertEquals("New Name", result.getShelterName());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testUpdateShelterChangeNit() {
         ShelterEntity updatedShelter = new ShelterEntity();
@@ -122,6 +127,7 @@ public class ShelterServiceTest {
                 () -> shelterService.updateShelter(shelter.getId(), updatedShelter));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testUpdateShelterNotActive() {
         shelter.setStatus("Inactivo");
@@ -134,6 +140,7 @@ public class ShelterServiceTest {
                 () -> shelterService.updateShelter(shelter.getId(), updatedShelter));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteShelterSuccess() throws EntityNotFoundException, IllegalOperationException {
         when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
@@ -143,6 +150,7 @@ public class ShelterServiceTest {
         verify(shelterRepository, times(1)).deleteById(shelter.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteShelterWithPets() {
         PetEntity pet = factory.manufacturePojo(PetEntity.class);

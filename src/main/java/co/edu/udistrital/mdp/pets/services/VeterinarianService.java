@@ -1,12 +1,8 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import co.edu.udistrital.mdp.pets.entities.MedicalEventEntity;
-import co.edu.udistrital.mdp.pets.entities.MedicalHistoryEntity;
 import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.pets.repositories.MedicalEventRepository;
-import co.edu.udistrital.mdp.pets.repositories.MedicalHistoryRepository;
 import co.edu.udistrital.mdp.pets.repositories.UserRepository;
 import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -26,12 +22,7 @@ public class VeterinarianService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private MedicalHistoryRepository medicalHistoryRepository;
-
-    @Autowired
-    private MedicalEventRepository medicalEventRepository;
-
+    @SuppressWarnings("null")
     @Transactional
     public VeterinarianEntity createVeterinarian(VeterinarianEntity veterinarian)
             throws IllegalOperationException, EntityNotFoundException {
@@ -54,6 +45,7 @@ public class VeterinarianService {
         return veterinarianRepository.save(veterinarian);
     }
 
+    @SuppressWarnings("null")
     @Transactional(readOnly = true)
     public VeterinarianEntity searchVeterinarian(Long id) throws EntityNotFoundException {
         log.info("Searching veterinarian with id: {}", id);
@@ -99,6 +91,7 @@ public class VeterinarianService {
         return veterinarianRepository.save(existing);
     }
 
+    @SuppressWarnings("null")
     @Transactional
     public void deleteVeterinarian(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting veterinarian with id: {}", id);

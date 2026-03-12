@@ -1,4 +1,4 @@
-package co.edu.udistrital.mdp.pets;
+package co.edu.udistrital.mdp.pets.entities;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,10 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import co.edu.udistrital.mdp.pets.entities.MedicalEventEntity;
-import co.edu.udistrital.mdp.pets.entities.MedicalHistoryEntity;
-import co.edu.udistrital.mdp.pets.entities.PetEntity;
-import co.edu.udistrital.mdp.pets.entities.VaccineEntryEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
