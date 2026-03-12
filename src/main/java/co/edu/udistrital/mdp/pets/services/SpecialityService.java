@@ -35,6 +35,7 @@ public class SpecialityService {
         return specialityRepository.save(speciality);
     }
 
+    @SuppressWarnings("null")
     @Transactional(readOnly = true)
     public VetSpecialityEntity searchSpeciality(Long id) throws EntityNotFoundException {
         log.info("Searching speciality with id: {}", id);
@@ -50,6 +51,7 @@ public class SpecialityService {
         return specialityRepository.findByNameContainingIgnoreCase(namePart.trim());
     }
 
+    @SuppressWarnings("null")
     @Transactional
     public VetSpecialityEntity updateSpeciality(Long id, VetSpecialityEntity speciality) throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating speciality with id: {}", id);
@@ -70,6 +72,7 @@ public class SpecialityService {
         return specialityRepository.save(existing);
     }
 
+    @SuppressWarnings("null")
     @Transactional
     public void deleteSpeciality(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting speciality with id: {}", id);

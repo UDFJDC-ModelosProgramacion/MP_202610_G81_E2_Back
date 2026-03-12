@@ -45,6 +45,7 @@ public class ShelterMediaServiceTest {
         mediaEntity.setShelter(shelter);
     }
 
+    @SuppressWarnings("null")
     @Test
     void testCreateShelterMediaSuccess() throws IllegalOperationException {
         when(shelterMediaRepository.save(any(ShelterMediaEntity.class))).thenReturn(mediaEntity);
@@ -72,6 +73,7 @@ public class ShelterMediaServiceTest {
         assertThrows(IllegalOperationException.class, () -> shelterMediaService.createShelterMedia(mediaEntity, 1024));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchShelterMediaSuccess() throws EntityNotFoundException {
         when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
@@ -80,12 +82,14 @@ public class ShelterMediaServiceTest {
         assertEquals(mediaEntity.getId(), result.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchShelterMediaNotFound() {
         when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> shelterMediaService.searchShelterMedia(mediaEntity.getId()));
     }
 
+    @SuppressWarnings("null")
     @Test
     void testSearchShelterMediasByShelterId() {
         when(shelterMediaRepository.findByShelterId(shelter.getId())).thenReturn(java.util.Collections.singletonList(mediaEntity));
@@ -107,6 +111,7 @@ public class ShelterMediaServiceTest {
         assertEquals("Nueva descripción", mediaEntity.getDescription()); // existing gets updated
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteShelterMediaSuccessNotProfilePhoto() throws EntityNotFoundException, IllegalOperationException {
         mediaEntity.setMediaType("Video Tour");
@@ -116,6 +121,7 @@ public class ShelterMediaServiceTest {
         verify(shelterMediaRepository, times(1)).deleteById(mediaEntity.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteShelterMediaSuccessProfilePhotoWithBackup() throws EntityNotFoundException, IllegalOperationException {
         when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
@@ -125,6 +131,7 @@ public class ShelterMediaServiceTest {
         verify(shelterMediaRepository, times(1)).deleteById(mediaEntity.getId());
     }
 
+    @SuppressWarnings("null")
     @Test
     void testDeleteShelterMediaFailsProfilePhotoNoBackup() {
         when(shelterMediaRepository.findById(mediaEntity.getId())).thenReturn(Optional.of(mediaEntity));
