@@ -2,23 +2,26 @@ package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.util.Date;
+import lombok.EqualsAndHashCode;
+import java.time.LocalDate;
 
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
+@EqualsAndHashCode(callSuper = true)
 @Entity
 public class AdoptionEntity extends BaseEntity {
 
-    private Date officialDate;
+    private LocalDate officialDate;
     private Boolean contractSigned;
 
-    /*@OneToOne
-    @JoinColumn(name = "adoption_request_id")
+    @OneToOne
+    @JoinColumn(name = "trial_cohabitation_id")
     @PodamExclude
-    private AdoptionRequestEntity adoptionRequest;*/
+    private TrialCohabitationEntity trialCohabitation;
 
-    //@OneToOne(mappedBy = "adoption")
-    //@PodamExclude
-    //private ReturnCaseEntity returnCase;
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
 }

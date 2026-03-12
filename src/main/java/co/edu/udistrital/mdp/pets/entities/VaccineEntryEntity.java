@@ -1,5 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -10,18 +12,13 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-public class ReviewEntity extends BaseEntity{
-    private Integer rating;
-    private String comment;
-    private Boolean isSuccessStory;
+public class VaccineEntryEntity extends BaseEntity {
+    private String vaccineName;
+    private LocalDate adminDate;
+    private LocalDate nextDueDate;
 
     @ManyToOne
-    @JoinColumn(name = "adopter_id")
+    @JoinColumn(name = "medical_history_id")
     @PodamExclude
-    private AdopterEntity adopter;
-
-    @ManyToOne
-    @JoinColumn(name = "shelter_id")
-    @PodamExclude
-    private ShelterEntity shelter;
+    private MedicalHistoryEntity medicalHistory;
 }
