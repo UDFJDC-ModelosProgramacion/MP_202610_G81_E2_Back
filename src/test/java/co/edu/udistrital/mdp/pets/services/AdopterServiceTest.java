@@ -1,13 +1,12 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +52,8 @@ class AdopterServiceTest {
         for (int i = 0; i < 3; i++) {
             AdopterEntity adopterEntity = factory.manufacturePojo(AdopterEntity.class);
             adopterEntity.setEmail("adopter" + i + "@mail.com");
-            adopterEntity.setName("Adopter " + i);
             adopterEntity.setPassword("Password123");
-            adopterEntity.setPhone("30000000" + i);
+            adopterEntity.setPhoneNumber("30000000" + i);
             entityManager.persist(adopterEntity);
             adopterList.add(adopterEntity);
         }
@@ -65,9 +63,8 @@ class AdopterServiceTest {
     void testCreateAdopter() throws Exception {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("newadopter@mail.com");
-        newAdopter.setName("New Adopter");
         newAdopter.setPassword("Secure123");
-        newAdopter.setPhone("3001111111");
+        newAdopter.setPhoneNumber("3001111111");
 
         AdopterEntity result = adopterService.createAdopter(newAdopter);
 
@@ -80,9 +77,8 @@ class AdopterServiceTest {
     void testCreateAdopterWithoutPhone() {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("invalidadopter@mail.com");
-        newAdopter.setName("Invalid Adopter");
         newAdopter.setPassword("Secure123");
-        newAdopter.setPhone("");
+        newAdopter.setPhoneNumber("");
 
         assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newAdopter));
     }
@@ -108,14 +104,12 @@ class AdopterServiceTest {
     @Test
     void testUpdateAdopter() throws Exception {
         AdopterEntity newData = factory.manufacturePojo(AdopterEntity.class);
-        newData.setName("Updated Adopter");
         newData.setEmail("updatedadopter@mail.com");
         newData.setPassword("Updated123");
-        newData.setPhone("3110000000");
+        newData.setPhoneNumber("3110000000");
 
         AdopterEntity updated = adopterService.updateAdopter(adopterList.get(0).getId(), newData);
 
-        assertEquals("Updated Adopter", updated.getName());
         assertEquals("updatedadopter@mail.com", updated.getEmail());
     }
 
@@ -134,9 +128,11 @@ class AdopterServiceTest {
     void testDeleteAdopter() throws Exception {
         AdopterEntity adopter = factory.manufacturePojo(AdopterEntity.class);
         adopter.setEmail("deleteadopter@mail.com");
-        adopter.setName("Delete Adopter");
         adopter.setPassword("Secure123");
-        adopter.setPhone("3220000000");
+        adopter.setPhoneNumber("3220000000");
+        adopter.setSentMessages(new ArrayList<>());
+        adopter.setReceivedMessages(new ArrayList<>());
+        adopter.setNotifications(new ArrayList<>());
         entityManager.persist(adopter);
 
         adopterService.deleteAdopter(adopter.getId());

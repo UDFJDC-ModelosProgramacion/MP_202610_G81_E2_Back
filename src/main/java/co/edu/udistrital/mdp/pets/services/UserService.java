@@ -91,9 +91,6 @@ public class UserService {
         if (userEntity == null) {
             throw new IllegalOperationException("User is not valid");
         }
-        if (userEntity.getName() == null || userEntity.getName().isBlank()) {
-            throw new IllegalOperationException("User name is not valid");
-        }
         if (userEntity.getEmail() == null || userEntity.getEmail().isBlank()) {
             throw new IllegalOperationException("User email is not valid");
         }

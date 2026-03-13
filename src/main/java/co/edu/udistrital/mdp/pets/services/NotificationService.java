@@ -36,8 +36,8 @@ public class NotificationService {
         if (notificationEntity.getCreatedAt() == null) {
             notificationEntity.setCreatedAt(LocalDateTime.now());
         }
-        if (notificationEntity.getRead() == null) {
-            notificationEntity.setRead(Boolean.FALSE);
+        if (notificationEntity.getIsRead() == null) {
+            notificationEntity.setIsRead(Boolean.FALSE);
         }
         return notificationRepository.save(notificationEntity);
     }
@@ -69,7 +69,7 @@ public class NotificationService {
         NotificationEntity storedNotification = persistedNotification.get();
         storedNotification.setTitle(notificationEntity.getTitle());
         storedNotification.setContent(notificationEntity.getContent());
-        storedNotification.setRead(notificationEntity.getRead() != null ? notificationEntity.getRead() : storedNotification.getRead());
+        storedNotification.setIsRead(notificationEntity.getIsRead() != null ? notificationEntity.getIsRead() : storedNotification.getIsRead());
         return notificationRepository.save(storedNotification);
     }
 
@@ -79,7 +79,7 @@ public class NotificationService {
         if (notificationEntity.isEmpty()) {
             throw new EntityNotFoundException("The notification with the given id was not found");
         }
-        if (Boolean.FALSE.equals(notificationEntity.get().getRead())) {
+        if (Boolean.FALSE.equals(notificationEntity.get().getIsRead())) {
             throw new IllegalOperationException("Unread notifications cannot be deleted");
         }
         notificationRepository.deleteById(notificationId);

@@ -38,8 +38,8 @@ public class MessageService {
         if (messageEntity.getSentAt() == null) {
             messageEntity.setSentAt(LocalDateTime.now());
         }
-        if (messageEntity.getRead() == null) {
-            messageEntity.setRead(Boolean.FALSE);
+        if (messageEntity.getIsRead() == null) {
+            messageEntity.setIsRead(Boolean.FALSE);
         }
         return messageRepository.save(messageEntity);
     }
@@ -70,7 +70,7 @@ public class MessageService {
         }
         MessageEntity storedMessage = persistedMessage.get();
         storedMessage.setContent(messageEntity.getContent());
-        storedMessage.setRead(messageEntity.getRead() != null ? messageEntity.getRead() : storedMessage.getRead());
+        storedMessage.setIsRead(messageEntity.getIsRead() != null ? messageEntity.getIsRead() : storedMessage.getIsRead());
         return messageRepository.save(storedMessage);
     }
 
@@ -80,7 +80,7 @@ public class MessageService {
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
-        if (Boolean.FALSE.equals(messageEntity.get().getRead())) {
+        if (Boolean.FALSE.equals(messageEntity.get().getIsRead())) {
             throw new IllegalOperationException("Unread messages cannot be deleted");
         }
         messageRepository.deleteById(messageId);

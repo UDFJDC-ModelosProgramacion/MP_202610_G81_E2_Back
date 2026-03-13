@@ -54,9 +54,8 @@ class MessageServiceTest {
         for (int i = 0; i < 3; i++) {
             AdopterEntity userEntity = factory.manufacturePojo(AdopterEntity.class);
             userEntity.setEmail("messageuser" + i + "@mail.com");
-            userEntity.setName("Message User " + i);
             userEntity.setPassword("Password123");
-            userEntity.setPhone("30000000" + i);
+            userEntity.setPhoneNumber("30000000" + i);
             entityManager.persist(userEntity);
             userList.add(userEntity);
         }
@@ -66,7 +65,7 @@ class MessageServiceTest {
             messageEntity.setContent("Message " + i);
             messageEntity.setSender(userList.get(0));
             messageEntity.setReceiver(userList.get(1));
-            messageEntity.setRead(Boolean.TRUE);
+            messageEntity.setIsRead(Boolean.TRUE);
             entityManager.persist(messageEntity);
             messageList.add(messageEntity);
         }
@@ -78,7 +77,7 @@ class MessageServiceTest {
         newMessage.setContent("Hello world");
         newMessage.setSender(userList.get(0));
         newMessage.setReceiver(userList.get(1));
-        newMessage.setRead(Boolean.FALSE);
+        newMessage.setIsRead(Boolean.FALSE);
 
         MessageEntity result = messageService.createMessage(newMessage);
 
@@ -118,12 +117,12 @@ class MessageServiceTest {
     void testUpdateMessage() throws Exception {
         MessageEntity newData = factory.manufacturePojo(MessageEntity.class);
         newData.setContent("Updated message");
-        newData.setRead(Boolean.TRUE);
+        newData.setIsRead(Boolean.TRUE);
 
         MessageEntity updated = messageService.updateMessage(messageList.get(0).getId(), newData);
 
         assertEquals("Updated message", updated.getContent());
-        assertTrue(updated.getRead());
+        assertTrue(updated.getIsRead());
     }
 
     @Test
@@ -132,7 +131,7 @@ class MessageServiceTest {
         unreadMessage.setContent("Unread message");
         unreadMessage.setSender(userList.get(0));
         unreadMessage.setReceiver(userList.get(1));
-        unreadMessage.setRead(Boolean.FALSE);
+        unreadMessage.setIsRead(Boolean.FALSE);
         entityManager.persist(unreadMessage);
 
         assertThrows(IllegalOperationException.class, () -> messageService.deleteMessage(unreadMessage.getId()));
@@ -144,7 +143,7 @@ class MessageServiceTest {
         deletable.setContent("Delete message");
         deletable.setSender(userList.get(0));
         deletable.setReceiver(userList.get(1));
-        deletable.setRead(Boolean.TRUE);
+        deletable.setIsRead(Boolean.TRUE);
         entityManager.persist(deletable);
 
         messageService.deleteMessage(deletable.getId());

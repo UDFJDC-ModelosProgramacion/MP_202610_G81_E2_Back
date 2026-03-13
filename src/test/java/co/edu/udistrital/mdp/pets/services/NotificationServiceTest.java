@@ -1,13 +1,12 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,8 @@ class NotificationServiceTest {
         for (int i = 0; i < 3; i++) {
             AdopterEntity userEntity = factory.manufacturePojo(AdopterEntity.class);
             userEntity.setEmail("notificationuser" + i + "@mail.com");
-            userEntity.setName("Notification User " + i);
             userEntity.setPassword("Password123");
-            userEntity.setPhone("30000000" + i);
+            userEntity.setPhoneNumber("30000000" + i);
             entityManager.persist(userEntity);
             userList.add(userEntity);
         }
@@ -66,7 +64,7 @@ class NotificationServiceTest {
             notificationEntity.setTitle("Title " + i);
             notificationEntity.setContent("Notification " + i);
             notificationEntity.setUser(userList.get(0));
-            notificationEntity.setRead(Boolean.TRUE);
+            notificationEntity.setIsRead(Boolean.TRUE);
             entityManager.persist(notificationEntity);
             notificationList.add(notificationEntity);
         }
@@ -78,7 +76,7 @@ class NotificationServiceTest {
         newNotification.setTitle("New notification");
         newNotification.setContent("New content");
         newNotification.setUser(userList.get(0));
-        newNotification.setRead(Boolean.FALSE);
+        newNotification.setIsRead(Boolean.FALSE);
 
         NotificationEntity result = notificationService.createNotification(newNotification);
 
@@ -119,12 +117,12 @@ class NotificationServiceTest {
         NotificationEntity newData = factory.manufacturePojo(NotificationEntity.class);
         newData.setTitle("Updated title");
         newData.setContent("Updated notification");
-        newData.setRead(Boolean.TRUE);
+        newData.setIsRead(Boolean.TRUE);
 
         NotificationEntity updated = notificationService.updateNotification(notificationList.get(0).getId(), newData);
 
         assertEquals("Updated notification", updated.getContent());
-        assertTrue(updated.getRead());
+        assertTrue(updated.getIsRead());
     }
 
     @Test
@@ -133,7 +131,7 @@ class NotificationServiceTest {
         unreadNotification.setTitle("Unread");
         unreadNotification.setContent("Unread notification");
         unreadNotification.setUser(userList.get(0));
-        unreadNotification.setRead(Boolean.FALSE);
+        unreadNotification.setIsRead(Boolean.FALSE);
         entityManager.persist(unreadNotification);
 
         assertThrows(IllegalOperationException.class, () -> notificationService.deleteNotification(unreadNotification.getId()));
@@ -145,7 +143,7 @@ class NotificationServiceTest {
         deletable.setTitle("Delete");
         deletable.setContent("Delete notification");
         deletable.setUser(userList.get(0));
-        deletable.setRead(Boolean.TRUE);
+        deletable.setIsRead(Boolean.TRUE);
         entityManager.persist(deletable);
 
         notificationService.deleteNotification(deletable.getId());
