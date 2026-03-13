@@ -29,4 +29,9 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
     @OneToMany(mappedBy = "adoptionProcess")
     @PodamExclude
     private List<ReviewEntity> reviews = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
 }
