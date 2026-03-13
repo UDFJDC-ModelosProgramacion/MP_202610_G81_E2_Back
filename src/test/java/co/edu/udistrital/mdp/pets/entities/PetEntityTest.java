@@ -1,7 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ class PetEntityTest {
         assertEquals(petEntity.getSize(), found.getSize());
         assertEquals(petEntity.getTemperament(), found.getTemperament());
         assertEquals(petEntity.getSpecificNeeds(), found.getSpecificNeeds());
-        assertEquals(petEntity.isRescued(), found.isRescued());
+        assertEquals(petEntity.getIsRescued(), found.getIsRescued());
         assertEquals(petEntity.getStatus(), found.getStatus());
     }
 
