@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdopterRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,26 +27,31 @@ public class AdopterService {
         if (!adopterRepository.findByEmail(adopterEntity.getEmail()).isEmpty()) {
             throw new IllegalOperationException("Email already exists");
         }
+        log.info("Termina proceso de creación del adoptante");
         return adopterRepository.save(adopterEntity);
     }
 
     @Transactional
     public AdopterEntity searchAdopter(Long adopterId) throws EntityNotFoundException {
+        log.info("Inicia proceso de consultar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
             throw new EntityNotFoundException("The adopter with the given id was not found");
         }
+        log.info("Termina proceso de consultar el adoptante con id = {}", adopterId);
         return adopterEntity.get();
     }
 
     @Transactional
     public List<AdopterEntity> searchAdopters() {
+        log.info("Inicia proceso de consultar todos los adoptantes");
         return adopterRepository.findAll();
     }
 
     @Transactional
     public AdopterEntity updateAdopter(Long adopterId, AdopterEntity adopterEntity)
             throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de actualizar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> persistedAdopter = adopterRepository.findById(adopterId);
         if (persistedAdopter.isEmpty()) {
             throw new EntityNotFoundException("The adopter with the given id was not found");
@@ -61,11 +66,13 @@ public class AdopterService {
         adopterEntity.setSentMessages(persistedAdopter.get().getSentMessages());
         adopterEntity.setReceivedMessages(persistedAdopter.get().getReceivedMessages());
         adopterEntity.setNotifications(persistedAdopter.get().getNotifications());
+        log.info("Termina proceso de actualizar el adoptante con id = {}", adopterId);
         return adopterRepository.save(adopterEntity);
     }
 
     @Transactional
     public void deleteAdopter(Long adopterId) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de borrar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
             throw new EntityNotFoundException("The adopter with the given id was not found");
@@ -75,6 +82,7 @@ public class AdopterService {
                 || !adopter.getNotifications().isEmpty()) {
             throw new IllegalOperationException("The adopter has active associations and cannot be deleted");
         }
+        log.info("Termina proceso de borrar el adoptante con id = {}", adopterId);
         adopterRepository.deleteById(adopterId);
     }
 

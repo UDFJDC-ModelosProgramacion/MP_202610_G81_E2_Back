@@ -5,6 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,9 +17,10 @@ import org.springframework.context.annotation.Import;
 
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.NotificationEntity;
+import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -82,7 +84,39 @@ class NotificationServiceTest {
 
         assertNotNull(result);
         NotificationEntity stored = entityManager.find(NotificationEntity.class, result.getId());
-        assertEquals("New content", stored.getContent());
+        assertEquals(newNotification.getTitle(), stored.getTitle());
+        assertEquals(newNotification.getContent(), stored.getContent());
+        assertEquals(newNotification.getIsRead(), stored.getIsRead());
+        assertEquals(userList.get(0).getId(), stored.getUser().getId());
+    }
+
+    @Test
+    void testCreateNotificationNull() {
+        assertThrows(IllegalOperationException.class, () -> notificationService.createNotification(null));
+    }
+
+    @Test
+    void testCreateNotificationWithNullUser() {
+        assertThrows(IllegalOperationException.class, () -> {
+            NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
+            newNotification.setTitle("No user");
+            newNotification.setContent("Content");
+            newNotification.setUser(null);
+            notificationService.createNotification(newNotification);
+        });
+    }
+
+    @Test
+    void testCreateNotificationWithInvalidUser() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
+            newNotification.setTitle("Invalid user");
+            newNotification.setContent("Content");
+            UserEntity invalidUser = new AdopterEntity();
+            invalidUser.setId(0L);
+            newNotification.setUser(invalidUser);
+            notificationService.createNotification(newNotification);
+        });
     }
 
     @Test
@@ -97,8 +131,13 @@ class NotificationServiceTest {
 
     @Test
     void testSearchNotification() throws Exception {
-        NotificationEntity found = notificationService.searchNotification(notificationList.get(0).getId());
-        assertEquals(notificationList.get(0).getId(), found.getId());
+        NotificationEntity entity = notificationList.get(0);
+        NotificationEntity resultEntity = notificationService.searchNotification(entity.getId());
+        assertNotNull(resultEntity);
+        assertEquals(entity.getId(), resultEntity.getId());
+        assertEquals(entity.getTitle(), resultEntity.getTitle());
+        assertEquals(entity.getContent(), resultEntity.getContent());
+        assertEquals(entity.getIsRead(), resultEntity.getIsRead());
     }
 
     @Test
@@ -110,6 +149,15 @@ class NotificationServiceTest {
     void testSearchNotifications() {
         List<NotificationEntity> notifications = notificationService.searchNotifications();
         assertEquals(notificationList.size(), notifications.size());
+        for (NotificationEntity entity : notifications) {
+            boolean found = false;
+            for (NotificationEntity storedEntity : notificationList) {
+                if (entity.getId().equals(storedEntity.getId())) {
+                    found = true;
+                }
+            }
+            assertTrue(found);
+        }
     }
 
     @Test
@@ -119,10 +167,21 @@ class NotificationServiceTest {
         newData.setContent("Updated notification");
         newData.setIsRead(Boolean.TRUE);
 
-        NotificationEntity updated = notificationService.updateNotification(notificationList.get(0).getId(), newData);
+        notificationService.updateNotification(notificationList.get(0).getId(), newData);
 
-        assertEquals("Updated notification", updated.getContent());
-        assertTrue(updated.getIsRead());
+        NotificationEntity stored = entityManager.find(NotificationEntity.class, notificationList.get(0).getId());
+        assertEquals("Updated title", stored.getTitle());
+        assertEquals("Updated notification", stored.getContent());
+        assertEquals(Boolean.TRUE, stored.getIsRead());
+    }
+
+    @Test
+    void testUpdateNotificationNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            NotificationEntity newData = factory.manufacturePojo(NotificationEntity.class);
+            newData.setContent("Updated notification");
+            notificationService.updateNotification(0L, newData);
+        });
     }
 
     @Test
@@ -148,6 +207,11 @@ class NotificationServiceTest {
 
         notificationService.deleteNotification(deletable.getId());
         NotificationEntity deleted = entityManager.find(NotificationEntity.class, deletable.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
+    }
+
+    @Test
+    void testDeleteInvalidNotification() {
+        assertThrows(EntityNotFoundException.class, () -> notificationService.deleteNotification(0L));
     }
 }

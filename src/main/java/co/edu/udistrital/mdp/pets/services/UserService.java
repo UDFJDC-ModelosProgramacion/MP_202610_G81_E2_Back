@@ -10,7 +10,7 @@ import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.UserRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,12 +33,12 @@ public class UserService {
 
     @Transactional
     public UserEntity searchUser(Long userId) throws EntityNotFoundException {
-        log.info("Inicia proceso de consultar el usuario con id = {0}", userId);
+        log.info("Inicia proceso de consultar el usuario con id = {}", userId);
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if (userEntity.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
         }
-        log.info("Termina proceso de consultar el usuario con id = {0}", userId);
+        log.info("Termina proceso de consultar el usuario con id = {}", userId);
         return userEntity.get();
     }
 
@@ -51,7 +51,7 @@ public class UserService {
     @Transactional
     public UserEntity updateUser(Long userId, UserEntity userEntity)
             throws EntityNotFoundException, IllegalOperationException {
-        log.info("Inicia proceso de actualizar el usuario con id = {0}", userId);
+        log.info("Inicia proceso de actualizar el usuario con id = {}", userId);
         Optional<UserEntity> persistedUser = userRepository.findById(userId);
         if (persistedUser.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
@@ -68,13 +68,13 @@ public class UserService {
         userEntity.setSentMessages(persistedUser.get().getSentMessages());
         userEntity.setReceivedMessages(persistedUser.get().getReceivedMessages());
         userEntity.setNotifications(persistedUser.get().getNotifications());
-        log.info("Termina proceso de actualizar el usuario con id = {0}", userId);
+        log.info("Termina proceso de actualizar el usuario con id = {}", userId);
         return userRepository.save(userEntity);
     }
 
     @Transactional
     public void deleteUser(Long userId) throws EntityNotFoundException, IllegalOperationException {
-        log.info("Inicia proceso de borrar el usuario con id = {0}", userId);
+        log.info("Inicia proceso de borrar el usuario con id = {}", userId);
         Optional<UserEntity> userEntity = userRepository.findById(userId);
         if (userEntity.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
@@ -84,7 +84,7 @@ public class UserService {
             throw new IllegalOperationException("The user has active associations and cannot be deleted");
         }
         userRepository.deleteById(userId);
-        log.info("Termina proceso de borrar el usuario con id = {0}", userId);
+        log.info("Termina proceso de borrar el usuario con id = {}", userId);
     }
 
     private void validateUserData(UserEntity userEntity) throws IllegalOperationException {

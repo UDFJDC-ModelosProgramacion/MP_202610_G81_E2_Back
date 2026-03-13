@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.MessageEntity;
 import co.edu.udistrital.mdp.pets.entities.UserEntity;
@@ -13,7 +14,6 @@ import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.MessageRepository;
 import co.edu.udistrital.mdp.pets.repositories.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -41,26 +41,31 @@ public class MessageService {
         if (messageEntity.getIsRead() == null) {
             messageEntity.setIsRead(Boolean.FALSE);
         }
+        log.info("Termina proceso de creación del mensaje");
         return messageRepository.save(messageEntity);
     }
 
     @Transactional
     public MessageEntity searchMessage(Long messageId) throws EntityNotFoundException {
+        log.info("Inicia proceso de consultar el mensaje con id = {}", messageId);
         Optional<MessageEntity> messageEntity = messageRepository.findById(messageId);
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
+        log.info("Termina proceso de consultar el mensaje con id = {}", messageId);
         return messageEntity.get();
     }
 
     @Transactional
     public List<MessageEntity> searchMessages() {
+        log.info("Inicia proceso de consultar todos los mensajes");
         return messageRepository.findAll();
     }
 
     @Transactional
     public MessageEntity updateMessage(Long messageId, MessageEntity messageEntity)
             throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de actualizar el mensaje con id = {}", messageId);
         Optional<MessageEntity> persistedMessage = messageRepository.findById(messageId);
         if (persistedMessage.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
@@ -71,11 +76,13 @@ public class MessageService {
         MessageEntity storedMessage = persistedMessage.get();
         storedMessage.setContent(messageEntity.getContent());
         storedMessage.setIsRead(messageEntity.getIsRead() != null ? messageEntity.getIsRead() : storedMessage.getIsRead());
+        log.info("Termina proceso de actualizar el mensaje con id = {}", messageId);
         return messageRepository.save(storedMessage);
     }
 
     @Transactional
     public void deleteMessage(Long messageId) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de borrar el mensaje con id = {}", messageId);
         Optional<MessageEntity> messageEntity = messageRepository.findById(messageId);
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
@@ -83,6 +90,7 @@ public class MessageService {
         if (Boolean.FALSE.equals(messageEntity.get().getIsRead())) {
             throw new IllegalOperationException("Unread messages cannot be deleted");
         }
+        log.info("Termina proceso de borrar el mensaje con id = {}", messageId);
         messageRepository.deleteById(messageId);
     }
 

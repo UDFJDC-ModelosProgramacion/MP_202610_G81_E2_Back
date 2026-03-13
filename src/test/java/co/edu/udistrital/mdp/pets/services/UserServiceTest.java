@@ -5,6 +5,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +20,7 @@ import co.edu.udistrital.mdp.pets.entities.NotificationEntity;
 import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -69,7 +70,35 @@ class UserServiceTest {
 
         assertNotNull(result);
         UserEntity stored = entityManager.find(AdopterEntity.class, result.getId());
+        assertEquals(newUser.getId(), stored.getId());
         assertEquals(newUser.getEmail(), stored.getEmail());
+        assertEquals(newUser.getPassword(), stored.getPassword());
+        assertEquals(newUser.getPhoneNumber(), stored.getPhoneNumber());
+    }
+
+    @Test
+    void testCreateUserNull() {
+        assertThrows(IllegalOperationException.class, () -> userService.createUser(null));
+    }
+
+    @Test
+    void testCreateUserWithInvalidEmail() {
+        assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
+            newUser.setEmail("");
+            newUser.setPassword("Secure123");
+            userService.createUser(newUser);
+        });
+    }
+
+    @Test
+    void testCreateUserWithInvalidPassword() {
+        assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
+            newUser.setEmail("valid@mail.com");
+            newUser.setPassword("");
+            userService.createUser(newUser);
+        });
     }
 
     @Test
@@ -83,9 +112,13 @@ class UserServiceTest {
 
     @Test
     void testSearchUser() throws Exception {
-        UserEntity found = userService.searchUser(userList.get(0).getId());
-        assertNotNull(found);
-        assertEquals(userList.get(0).getEmail(), found.getEmail());
+        UserEntity entity = userList.get(0);
+        UserEntity resultEntity = userService.searchUser(entity.getId());
+        assertNotNull(resultEntity);
+        assertEquals(entity.getId(), resultEntity.getId());
+        assertEquals(entity.getEmail(), resultEntity.getEmail());
+        assertEquals(entity.getPassword(), resultEntity.getPassword());
+        assertEquals(entity.getPhoneNumber(), resultEntity.getPhoneNumber());
     }
 
     @Test
@@ -97,19 +130,39 @@ class UserServiceTest {
     void testSearchUsers() {
         List<UserEntity> users = userService.searchUsers();
         assertEquals(userList.size(), users.size());
+        for (UserEntity entity : users) {
+            boolean found = false;
+            for (UserEntity storedEntity : userList) {
+                if (entity.getId().equals(storedEntity.getId())) {
+                    found = true;
+                }
+            }
+            assertTrue(found);
+        }
     }
 
     @Test
     void testUpdateUser() throws Exception {
-        AdopterEntity newData = factory.manufacturePojo(AdopterEntity.class);
-        newData.setEmail("updated@mail.com");
-        newData.setPassword("Updated123");
+        AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
+        pojoEntity.setEmail("updated@mail.com");
+        pojoEntity.setPassword("Updated123");
 
-        UserEntity updated = userService.updateUser(userList.get(0).getId(), newData);
+        userService.updateUser(userList.get(0).getId(), pojoEntity);
 
-        assertNotNull(updated);
         UserEntity stored = entityManager.find(AdopterEntity.class, userList.get(0).getId());
-        assertEquals("updated@mail.com", stored.getEmail());
+        assertEquals(pojoEntity.getEmail(), stored.getEmail());
+        assertEquals(pojoEntity.getPassword(), stored.getPassword());
+        assertEquals(pojoEntity.getPhoneNumber(), stored.getPhoneNumber());
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
+            pojoEntity.setEmail("updated@mail.com");
+            pojoEntity.setPassword("Updated123");
+            userService.updateUser(0L, pojoEntity);
+        });
     }
 
     @Test
@@ -135,6 +188,11 @@ class UserServiceTest {
 
         userService.deleteUser(user.getId());
         UserEntity deleted = entityManager.find(AdopterEntity.class, user.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
+    }
+
+    @Test
+    void testDeleteInvalidUser() {
+        assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(0L));
     }
 }
