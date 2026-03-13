@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,8 @@ public class NotificationService {
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de creación de la notificación");
         validateNotificationData(notificationEntity);
-        UserEntity user = userRepository.findById(notificationEntity.getUser().getId())
+        Long safeUserId = Objects.requireNonNull(notificationEntity.getUser().getId(), "userId must not be null");
+        UserEntity user = userRepository.findById(safeUserId)
                 .orElseThrow(() -> new EntityNotFoundException("The user with the given id was not found"));
         notificationEntity.setUser(user);
         if (notificationEntity.getCreatedAt() == null) {
@@ -47,7 +49,8 @@ public class NotificationService {
     @Transactional
     public NotificationEntity searchNotification(Long notificationId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la notificación con id = {}", notificationId);
-        Optional<NotificationEntity> notificationEntity = notificationRepository.findById(notificationId);
+        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Optional<NotificationEntity> notificationEntity = notificationRepository.findById(safeNotificationId);
         if (notificationEntity.isEmpty()) {
             throw new EntityNotFoundException("The notification with the given id was not found");
         }
@@ -65,7 +68,8 @@ public class NotificationService {
     public NotificationEntity updateNotification(Long notificationId, NotificationEntity notificationEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la notificación con id = {}", notificationId);
-        Optional<NotificationEntity> persistedNotification = notificationRepository.findById(notificationId);
+        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Optional<NotificationEntity> persistedNotification = notificationRepository.findById(safeNotificationId);
         if (persistedNotification.isEmpty()) {
             throw new EntityNotFoundException("The notification with the given id was not found");
         }
@@ -83,7 +87,8 @@ public class NotificationService {
     @Transactional
     public void deleteNotification(Long notificationId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar la notificación con id = {}", notificationId);
-        Optional<NotificationEntity> notificationEntity = notificationRepository.findById(notificationId);
+        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Optional<NotificationEntity> notificationEntity = notificationRepository.findById(safeNotificationId);
         if (notificationEntity.isEmpty()) {
             throw new EntityNotFoundException("The notification with the given id was not found");
         }
@@ -91,7 +96,7 @@ public class NotificationService {
             throw new IllegalOperationException("Unread notifications cannot be deleted");
         }
         log.info("Termina proceso de borrar la notificación con id = {}", notificationId);
-        notificationRepository.deleteById(notificationId);
+        notificationRepository.deleteById(safeNotificationId);
     }
 
     private void validateNotificationData(NotificationEntity notificationEntity) throws IllegalOperationException {

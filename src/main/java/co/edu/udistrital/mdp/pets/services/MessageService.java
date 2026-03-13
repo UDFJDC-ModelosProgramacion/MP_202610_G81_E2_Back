@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class MessageService {
     @Transactional
     public MessageEntity searchMessage(Long messageId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el mensaje con id = {}", messageId);
-        Optional<MessageEntity> messageEntity = messageRepository.findById(messageId);
+        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
@@ -66,7 +68,8 @@ public class MessageService {
     public MessageEntity updateMessage(Long messageId, MessageEntity messageEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el mensaje con id = {}", messageId);
-        Optional<MessageEntity> persistedMessage = messageRepository.findById(messageId);
+        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Optional<MessageEntity> persistedMessage = messageRepository.findById(safeMessageId);
         if (persistedMessage.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
@@ -83,7 +86,8 @@ public class MessageService {
     @Transactional
     public void deleteMessage(Long messageId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el mensaje con id = {}", messageId);
-        Optional<MessageEntity> messageEntity = messageRepository.findById(messageId);
+        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
@@ -91,7 +95,7 @@ public class MessageService {
             throw new IllegalOperationException("Unread messages cannot be deleted");
         }
         log.info("Termina proceso de borrar el mensaje con id = {}", messageId);
-        messageRepository.deleteById(messageId);
+        messageRepository.deleteById(safeMessageId);
     }
 
     private void validateMessageData(MessageEntity messageEntity) throws IllegalOperationException {
@@ -110,7 +114,8 @@ public class MessageService {
     }
 
     private UserEntity validateAndGetUser(UserEntity userEntity) throws EntityNotFoundException {
-        return userRepository.findById(userEntity.getId())
+        Long safeUserId = Objects.requireNonNull(userEntity.getId(), "userId must not be null");
+        return userRepository.findById(safeUserId)
                 .orElseThrow(() -> new EntityNotFoundException("The user with the given id was not found"));
     }
 }

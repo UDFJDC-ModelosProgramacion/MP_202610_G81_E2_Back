@@ -39,6 +39,7 @@ class MessageServiceTest {
     private final List<MessageEntity> messageList = new ArrayList<>();
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         clearData();
         insertData();
@@ -91,34 +92,34 @@ class MessageServiceTest {
 
     @Test
     void testCreateMessageNull() {
-        assertThrows(IllegalOperationException.class, () -> messageService.createMessage(null));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.createMessage(null)));
     }
 
     @Test
     void testCreateMessageWithNullSender() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
             newMessage.setSender(null);
             newMessage.setReceiver(userList.get(1));
             messageService.createMessage(newMessage);
-        });
+        }));
     }
 
     @Test
     void testCreateMessageWithNullReceiver() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
             newMessage.setSender(userList.get(0));
             newMessage.setReceiver(null);
             messageService.createMessage(newMessage);
-        });
+        }));
     }
 
     @Test
     void testCreateMessageWithInvalidSender() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
             AdopterEntity invalidUser = new AdopterEntity();
@@ -126,7 +127,7 @@ class MessageServiceTest {
             newMessage.setSender(invalidUser);
             newMessage.setReceiver(userList.get(1));
             messageService.createMessage(newMessage);
-        });
+        }));
     }
 
     @Test
@@ -136,7 +137,7 @@ class MessageServiceTest {
         newMessage.setSender(userList.get(0));
         newMessage.setReceiver(userList.get(1));
 
-        assertThrows(IllegalOperationException.class, () -> messageService.createMessage(newMessage));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.createMessage(newMessage)));
     }
 
     @Test
@@ -151,7 +152,7 @@ class MessageServiceTest {
 
     @Test
     void testSearchInvalidMessage() {
-        assertThrows(EntityNotFoundException.class, () -> messageService.searchMessage(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> messageService.searchMessage(0L)));
     }
 
     @Test
@@ -184,11 +185,11 @@ class MessageServiceTest {
 
     @Test
     void testUpdateMessageNotFound() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             MessageEntity newData = factory.manufacturePojo(MessageEntity.class);
             newData.setContent("Updated message");
             messageService.updateMessage(0L, newData);
-        });
+        }));
     }
 
     @Test
@@ -200,7 +201,7 @@ class MessageServiceTest {
         unreadMessage.setIsRead(Boolean.FALSE);
         entityManager.persist(unreadMessage);
 
-        assertThrows(IllegalOperationException.class, () -> messageService.deleteMessage(unreadMessage.getId()));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.deleteMessage(unreadMessage.getId())));
     }
 
     @Test
@@ -219,7 +220,7 @@ class MessageServiceTest {
 
     @Test
     void testDeleteInvalidMessage() {
-        assertThrows(EntityNotFoundException.class, () -> messageService.deleteMessage(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> messageService.deleteMessage(0L)));
     }
 }
 

@@ -39,6 +39,7 @@ class UserServiceTest {
     private final List<AdopterEntity> userList = new ArrayList<>();
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         clearData();
         insertData();
@@ -78,27 +79,27 @@ class UserServiceTest {
 
     @Test
     void testCreateUserNull() {
-        assertThrows(IllegalOperationException.class, () -> userService.createUser(null));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.createUser(null)));
     }
 
     @Test
     void testCreateUserWithInvalidEmail() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
             newUser.setEmail("");
             newUser.setPassword("Secure123");
             userService.createUser(newUser);
-        });
+        }));
     }
 
     @Test
     void testCreateUserWithInvalidPassword() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
             newUser.setEmail("valid@mail.com");
             newUser.setPassword("");
             userService.createUser(newUser);
-        });
+        }));
     }
 
     @Test
@@ -107,7 +108,7 @@ class UserServiceTest {
         newUser.setEmail(userList.get(0).getEmail());
         newUser.setPassword("Secure123");
 
-        assertThrows(IllegalOperationException.class, () -> userService.createUser(newUser));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.createUser(newUser)));
     }
 
     @Test
@@ -123,7 +124,7 @@ class UserServiceTest {
 
     @Test
     void testSearchInvalidUser() {
-        assertThrows(EntityNotFoundException.class, () -> userService.searchUser(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> userService.searchUser(0L)));
     }
 
     @Test
@@ -157,12 +158,12 @@ class UserServiceTest {
 
     @Test
     void testUpdateUserNotFound() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
             pojoEntity.setEmail("updated@mail.com");
             pojoEntity.setPassword("Updated123");
             userService.updateUser(0L, pojoEntity);
-        });
+        }));
     }
 
     @Test
@@ -173,7 +174,7 @@ class UserServiceTest {
         notification.setUser(user);
         entityManager.persist(notification);
 
-        assertThrows(IllegalOperationException.class, () -> userService.deleteUser(user.getId()));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.deleteUser(user.getId())));
     }
 
     @Test
@@ -193,6 +194,6 @@ class UserServiceTest {
 
     @Test
     void testDeleteInvalidUser() {
-        assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(0L)));
     }
 }

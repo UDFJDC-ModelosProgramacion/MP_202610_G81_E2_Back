@@ -38,6 +38,7 @@ class AdopterServiceTest {
     private final List<AdopterEntity> adopterList = new ArrayList<>();
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         clearData();
         insertData();
@@ -82,29 +83,29 @@ class AdopterServiceTest {
 
     @Test
     void testCreateAdopterNull() {
-        assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(null));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(null)));
     }
 
     @Test
     void testCreateAdopterWithInvalidEmail() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
             newAdopter.setEmail("");
             newAdopter.setPassword("Secure123");
             newAdopter.setPhoneNumber("3001111111");
             adopterService.createAdopter(newAdopter);
-        });
+        }));
     }
 
     @Test
     void testCreateAdopterWithInvalidPassword() {
-        assertThrows(IllegalOperationException.class, () -> {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
             newAdopter.setEmail("valid@mail.com");
             newAdopter.setPassword("");
             newAdopter.setPhoneNumber("3001111111");
             adopterService.createAdopter(newAdopter);
-        });
+        }));
     }
 
     @Test
@@ -114,7 +115,7 @@ class AdopterServiceTest {
         newAdopter.setPassword("Secure123");
         newAdopter.setPhoneNumber("");
 
-        assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newAdopter));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newAdopter)));
     }
 
     @Test
@@ -133,7 +134,7 @@ class AdopterServiceTest {
 
     @Test
     void testSearchInvalidAdopter() {
-        assertThrows(EntityNotFoundException.class, () -> adopterService.searchAdopter(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> adopterService.searchAdopter(0L)));
     }
 
     @Test
@@ -171,13 +172,13 @@ class AdopterServiceTest {
 
     @Test
     void testUpdateAdopterNotFound() {
-        assertThrows(EntityNotFoundException.class, () -> {
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
             pojoEntity.setEmail("updated@mail.com");
             pojoEntity.setPassword("Updated123");
             pojoEntity.setPhoneNumber("3110000000");
             adopterService.updateAdopter(0L, pojoEntity);
-        });
+        }));
     }
 
     @Test
@@ -188,7 +189,7 @@ class AdopterServiceTest {
         notification.setUser(adopter);
         entityManager.persist(notification);
 
-        assertThrows(IllegalOperationException.class, () -> adopterService.deleteAdopter(adopter.getId()));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.deleteAdopter(adopter.getId())));
     }
 
     @Test
@@ -209,6 +210,6 @@ class AdopterServiceTest {
 
     @Test
     void testDeleteInvalidAdopter() {
-        assertThrows(EntityNotFoundException.class, () -> adopterService.deleteAdopter(0L));
+        assertNotNull(assertThrows(EntityNotFoundException.class, () -> adopterService.deleteAdopter(0L)));
     }
 }

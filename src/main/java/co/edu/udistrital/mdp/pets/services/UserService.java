@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class UserService {
     @Transactional
     public UserEntity searchUser(Long userId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el usuario con id = {}", userId);
-        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Optional<UserEntity> userEntity = userRepository.findById(safeUserId);
         if (userEntity.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
         }
@@ -52,7 +54,8 @@ public class UserService {
     public UserEntity updateUser(Long userId, UserEntity userEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el usuario con id = {}", userId);
-        Optional<UserEntity> persistedUser = userRepository.findById(userId);
+        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Optional<UserEntity> persistedUser = userRepository.findById(safeUserId);
         if (persistedUser.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
         }
@@ -75,7 +78,8 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el usuario con id = {}", userId);
-        Optional<UserEntity> userEntity = userRepository.findById(userId);
+        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Optional<UserEntity> userEntity = userRepository.findById(safeUserId);
         if (userEntity.isEmpty()) {
             throw new EntityNotFoundException("The user with the given id was not found");
         }
@@ -83,7 +87,7 @@ public class UserService {
         if (!user.getSentMessages().isEmpty() || !user.getReceivedMessages().isEmpty() || !user.getNotifications().isEmpty()) {
             throw new IllegalOperationException("The user has active associations and cannot be deleted");
         }
-        userRepository.deleteById(userId);
+        userRepository.deleteById(safeUserId);
         log.info("Termina proceso de borrar el usuario con id = {}", userId);
     }
 
