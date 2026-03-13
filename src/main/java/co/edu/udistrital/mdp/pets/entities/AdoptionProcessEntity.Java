@@ -1,22 +1,30 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
-
+import jakarta.persistence.*;
 import lombok.Data;
+import java.time.LocalDate;
 import uk.co.jemos.podam.common.PodamExclude;
-import Java.time.localDateTime;
-import java.util.Date;
 
 @Data
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AdoptionProcess extends BaseEntity {
+public abstract class AdoptionProcessEntity extends BaseEntity {
 
     private LocalDate creationDate;
 
     private String status;
 
+    @OneToOne
+    @JoinColumn(name = "adoption_request_id")
+    @PodamExclude
+    private AdoptionRequestEntity adoptionRequest;
+
+    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
+    @PodamExclude
+    private ReturnCaseEntity returnCase;
+
+        @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
 }

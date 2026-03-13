@@ -22,4 +22,9 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
     @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
     @PodamExclude
     private ReturnCaseEntity returnCase;
+
+        @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
 }
