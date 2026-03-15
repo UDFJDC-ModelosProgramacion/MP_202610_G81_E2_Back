@@ -43,6 +43,12 @@ public class AdopterService {
     }
 
     @Transactional
+    public List<AdopterEntity> searchAdopters(String name, String email, String status) {
+        log.info("Inicia proceso de consultar adoptantes por filtros");
+        return adopterRepository.searchAdopters(name, email, status);
+    }
+
+    @Transactional
     public List<AdopterEntity> searchAdopters() {
         log.info("Inicia proceso de consultar todos los adoptantes");
         return adopterRepository.findAll();
@@ -78,9 +84,8 @@ public class AdopterService {
             throw new EntityNotFoundException("The adopter with the given id was not found");
         }
         AdopterEntity adopter = adopterEntity.get();
-        if (!adopter.getSentMessages().isEmpty() || !adopter.getReceivedMessages().isEmpty()
-                || !adopter.getNotifications().isEmpty()) {
-            throw new IllegalOperationException("The adopter has active associations and cannot be deleted");
+        if (!adopter.getAdoptionRequests().isEmpty()) {
+            throw new IllegalOperationException("The adopter has active adoption requests and cannot be deleted");
         }
         log.info("Termina proceso de borrar el adoptante con id = {}", adopterId);
         adopterRepository.deleteById(adopterId);
@@ -90,6 +95,9 @@ public class AdopterService {
         if (adopterEntity == null) {
             throw new IllegalOperationException("Adopter is not valid");
         }
+        if (adopterEntity.getName() == null || adopterEntity.getName().isBlank()) {
+            throw new IllegalOperationException("Adopter name is not valid");
+        }
         if (adopterEntity.getEmail() == null || adopterEntity.getEmail().isBlank()) {
             throw new IllegalOperationException("Adopter email is not valid");
         }
@@ -98,6 +106,12 @@ public class AdopterService {
         }
         if (adopterEntity.getPhoneNumber() == null || adopterEntity.getPhoneNumber().isBlank()) {
             throw new IllegalOperationException("Adopter phone is not valid");
+        }
+        if (adopterEntity.getAddress() == null || adopterEntity.getAddress().isBlank()) {
+            throw new IllegalOperationException("Adopter address is not valid");
+        }
+        if (adopterEntity.getCity() == null || adopterEntity.getCity().isBlank()) {
+            throw new IllegalOperationException("Adopter city is not valid");
         }
     }
 }

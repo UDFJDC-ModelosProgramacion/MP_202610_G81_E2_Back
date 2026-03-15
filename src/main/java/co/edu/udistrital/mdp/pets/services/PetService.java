@@ -12,7 +12,7 @@ import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.PetRepository;
 import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
-import jakarta.persistence.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -30,8 +30,27 @@ public class PetService {
            * 2. No puede existir duplicada
            */
           @Transactional
-          public PetEntity createPet(Long shelterId, PetEntity pet) {
+          public PetEntity createPet(Long shelterId, PetEntity pet) throws IllegalOperationException, EntityNotFoundException {
                     log.info("Creating pet");
+
+                    if (pet.getName() == null || pet.getName().trim().isEmpty()) {
+                              throw new IllegalOperationException("El nombre de la mascota es obligatorio");
+                    }
+                    if (pet.getTemperament() == null || pet.getTemperament().trim().isEmpty()) {
+                              throw new IllegalOperationException("El temperamento de la mascota es obligatorio");
+                    }
+                    if (pet.getBreed() == null || pet.getBreed().trim().isEmpty()) {
+                              throw new IllegalOperationException("La raza de la mascota es obligatoria");
+                    }
+                    if (pet.getSize() == null || pet.getSize().trim().isEmpty()) {
+                              throw new IllegalOperationException("El tamanio de la mascota es obligatorio");
+                    }
+                    if (pet.getSex() == null || pet.getSex().trim().isEmpty()) {
+                              throw new IllegalOperationException("El sexo de la mascota es obligatorio");
+                    }
+                    if (pet.getSpecificNeeds() == null || pet.getSpecificNeeds().trim().isEmpty()) {
+                              throw new IllegalOperationException("Las necesitades especificas de la mascota son obligatorias");
+                    }
 
                     boolean exists = petRepository.existsByNameAndBreedAndBornDate(
                                         pet.getName(),
@@ -39,7 +58,7 @@ public class PetService {
                                         pet.getBornDate());
 
                     if (exists) {
-                              throw new IllegalStateException("Pet already exists");
+                              throw new IllegalOperationException("Pet already exists");
                     }
 
                     ShelterEntity shelter = shelterRepository.findById(shelterId)
@@ -52,7 +71,7 @@ public class PetService {
           }
 
           @Transactional(readOnly = true)
-          public PetEntity getPet(Long petId) {
+          public PetEntity getPet(Long petId) throws EntityNotFoundException {
 
                     return petRepository.findById(petId)
                                         .orElseThrow(() -> new EntityNotFoundException("Pet not found"));
@@ -65,7 +84,7 @@ public class PetService {
           }
 
           @Transactional
-          public PetEntity updatePet(Long petId, PetEntity updatedPet) {
+          public PetEntity updatePet(Long petId, PetEntity updatedPet) throws EntityNotFoundException {
 
                     PetEntity pet = getPet(petId);
 
@@ -85,15 +104,13 @@ public class PetService {
            * Solo se elimina si está adoptada o murió
            */
           @Transactional
-          public void deletePet(Long petId) {
+          public void deletePet(Long petId) throws EntityNotFoundException, IllegalOperationException {
 
                     PetEntity pet = getPet(petId);
 
-                    if (!pet.getStatus().equals("ADOPTED") &&
-                                        !pet.getStatus().equals("DECEASED")) {
+                    if (!"ADOPTED".equals(pet.getStatus()) && !"DECEASED".equals(pet.getStatus())) {
 
-                              throw new IllegalStateException(
-                                                  "Pet cannot be deleted unless adopted or deceased");
+                              throw new IllegalOperationException("Pet cannot be deleted unless adopted or deceased");
                     }
 
                     petRepository.delete(pet);

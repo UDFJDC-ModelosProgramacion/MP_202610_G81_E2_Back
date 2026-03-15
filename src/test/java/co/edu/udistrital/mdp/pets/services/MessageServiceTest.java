@@ -67,6 +67,7 @@ class MessageServiceTest {
             messageEntity.setSender(userList.get(0));
             messageEntity.setReceiver(userList.get(1));
             messageEntity.setIsRead(Boolean.TRUE);
+            messageEntity.setActive(Boolean.TRUE);
             entityManager.persist(messageEntity);
             messageList.add(messageEntity);
         }
@@ -113,6 +114,17 @@ class MessageServiceTest {
             newMessage.setContent("Hello");
             newMessage.setSender(userList.get(0));
             newMessage.setReceiver(null);
+            messageService.createMessage(newMessage);
+        }));
+    }
+
+    @Test
+    void testCreateMessageSenderIsReceiver() {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
+            newMessage.setContent("Hello");
+            newMessage.setSender(userList.get(0));
+            newMessage.setReceiver(userList.get(0));
             messageService.createMessage(newMessage);
         }));
     }
@@ -179,7 +191,7 @@ class MessageServiceTest {
         messageService.updateMessage(messageList.get(0).getId(), newData);
 
         MessageEntity stored = entityManager.find(MessageEntity.class, messageList.get(0).getId());
-        assertEquals("Updated message", stored.getContent());
+        assertEquals(messageList.get(0).getContent(), stored.getContent());
         assertEquals(Boolean.TRUE, stored.getIsRead());
     }
 
@@ -193,15 +205,16 @@ class MessageServiceTest {
     }
 
     @Test
-    void testDeleteUnreadMessage() {
-        MessageEntity unreadMessage = factory.manufacturePojo(MessageEntity.class);
-        unreadMessage.setContent("Unread message");
-        unreadMessage.setSender(userList.get(0));
-        unreadMessage.setReceiver(userList.get(1));
-        unreadMessage.setIsRead(Boolean.FALSE);
-        entityManager.persist(unreadMessage);
+    void testDeleteReadMessage() {
+        MessageEntity readMessage = factory.manufacturePojo(MessageEntity.class);
+        readMessage.setContent("Read message");
+        readMessage.setSender(userList.get(0));
+        readMessage.setReceiver(userList.get(1));
+        readMessage.setIsRead(Boolean.TRUE);
+        readMessage.setActive(Boolean.TRUE);
+        entityManager.persist(readMessage);
 
-        assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.deleteMessage(unreadMessage.getId())));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.deleteMessage(readMessage.getId())));
     }
 
     @Test
@@ -210,12 +223,14 @@ class MessageServiceTest {
         deletable.setContent("Delete message");
         deletable.setSender(userList.get(0));
         deletable.setReceiver(userList.get(1));
-        deletable.setIsRead(Boolean.TRUE);
+        deletable.setIsRead(Boolean.FALSE);
+        deletable.setActive(Boolean.TRUE);
         entityManager.persist(deletable);
 
         messageService.deleteMessage(deletable.getId());
         MessageEntity deleted = entityManager.find(MessageEntity.class, deletable.getId());
-        assertNull(deleted);
+        assertNotNull(deleted);
+        assertEquals(Boolean.FALSE, deleted.getActive());
     }
 
     @Test

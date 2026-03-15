@@ -53,9 +53,13 @@ class AdopterServiceTest {
     private void insertData() {
         for (int i = 0; i < 3; i++) {
             AdopterEntity adopterEntity = factory.manufacturePojo(AdopterEntity.class);
+            adopterEntity.setName("Adopter " + i);
             adopterEntity.setEmail("adopter" + i + "@mail.com");
             adopterEntity.setPassword("Password123");
             adopterEntity.setPhoneNumber("30000000" + i);
+            adopterEntity.setAddress("Calle " + i);
+            adopterEntity.setCity("City " + i);
+            adopterEntity.setStatus("Active");
             entityManager.persist(adopterEntity);
             adopterList.add(adopterEntity);
         }
@@ -119,6 +123,25 @@ class AdopterServiceTest {
     }
 
     @Test
+    void testCreateAdopterWithoutNameAddressCity() {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
+            newAdopter.setName("");
+            adopterService.createAdopter(newAdopter);
+        }));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
+            newAdopter.setAddress("");
+            adopterService.createAdopter(newAdopter);
+        }));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
+            newAdopter.setCity("");
+            adopterService.createAdopter(newAdopter);
+        }));
+    }
+
+    @Test
     void testSearchAdopter() throws Exception {
         AdopterEntity entity = adopterList.get(0);
         AdopterEntity resultEntity = adopterService.searchAdopter(entity.getId());
@@ -153,6 +176,18 @@ class AdopterServiceTest {
     }
 
     @Test
+    void testSearchAdoptersWithFilters() {
+        List<AdopterEntity> resultsName = adopterService.searchAdopters(adopterList.get(0).getName(), null, null);
+        assertTrue(resultsName.size() > 0);
+
+        List<AdopterEntity> resultsEmail = adopterService.searchAdopters(null, adopterList.get(0).getEmail(), null);
+        assertTrue(resultsEmail.size() > 0);
+
+        List<AdopterEntity> resultsStatus = adopterService.searchAdopters(null, null, "Active");
+        assertTrue(resultsStatus.size() > 0);
+    }
+
+    @Test
     void testUpdateAdopter() throws Exception {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updatedadopter@mail.com");
@@ -184,10 +219,10 @@ class AdopterServiceTest {
     @Test
     void testDeleteAdopterWithAssociations() {
         AdopterEntity adopter = adopterList.get(0);
-        NotificationEntity notification = factory.manufacturePojo(NotificationEntity.class);
-        notification.setContent("Notification");
-        notification.setUser(adopter);
-        entityManager.persist(notification);
+        co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity request = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity.class);
+        request.setAdopter(adopter);
+        entityManager.persist(request);
+        adopter.getAdoptionRequests().add(request);
 
         assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.deleteAdopter(adopter.getId())));
     }

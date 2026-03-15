@@ -11,12 +11,12 @@ import co.edu.udistrital.mdp.pets.entities.MedicalEventEntity;
 import co.edu.udistrital.mdp.pets.entities.MedicalHistoryEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.MedicalEventRepository;
 import co.edu.udistrital.mdp.pets.repositories.MedicalHistoryRepository;
 import co.edu.udistrital.mdp.pets.repositories.PetRepository;
 import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,7 +35,7 @@ public class MedicalHistoryService {
            * 2. Necesita mascota
            */
           @Transactional
-          public MedicalHistoryEntity createMedicalHistory(Long petId, Long veterinarianId) {
+          public MedicalHistoryEntity createMedicalHistory(Long petId, Long veterinarianId) throws EntityNotFoundException {
 
                     PetEntity pet = petRepository.findById(petId)
                                         .orElseThrow(() -> new EntityNotFoundException("Pet not found"));
@@ -55,7 +55,7 @@ public class MedicalHistoryService {
           }
 
           @Transactional(readOnly = true)
-          public MedicalHistoryEntity searchMedicalHistory(Long petId) {
+          public MedicalHistoryEntity searchMedicalHistory(Long petId) throws EntityNotFoundException {
 
                     return historyRepository.findByPetId(petId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -71,7 +71,7 @@ public class MedicalHistoryService {
            * Solo se actualiza cuando hay eventos médicos
            */
           @Transactional
-          public MedicalHistoryEntity updateMedicalHistory(Long historyId) {
+          public MedicalHistoryEntity updateMedicalHistory(Long historyId) throws EntityNotFoundException {
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -86,14 +86,14 @@ public class MedicalHistoryService {
            * Solo se borra cuando la mascota es adoptada
            */
           @Transactional
-          public void deleteMedicalHistory(Long historyId) {
+          public void deleteMedicalHistory(Long historyId) throws EntityNotFoundException, IllegalOperationException {
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
                                                             "Medical history not found"));
 
-                    if (!history.getPet().getStatus().equals("ADOPTED")) {
-                              throw new IllegalStateException(
+                    if (!"ADOPTED".equals(history.getPet().getStatus())) {
+                              throw new IllegalOperationException(
                                                   "Medical history can only be deleted after adoption");
                     }
 

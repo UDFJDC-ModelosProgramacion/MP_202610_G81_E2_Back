@@ -86,7 +86,19 @@ class UserServiceTest {
     void testCreateUserWithInvalidEmail() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
+            newUser.setName("Valid Name");
             newUser.setEmail("");
+            newUser.setPassword("Secure123");
+            userService.createUser(newUser);
+        }));
+    }
+
+    @Test
+    void testCreateUserWithInvalidName() {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
+            newUser.setName("");
+            newUser.setEmail("valid@mail.com");
             newUser.setPassword("Secure123");
             userService.createUser(newUser);
         }));
@@ -140,6 +152,15 @@ class UserServiceTest {
             }
             assertTrue(found);
         }
+    }
+
+    @Test
+    void testSearchUsersWithFilters() {
+        List<UserEntity> usersByName = userService.searchUsers(userList.get(0).getName(), null);
+        assertTrue(usersByName.size() > 0);
+        
+        List<UserEntity> usersByEmail = userService.searchUsers(null, userList.get(0).getEmail());
+        assertTrue(usersByEmail.size() > 0);
     }
 
     @Test

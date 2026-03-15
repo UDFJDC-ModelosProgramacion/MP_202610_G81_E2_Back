@@ -42,6 +42,7 @@ public class MessageService {
         if (messageEntity.getIsRead() == null) {
             messageEntity.setIsRead(Boolean.FALSE);
         }
+        messageEntity.setActive(Boolean.TRUE);
         log.info("Termina proceso de creación del mensaje");
         return messageRepository.save(messageEntity);
     }
@@ -61,7 +62,7 @@ public class MessageService {
     @Transactional
     public List<MessageEntity> searchMessages() {
         log.info("Inicia proceso de consultar todos los mensajes");
-        return messageRepository.findAll();
+        return messageRepository.findByActiveTrue();
     }
 
     @Transactional
@@ -70,15 +71,13 @@ public class MessageService {
         log.info("Inicia proceso de actualizar el mensaje con id = {}", messageId);
         Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
         Optional<MessageEntity> persistedMessage = messageRepository.findById(safeMessageId);
-        if (persistedMessage.isEmpty()) {
-            throw new EntityNotFoundException("The message with the given id was not found");
-        }
-        if (messageEntity == null || messageEntity.getContent() == null || messageEntity.getContent().isBlank()) {
-            throw new IllegalOperationException("Message content is not valid");
+        if (persistedMessage.isEmpty() || !Boolean.TRUE.equals(persistedMessage.get().getActive())) {
+            throw new EntityNotFoundException("The message with the given id was not found or is deleted");
         }
         MessageEntity storedMessage = persistedMessage.get();
-        storedMessage.setContent(messageEntity.getContent());
-        storedMessage.setIsRead(messageEntity.getIsRead() != null ? messageEntity.getIsRead() : storedMessage.getIsRead());
+        if (messageEntity != null && messageEntity.getIsRead() != null) {
+            storedMessage.setIsRead(messageEntity.getIsRead());
+        }
         log.info("Termina proceso de actualizar el mensaje con id = {}", messageId);
         return messageRepository.save(storedMessage);
     }
@@ -88,14 +87,16 @@ public class MessageService {
         log.info("Inicia proceso de borrar el mensaje con id = {}", messageId);
         Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
         Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
-        if (messageEntity.isEmpty()) {
+        if (messageEntity.isEmpty() || !Boolean.TRUE.equals(messageEntity.get().getActive())) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
-        if (Boolean.FALSE.equals(messageEntity.get().getIsRead())) {
-            throw new IllegalOperationException("Unread messages cannot be deleted");
+        if (Boolean.TRUE.equals(messageEntity.get().getIsRead())) {
+            throw new IllegalOperationException("Read messages cannot be deleted");
         }
+        MessageEntity storedMessage = messageEntity.get();
+        storedMessage.setActive(Boolean.FALSE);
+        messageRepository.save(storedMessage);
         log.info("Termina proceso de borrar el mensaje con id = {}", messageId);
-        messageRepository.deleteById(safeMessageId);
     }
 
     private void validateMessageData(MessageEntity messageEntity) throws IllegalOperationException {
@@ -110,6 +111,9 @@ public class MessageService {
         }
         if (messageEntity.getReceiver() == null || messageEntity.getReceiver().getId() == null) {
             throw new IllegalOperationException("Message receiver is not valid");
+        }
+        if (messageEntity.getSender().getId().equals(messageEntity.getReceiver().getId())) {
+            throw new IllegalOperationException("A user cannot send a message to themselves");
         }
     }
 

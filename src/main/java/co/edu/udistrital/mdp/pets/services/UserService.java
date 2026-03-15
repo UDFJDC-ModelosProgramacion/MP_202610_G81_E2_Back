@@ -45,6 +45,12 @@ public class UserService {
     }
 
     @Transactional
+    public List<UserEntity> searchUsers(String name, String email) {
+        log.info("Inicia proceso de consultar usuarios por filtros");
+        return userRepository.searchUsers(name, email);
+    }
+
+    @Transactional
     public List<UserEntity> searchUsers() {
         log.info("Inicia proceso de consultar todos los usuarios");
         return userRepository.findAll();
@@ -94,6 +100,9 @@ public class UserService {
     private void validateUserData(UserEntity userEntity) throws IllegalOperationException {
         if (userEntity == null) {
             throw new IllegalOperationException("User is not valid");
+        }
+        if (userEntity.getName() == null || userEntity.getName().isBlank()) {
+            throw new IllegalOperationException("User name is not valid");
         }
         if (userEntity.getEmail() == null || userEntity.getEmail().isBlank()) {
             throw new IllegalOperationException("User email is not valid");

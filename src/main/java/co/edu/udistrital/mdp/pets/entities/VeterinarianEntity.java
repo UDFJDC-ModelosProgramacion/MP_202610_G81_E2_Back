@@ -22,7 +22,6 @@ public class VeterinarianEntity extends UserEntity {
 
     private String licenseNumber;
     private String availabilitySchedule;
-    private String name;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
