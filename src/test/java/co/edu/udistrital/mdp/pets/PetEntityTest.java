@@ -35,7 +35,6 @@ class PetEntityTest {
 
         assertNotNull(found);
         assertEquals(petEntity.getName(), found.getName());
-        assertEquals(petEntity.getSpecies(), found.getSpecies());
         assertEquals(petEntity.getBreed(), found.getBreed());
         assertEquals(petEntity.getBornDate(), found.getBornDate());
         assertEquals(petEntity.getSex(), found.getSex());

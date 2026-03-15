@@ -14,7 +14,6 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class PetEntity extends BaseEntity {
     private String name;
-    private String species;
     private String breed;
     private LocalDate bornDate;
     private String sex;
