@@ -1,70 +1,102 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.pets.entities.MedicalEventEntity;
 import co.edu.udistrital.mdp.pets.entities.MedicalHistoryEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.repositories.MedicalEventRepository;
 import co.edu.udistrital.mdp.pets.repositories.MedicalHistoryRepository;
 import co.edu.udistrital.mdp.pets.repositories.PetRepository;
+import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class MedicalHistoryService {
+
           @Autowired
-          private MedicalHistoryRepository mhRepository;
+          private MedicalHistoryRepository historyRepository;
+          @Autowired
+          private PetRepository petRepository;
+          @Autowired
+          private VeterinarianRepository veterinarianRepository;
 
+          /**
+           * 1. Solo puede ser creado por un veterinario
+           * 2. Necesita mascota
+           */
           @Transactional
-          public MedicalHistoryEntity createPet(MedicalHistoryEntity mh) throws IllegalOperationException {
-                    log.info("Creating Pet");
+          public MedicalHistoryEntity createMedicalHistory(Long petId, Long veterinarianId) {
 
-                    return mhRepository.save(mh);
+                    PetEntity pet = petRepository.findById(petId)
+                                        .orElseThrow(() -> new EntityNotFoundException("Pet not found"));
+
+                    VeterinarianEntity vet = veterinarianRepository.findById(veterinarianId)
+                                        .orElseThrow(() -> new EntityNotFoundException(
+                                                            "Veterinarian not found"));
+
+                    MedicalHistoryEntity history = new MedicalHistoryEntity();
+
+                    history.setPet(pet);
+                    history.setVeterinarian(vet);
+                    history.setCreatedDate(LocalDate.now());
+                    history.setLastUpdated(LocalDate.now());
+
+                    return historyRepository.save(history);
           }
 
           @Transactional(readOnly = true)
-          public PetEntity searchPetEntity(Long id) throws EntityNotFoundException{
-                    log.info("Searching pet by id: {}", id );
-                    return petRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No hay una mascota con el id " + id + "en el shelter"));
+          public MedicalHistoryEntity searchMedicalHistory(Long petId) {
+
+                    return historyRepository.findByPetId(petId)
+                                        .orElseThrow(() -> new EntityNotFoundException(
+                                                            "Medical history not found"));
           }
 
-          @Transactional(readOnly = true)
-          public List<PetEntity> searchPetEntitiesByShelter(Long shelterid) throws EntityNotFoundException{
-                    log.info("Searching pet by shelter: {}", shelterid);
-                    return petRepository.findByShelterId(shelterid);
-                    //.orElseThrow(() -> new EntityNotFoundException("No hay mascotas en el refugio o no hay una mascota con el id "+ id));
+          public List<MedicalHistoryEntity> searchMedicalHistories() {
+
+                    return historyRepository.findAll();
           }
 
+          /**
+           * Solo se actualiza cuando hay eventos médicos
+           */
           @Transactional
-          public PetEntity updatePet(Long id, PetEntity petEntity) throws EntityNotFoundException, IllegalOperationException {
-                    log.info("Updating pet with id: {}", id);
-                    PetEntity existing = searchPetEntity(id);
+          public MedicalHistoryEntity updateMedicalHistory(Long historyId) {
 
-                    if (petEntity.getId() != null && !existing.getId().equals(petEntity.getId())) {
-                              throw new IllegalOperationException("No se puede desvincular del UserEntity original");
+                    MedicalHistoryEntity history = historyRepository.findById(historyId)
+                                        .orElseThrow(() -> new EntityNotFoundException(
+                                                            "Medical history not found"));
+
+                    history.setLastUpdated(LocalDate.now());
+
+                    return historyRepository.save(history);
+          }
+
+          /**
+           * Solo se borra cuando la mascota es adoptada
+           */
+          @Transactional
+          public void deleteMedicalHistory(Long historyId) {
+
+                    MedicalHistoryEntity history = historyRepository.findById(historyId)
+                                        .orElseThrow(() -> new EntityNotFoundException(
+                                                            "Medical history not found"));
+
+                    if (!history.getPet().getStatus().equals("ADOPTED")) {
+                              throw new IllegalStateException(
+                                                  "Medical history can only be deleted after adoption");
                     }
 
-                    existing.setName(petEntity.getName());
-                    existing.setBreed(petEntity.getBreed());
-                    existing.setBornDate(petEntity.getBornDate());
-                    existing.setSex(petEntity.getSex());
-                    existing.setSize(petEntity.getSize());
-                    existing.setTemperament(petEntity.getTemperament());
-                    existing.setSpecificNeeds(petEntity.getSpecificNeeds());
-                    existing.setRescued(petEntity.isRescued());
-                    existing.setStatus(petEntity.getStatus());
-
-                    return petRepository.save(existing);
+                    historyRepository.delete(history);
           }
-
-          @Transactional
-          public void deletePet(Long id){
-
-          }
-
 }
