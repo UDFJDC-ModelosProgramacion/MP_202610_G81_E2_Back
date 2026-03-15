@@ -4,7 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uk.co.jemos.podam.common.PodamExclude;
@@ -14,14 +19,13 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class PetEntity extends BaseEntity {
     private String name;
-    private String species;
     private String breed;
     private LocalDate bornDate;
     private String sex;
     private String size;
     private String temperament;
     private String specificNeeds;
-    private boolean isRescued;
+    private Boolean isRescued;
     private String status;
 
     @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)

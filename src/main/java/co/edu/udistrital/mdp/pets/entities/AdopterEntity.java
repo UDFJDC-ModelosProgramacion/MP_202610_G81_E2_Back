@@ -17,6 +17,7 @@ public class AdopterEntity extends UserEntity {
     private String address;
     private String city;
     private String housingType;
+    private String status;
 
     @OneToMany(mappedBy = "adopter")
     @PodamExclude

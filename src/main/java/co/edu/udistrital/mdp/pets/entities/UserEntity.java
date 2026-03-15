@@ -14,6 +14,7 @@ import lombok.EqualsAndHashCode;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class UserEntity extends BaseEntity {
 
+    private String name;
     private String email;
     private String password;
     private String phoneNumber;

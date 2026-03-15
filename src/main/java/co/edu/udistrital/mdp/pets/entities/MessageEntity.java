@@ -17,6 +17,7 @@ public class MessageEntity extends BaseEntity {
     private String content;
     private LocalDateTime sentAt;
     private Boolean isRead;
+    private Boolean active = true;
 
     @PodamExclude
     @ManyToOne

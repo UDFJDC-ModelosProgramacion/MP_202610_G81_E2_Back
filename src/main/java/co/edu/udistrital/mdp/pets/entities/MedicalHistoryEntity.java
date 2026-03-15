@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
@@ -31,4 +32,9 @@ public class MedicalHistoryEntity extends BaseEntity {
     @OneToMany(mappedBy = "medicalHistory")
     @PodamExclude
     private List<VaccineEntryEntity> vaccineEntries = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "veterinarian_id")
+    @PodamExclude
+    private VeterinarianEntity veterinarian;
 }

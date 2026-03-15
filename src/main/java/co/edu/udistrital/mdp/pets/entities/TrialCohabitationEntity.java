@@ -14,4 +14,6 @@ public class TrialCohabitationEntity extends AdoptionProcessEntity {
 
     private Boolean approved;
 
+    private String notes;
+
 }
