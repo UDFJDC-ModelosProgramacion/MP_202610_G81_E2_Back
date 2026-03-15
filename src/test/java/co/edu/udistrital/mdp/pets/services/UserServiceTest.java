@@ -188,6 +188,36 @@ class UserServiceTest {
     }
 
     @Test
+    void testUpdateUserDuplicateEmail() {
+        AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
+        pojoEntity.setEmail(userList.get(1).getEmail());
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            userService.updateUser(userList.get(0).getId(), pojoEntity);
+        }));
+    }
+
+    @Test
+    void testDeleteUserWithSentMessages() {
+        AdopterEntity user = userList.get(0);
+        co.edu.udistrital.mdp.pets.entities.MessageEntity msg = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.MessageEntity.class);
+        msg.setSender(user);
+        msg.setReceiver(user);
+        entityManager.persist(msg);
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.deleteUser(user.getId())));
+    }
+
+    @Test
+    void testDeleteUserWithReceivedMessages() {
+        AdopterEntity user = userList.get(0);
+        co.edu.udistrital.mdp.pets.entities.MessageEntity msg = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.MessageEntity.class);
+        msg.setSender(userList.get(1));
+        msg.setReceiver(user);
+        entityManager.persist(msg);
+        user.getReceivedMessages().add(msg);
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.deleteUser(user.getId())));
+    }
+
+    @Test
     void testDeleteUserWithAssociations() {
         AdopterEntity user = userList.get(0);
         NotificationEntity notification = factory.manufacturePojo(NotificationEntity.class);

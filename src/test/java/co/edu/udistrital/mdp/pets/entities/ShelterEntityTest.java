@@ -1,7 +1,8 @@
 package co.edu.udistrital.mdp.pets.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +65,9 @@ class ShelterEntityTest {
         ShelterMediaEntity media = factory.manufacturePojo(ShelterMediaEntity.class);
         media.setShelter(saved);
         saved.getMediaItems().add(media);
-        entityManager.persistAndFlush(saved);
+        entityManager.persistAndFlush(media);
+        entityManager.merge(saved);
+        entityManager.flush();
 
         entityManager.clear();
 

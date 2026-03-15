@@ -97,7 +97,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testCreateAdoptionProcess() {
+    void testCreateAdoptionProcess() throws Exception {
         TrialCohabitationEntity newProcess = new TrialCohabitationEntity();
         newProcess.setCreationDate(LocalDate.now());
         newProcess.setStatus("PENDING");
@@ -110,28 +110,28 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testCreateAdoptionProcessNull() {
-        assertThrows(IllegalArgumentException.class, () -> adoptionProcessService.createAdoptionProcess(null));
+    void testCreateAdoptionProcessNull() throws Exception {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(null));
     }
 
     @Test
-    void testCreateAdoptionProcessWithoutDate() {
+    void testCreateAdoptionProcessWithoutDate() throws Exception {
         TrialCohabitationEntity process = new TrialCohabitationEntity();
         process.setAdoptionRequest(adoptionRequest);
         process.setStartDate(LocalDate.now());
-        assertThrows(IllegalArgumentException.class, () -> adoptionProcessService.createAdoptionProcess(process));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
     }
 
     @Test
-    void testCreateAdoptionProcessWithoutRequest() {
+    void testCreateAdoptionProcessWithoutRequest() throws Exception {
         TrialCohabitationEntity process = new TrialCohabitationEntity();
         process.setCreationDate(LocalDate.now());
         process.setStartDate(LocalDate.now());
-        assertThrows(IllegalArgumentException.class, () -> adoptionProcessService.createAdoptionProcess(process));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
     }
 
     @Test
-    void testSearchAdoptionProcess() {
+    void testSearchAdoptionProcess() throws Exception {
         AdoptionProcessEntity expected = processList.get(0);
         AdoptionProcessEntity result = adoptionProcessService.searchAdoptionProcess(expected.getId());
         assertNotNull(result);
@@ -139,18 +139,18 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testSearchAdoptionProcessNotFound() {
-        assertThrows(jakarta.persistence.EntityNotFoundException.class, () -> adoptionProcessService.searchAdoptionProcess(0L));
+    void testSearchAdoptionProcessNotFound() throws Exception {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.searchAdoptionProcess(0L));
     }
 
     @Test
-    void testSearchAdoptionProcesses() {
+    void testSearchAdoptionProcesses() throws Exception {
         List<AdoptionProcessEntity> results = adoptionProcessService.searchAdoptionProcesses();
         assertTrue(results.size() >= processList.size());
     }
 
     @Test
-    void testUpdateAdoptionProcess() {
+    void testUpdateAdoptionProcess() throws Exception {
         AdoptionProcessEntity expected = processList.get(0);
         expected.setStatus("COMPLETED");
 
@@ -160,7 +160,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionProcess() {
+    void testDeleteAdoptionProcess() throws Exception {
         AdoptionProcessEntity expected = processList.get(0);
         adoptionProcessService.deleteAdoptionProcess(expected.getId());
         
@@ -169,7 +169,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionProcessWithReturnCase() {
+    void testDeleteAdoptionProcessWithReturnCase() throws Exception {
         AdoptionProcessEntity expected = processList.get(0);
         
         ReturnCaseEntity returnCase = new ReturnCaseEntity();
@@ -180,6 +180,17 @@ class AdoptionProcessServiceTest {
         expected.setReturnCase(returnCase);
         entityManager.persist(expected);
 
-        assertThrows(IllegalArgumentException.class, () -> adoptionProcessService.deleteAdoptionProcess(expected.getId()));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.deleteAdoptionProcess(expected.getId()));
+    }
+
+    @Test
+    void testUpdateAdoptionProcessNotFound() {
+        AdoptionProcessEntity update = new TrialCohabitationEntity();
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.updateAdoptionProcess(0L, update));
+    }
+
+    @Test
+    void testDeleteAdoptionProcessNotFound() {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.deleteAdoptionProcess(0L));
     }
 }

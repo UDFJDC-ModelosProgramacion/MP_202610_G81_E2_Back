@@ -14,12 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
-import co.edu.udistrital.mdp.pets.entities.NotificationEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -123,6 +122,13 @@ class AdopterServiceTest {
     }
 
     @Test
+    void testCreateAdopterDuplicatedEmail() {
+        AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
+        newAdopter.setEmail(adopterList.get(0).getEmail());
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newAdopter)));
+    }
+
+    @Test
     void testCreateAdopterWithoutNameAddressCity() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
@@ -213,6 +219,17 @@ class AdopterServiceTest {
             pojoEntity.setPassword("Updated123");
             pojoEntity.setPhoneNumber("3110000000");
             adopterService.updateAdopter(0L, pojoEntity);
+        }));
+    }
+
+    @Test
+    void testUpdateAdopterDuplicatedEmail() {
+        AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
+        pojoEntity.setEmail(adopterList.get(1).getEmail());
+        pojoEntity.setPassword("Updated123");
+        pojoEntity.setPhoneNumber("3110000000");
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            adopterService.updateAdopter(adopterList.get(0).getId(), pojoEntity);
         }));
     }
 

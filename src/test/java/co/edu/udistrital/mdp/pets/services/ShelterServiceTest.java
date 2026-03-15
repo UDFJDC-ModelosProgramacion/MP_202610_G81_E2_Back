@@ -1,10 +1,13 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import co.edu.udistrital.mdp.pets.entities.PetEntity;
-import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
-import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
-import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +16,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Transactional
@@ -132,6 +134,28 @@ class ShelterServiceTest {
             newEntity.setAddress("   ");
             shelterService.createShelter(newEntity);
         });
+    }
+
+    @Test
+    void testCreateShelterDuplicateName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit("NIT-UNICO-" + System.nanoTime());
+            newEntity.setShelterName(shelterList.get(0).getShelterName());
+            shelterService.createShelter(newEntity);
+        });
+    }
+
+    @Test
+    void testCreateShelterNullStatus() throws IllegalOperationException {
+        ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+        newEntity.setNit("NIT-UNICO-" + System.nanoTime());
+        newEntity.setShelterName("Refugio Null " + System.nanoTime());
+        newEntity.setPhoneNumber("1234567");
+        newEntity.setAddress("Street XYZ");
+        newEntity.setStatus(null);
+        ShelterEntity saved = shelterService.createShelter(newEntity);
+        assertEquals("Activo", saved.getStatus());
     }
 
     @Test

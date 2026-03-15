@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import co.edu.udistrital.mdp.pets.entities.AdoptionProcessEntity;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionProcessRepository;
-import jakarta.persistence.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,25 +17,25 @@ public class AdoptionProcessService {
     @Autowired
     private AdoptionProcessRepository adoptionProcessRepository;
 
-    public AdoptionProcessEntity createAdoptionProcess(AdoptionProcessEntity adoptionProcess){
+    public AdoptionProcessEntity createAdoptionProcess(AdoptionProcessEntity adoptionProcess) throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         log.info("Create adoption process");
 
         if(adoptionProcess == null){
-            throw new IllegalArgumentException("Adoption process can't be null");
+            throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Adoption process can't be null");
         }
 
         if(adoptionProcess.getCreationDate() == null){
-            throw new IllegalArgumentException("Creation date can't be null");
+            throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Creation date can't be null");
         }
 
         if(adoptionProcess.getAdoptionRequest() == null){
-            throw new IllegalArgumentException("Adoption process must belong to an adoption request");
+            throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Adoption process must belong to an adoption request");
         }
 
         return adoptionProcessRepository.save(adoptionProcess);
     }
 
-    public AdoptionProcessEntity searchAdoptionProcess(Long id){
+    public AdoptionProcessEntity searchAdoptionProcess(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Search adoption process with id = {}", id);
 
         return adoptionProcessRepository.findById(id)
@@ -48,7 +48,7 @@ public class AdoptionProcessService {
         return adoptionProcessRepository.findAll();
     }
 
-    public AdoptionProcessEntity updateAdoptionProcess(Long id, AdoptionProcessEntity adoptionProcess){
+    public AdoptionProcessEntity updateAdoptionProcess(Long id, AdoptionProcessEntity adoptionProcess) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Updating adoption process");
 
         AdoptionProcessEntity existing = adoptionProcessRepository.findById(id)
@@ -60,14 +60,14 @@ public class AdoptionProcessService {
         return adoptionProcessRepository.save(existing);
     }
 
-    public void deleteAdoptionProcess(Long id){
+    public void deleteAdoptionProcess(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         log.info("Delete adoption process");
 
         AdoptionProcessEntity adoptionProcess = adoptionProcessRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Adoption process not found"));
 
         if(adoptionProcess.getReturnCase() != null){
-            throw new IllegalArgumentException("Can't delete adoption process because it has a return case");
+            throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Can't delete adoption process because it has a return case");
         }
 
         adoptionProcessRepository.delete(adoptionProcess);

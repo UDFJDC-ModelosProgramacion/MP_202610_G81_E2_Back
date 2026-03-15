@@ -83,7 +83,7 @@ public class ShelterService {
         log.info("Updating shelter with id: {}", id);
         ShelterEntity existing = searchShelter(id);
 
-        if (!existing.getNit().equals(shelter.getNit())) {
+        if (shelter.getNit() != null && !existing.getNit().equals(shelter.getNit())) {
             throw new IllegalOperationException("No se permite la modificación del NIT una vez creado");
         }
 

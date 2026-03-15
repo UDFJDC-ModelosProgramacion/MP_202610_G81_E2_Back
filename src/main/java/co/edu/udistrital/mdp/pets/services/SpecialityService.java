@@ -1,16 +1,17 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import co.edu.udistrital.mdp.pets.entities.VetSpecialityEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.VetSpecialityRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -58,12 +59,15 @@ public class SpecialityService {
         VetSpecialityEntity existing = searchSpeciality(id);
 
         if (speciality.getName() != null && !speciality.getName().equalsIgnoreCase(existing.getName())) {
+            if (speciality.getName().trim().isEmpty()) {
+                throw new IllegalOperationException("El nombre de la especialidad no puede ser nulo o vacío");
+            }
             Optional<VetSpecialityEntity> duplicate = specialityRepository
                     .findByNameIgnoreCase(speciality.getName().trim());
             if (duplicate.isPresent()) {
                 throw new IllegalOperationException("Ya existe una especialidad con el nombre " + speciality.getName());
             }
-            existing.setName(speciality.getName());
+            existing.setName(speciality.getName().trim());
         }
 
         if (speciality.getDescription() != null) {

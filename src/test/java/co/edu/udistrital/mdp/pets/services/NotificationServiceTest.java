@@ -14,13 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.NotificationEntity;
 import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import org.springframework.transaction.annotation.Transactional;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -105,6 +105,45 @@ class NotificationServiceTest {
             newNotification.setUser(null);
             notificationService.createNotification(newNotification);
         }));
+    }
+
+    @Test
+    void testCreateNotificationNullUser() {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
+            newNotification.setTitle("Invalid user");
+            newNotification.setContent("Content");
+            newNotification.setUser(null);
+            notificationService.createNotification(newNotification);
+        }));
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
+            newNotification.setTitle("Invalid user");
+            newNotification.setContent("Content");
+            UserEntity u = new AdopterEntity();
+            u.setId(null);
+            newNotification.setUser(u);
+            notificationService.createNotification(newNotification);
+        }));
+    }
+
+    @Test
+    void testUpdateNotificationMissingContent() {
+        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
+            NotificationEntity notification = new NotificationEntity();
+            notification.setContent("");
+            notificationService.updateNotification(notificationList.get(0).getId(), notification);
+        }));
+    }
+
+    @Test
+    void testCreateNotificationWithDefaults() throws Exception {
+        NotificationEntity notification = new NotificationEntity();
+        notification.setContent("Content without default");
+        notification.setUser(userList.get(0));
+        NotificationEntity created = notificationService.createNotification(notification);
+        assertNotNull(created.getCreatedAt());
+        assertEquals(Boolean.FALSE, created.getIsRead());
     }
 
     @Test

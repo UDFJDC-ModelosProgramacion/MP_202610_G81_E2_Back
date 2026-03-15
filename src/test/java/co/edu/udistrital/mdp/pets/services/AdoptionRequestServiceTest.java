@@ -83,7 +83,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequest() {
+    void testCreateAdoptionRequest() throws Exception {
         AdoptionRequestEntity newReq = new AdoptionRequestEntity();
         newReq.setRequestDate(LocalDate.now());
         newReq.setPet(pet);
@@ -96,36 +96,36 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequestNull() {
-        assertThrows(IllegalArgumentException.class, () -> adoptionRequestService.createAdoptionRequest(null));
+    void testCreateAdoptionRequestNull() throws Exception {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(null));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutDate() {
+    void testCreateAdoptionRequestWithoutDate() throws Exception {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setPet(pet);
         req.setAdopter(adopter);
-        assertThrows(IllegalArgumentException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutPet() {
+    void testCreateAdoptionRequestWithoutPet() throws Exception {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setAdopter(adopter);
-        assertThrows(IllegalArgumentException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutAdopter() {
+    void testCreateAdoptionRequestWithoutAdopter() throws Exception {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setPet(pet);
-        assertThrows(IllegalArgumentException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testSearchAdoptionRequest() {
+    void testSearchAdoptionRequest() throws Exception {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity result = adoptionRequestService.searchAdoptionRequest(expected.getId());
         assertNotNull(result);
@@ -133,18 +133,18 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testSearchAdoptionRequestNotFound() {
-        assertThrows(jakarta.persistence.EntityNotFoundException.class, () -> adoptionRequestService.searchAdoptionRequest(0L));
+    void testSearchAdoptionRequestNotFound() throws Exception {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.searchAdoptionRequest(0L));
     }
 
     @Test
-    void testSearchAdoptionRequests() {
+    void testSearchAdoptionRequests() throws Exception {
         List<AdoptionRequestEntity> results = adoptionRequestService.searchAdoptionRequests();
         assertTrue(results.size() >= requestList.size());
     }
 
     @Test
-    void testUpdateAdoptionRequest() {
+    void testUpdateAdoptionRequest() throws Exception {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity updatedInfo = new AdoptionRequestEntity();
         updatedInfo.setStatus("APPROVED");
@@ -156,7 +156,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequest() {
+    void testDeleteAdoptionRequest() throws Exception {
         AdoptionRequestEntity expected = requestList.get(0);
         adoptionRequestService.deleteAdoptionRequest(expected.getId());
         
@@ -165,7 +165,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequestWithProcess() {
+    void testDeleteAdoptionRequestWithProcess() throws Exception {
         AdoptionRequestEntity expected = requestList.get(0);
         
         TrialCohabitationEntity process = new TrialCohabitationEntity();
@@ -177,6 +177,17 @@ class AdoptionRequestServiceTest {
         expected.setAdoptionProcess(process);
         entityManager.persist(expected);
 
-        assertThrows(IllegalArgumentException.class, () -> adoptionRequestService.deleteAdoptionRequest(expected.getId()));
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.deleteAdoptionRequest(expected.getId()));
+    }
+
+    @Test
+    void testUpdateAdoptionRequestNotFound() {
+        AdoptionRequestEntity update = new AdoptionRequestEntity();
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.updateAdoptionRequest(0L, update));
+    }
+
+    @Test
+    void testDeleteAdoptionRequestNotFound() {
+        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.deleteAdoptionRequest(0L));
     }
 }

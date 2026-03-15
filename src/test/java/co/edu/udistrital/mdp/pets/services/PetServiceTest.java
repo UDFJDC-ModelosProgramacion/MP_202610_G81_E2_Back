@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -188,6 +187,47 @@ class PetServiceTest {
         PetEntity pet = petList.get(0); // Status is IN_SHELTER by default in insertData()
         
         assertNotNull(assertThrows(IllegalOperationException.class, () -> petService.deletePet(pet.getId())));
+    }
+
+    @Test
+    void testCreatePetValidations() {
+        PetEntity newPet = factory.manufacturePojo(PetEntity.class);
+        Long shelterId = shelterList.get(0).getId();
+
+        newPet.setName(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setName("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setName("Valid Name");
+
+        newPet.setTemperament(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setTemperament("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setTemperament("Calm");
+
+        newPet.setBreed(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setBreed("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setBreed("Mix");
+
+        newPet.setSize(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setSize("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setSize("Medium");
+
+        newPet.setSex(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setSex("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setSex("Male");
+
+        newPet.setSpecificNeeds(null);
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        newPet.setSpecificNeeds("  ");
+        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
     }
 
     @Test
