@@ -1,13 +1,16 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.ReturnCaseEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.ReturnCaseRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,54 +20,69 @@ public class ReturnCaseService {
     @Autowired
     private ReturnCaseRepository returnCaseRepository;
 
-    public ReturnCaseEntity createReturnCase(ReturnCaseEntity returnCase){
-        log.info("Creating return case");
+    @Transactional
+    public ReturnCaseEntity createReturnCase(ReturnCaseEntity returnCase) throws IllegalOperationException {
+        log.info("Inicia proceso de creación del caso de devolución");
 
-        if(returnCase == null){
-            throw new IllegalArgumentException("Return case cannot be null");
+        if (returnCase == null) {
+            throw new IllegalOperationException("Return case cannot be null");
         }
 
+        log.info("Termina proceso de creación del caso de devolución");
         return returnCaseRepository.save(returnCase);
     }
 
-    @SuppressWarnings("null")
-    public ReturnCaseEntity searchReturnCase(Long id){
-        log.info("Searching return case with id = {}", id);
+    @Transactional
+    public ReturnCaseEntity searchReturnCase(Long id) throws EntityNotFoundException {
+        log.info("Inicia proceso de consultar el caso de devolución con id = {}", id);
 
-        return returnCaseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Return case not found"));
+        Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
+        if (returnCaseEntity.isEmpty())
+            throw new EntityNotFoundException("Return case not found");
+
+        log.info("Termina proceso de consultar el caso de devolución con id = {}", id);
+        return returnCaseEntity.get();
     }
 
-    public List<ReturnCaseEntity> searchReturnCases(){
-        log.info("Searching all return cases");
-
+    @Transactional
+    public List<ReturnCaseEntity> searchReturnCases() {
+        log.info("Inicia proceso de consultar todos los casos de devolución");
         return returnCaseRepository.findAll();
     }
 
-    public ReturnCaseEntity updateReturnCase(Long id, ReturnCaseEntity returnCase){
-        log.info("Updating return case with id = {}", id);
+    @Transactional
+    public ReturnCaseEntity updateReturnCase(Long id, ReturnCaseEntity returnCase)
+            throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de actualizar el caso de devolución con id = {}", id);
 
-        @SuppressWarnings("null")
-        ReturnCaseEntity existing = returnCaseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Return case not found"));
+        Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
+        if (returnCaseEntity.isEmpty())
+            throw new EntityNotFoundException("Return case not found");
 
+        ReturnCaseEntity existing = returnCaseEntity.get();
         existing.setReturnDate(returnCase.getReturnDate());
         existing.setReason(returnCase.getReason());
         existing.setDetails(returnCase.getDetails());
 
+        log.info("Termina proceso de actualizar el caso de devolución con id = {}", id);
         return returnCaseRepository.save(existing);
     }
 
-    public void deleteReturnCase(Long id){
-        log.info("Deleting return case with id = {}", id);
+    @Transactional
+    public void deleteReturnCase(Long id) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de borrar el caso de devolución con id = {}", id);
 
-        @SuppressWarnings("null")
-        ReturnCaseEntity returnCase = returnCaseRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Return case not found"));
+        Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
+        if (returnCaseEntity.isEmpty())
+            throw new EntityNotFoundException("Return case not found");
 
-        if(returnCase.getAdoptionProcess() != null){
-            throw new IllegalArgumentException("Cannot delete return case associated to an adoption process");
+        ReturnCaseEntity returnCase = returnCaseEntity.get();
+
+        if (returnCase.getAdoptionProcess() != null) {
+            throw new IllegalOperationException("Cannot delete return case associated to an adoption process");
         }
 
         returnCaseRepository.delete(returnCase);
+        log.info("Termina proceso de borrar el caso de devolución con id = {}", id);
     }
 }

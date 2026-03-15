@@ -1,15 +1,13 @@
-package co.edu.udistrital.mdp.pets;
+package co.edu.udistrital.mdp.pets.entities;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
-import co.edu.udistrital.mdp.pets.entities.PetEntity;
-import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -41,7 +39,7 @@ class PetEntityTest {
         assertEquals(petEntity.getSize(), found.getSize());
         assertEquals(petEntity.getTemperament(), found.getTemperament());
         assertEquals(petEntity.getSpecificNeeds(), found.getSpecificNeeds());
-        assertEquals(petEntity.isRescued(), found.isRescued());
+        assertEquals(petEntity.getIsRescued(), found.getIsRescued());
         assertEquals(petEntity.getStatus(), found.getStatus());
     }
 

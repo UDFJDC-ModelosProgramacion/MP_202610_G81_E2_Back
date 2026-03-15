@@ -1,70 +1,91 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-
 public class AdoptionService {
+
     @Autowired
     AdoptionRepository adoptionRepository;
 
-    public AdoptionEntity createAdoption(AdoptionEntity adoption){
-        log.info("Creating adoption");
+    @Transactional
+    public AdoptionEntity createAdoption(AdoptionEntity adoption) throws IllegalOperationException {
+        log.info("Inicia proceso de creación de la adopción");
 
-        if(adoption == null){
-            throw new IllegalArgumentException("Adoption can not be null.");
+        if (adoption == null) {
+            throw new IllegalOperationException("Adoption can not be null.");
         }
 
+        log.info("Termina proceso de creación de la adopción");
         return adoptionRepository.save(adoption);
     }
 
-    @SuppressWarnings("null")
-    public AdoptionEntity searchAdoption(Long id){
-        log.info("Search adoption with id = {}", id);
+    @Transactional
+    public AdoptionEntity searchAdoption(Long id) throws EntityNotFoundException {
+        log.info("Inicia proceso de consultar la adopción con id = {}", id);
 
-        return adoptionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Adoption not found."));
+        Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
+        if (adoptionEntity.isEmpty())
+            throw new EntityNotFoundException("Adoption not found.");
+
+        log.info("Termina proceso de consultar la adopción con id = {}", id);
+        return adoptionEntity.get();
     }
-    
-    public List<AdoptionEntity> searchAdoptions(){
-        log.info("Search all adoptions");
 
+    @Transactional
+    public List<AdoptionEntity> searchAdoptions() {
+        log.info("Inicia proceso de consultar todas las adopciones");
         return adoptionRepository.findAll();
     }
 
-    @SuppressWarnings("null")
-    public AdoptionEntity updateAdoption(Long id, AdoptionEntity adoption){
-        log.info("Updating adoption with id = {}", id);
+    @Transactional
+    public AdoptionEntity updateAdoption(Long id, AdoptionEntity adoption)
+            throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de actualizar la adopción con id = {}", id);
 
-        AdoptionEntity existing = adoptionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Adoption not found."));
+        Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
+        if (adoptionEntity.isEmpty())
+            throw new EntityNotFoundException("Adoption not found.");
 
+        AdoptionEntity existing = adoptionEntity.get();
         existing.setOfficialDate(adoption.getOfficialDate());
         existing.setContractSigned(adoption.getContractSigned());
 
+        log.info("Termina proceso de actualizar la adopción con id = {}", id);
         return adoptionRepository.save(existing);
     }
 
-    @SuppressWarnings("null")
-    public void deleteAdoption(Long id){
-        log.info("Delete adoption with id = {}", id);
+    @Transactional
+    public void deleteAdoption(Long id) throws EntityNotFoundException, IllegalOperationException {
+        log.info("Inicia proceso de borrar la adopción con id = {}", id);
 
-        AdoptionEntity adoption = adoptionRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Adoption not found"));
-        
-        if(adoption.getTrialCohabitation() != null){
-            throw new IllegalArgumentException("Cannot delete adoption with associated trial cohabitation.");
+        Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
+        if (adoptionEntity.isEmpty())
+            throw new EntityNotFoundException("Adoption not found.");
+
+        AdoptionEntity adoption = adoptionEntity.get();
+
+        if (adoption.getTrialCohabitation() != null) {
+            throw new IllegalOperationException("Cannot delete adoption with associated trial cohabitation.");
         }
 
-        if(adoption.getPet() != null){
-            throw new IllegalArgumentException("Cannot delete adoption with associated with a pet.");
+        if (adoption.getPet() != null) {
+            throw new IllegalOperationException("Cannot delete adoption with associated pet.");
         }
+
         adoptionRepository.delete(adoption);
+        log.info("Termina proceso de borrar la adopción con id = {}", id);
     }
 }

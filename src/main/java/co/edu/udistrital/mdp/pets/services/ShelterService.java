@@ -114,7 +114,8 @@ public class ShelterService {
     @Transactional
     public void deleteShelter(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter with id: {}", id);
-        ShelterEntity existing = searchShelter(id);
+        
+        searchShelter(id); // Valida que exista el refugio
 
         List<PetEntity> pets = petRepository.findByShelterId(id);
         if (pets != null && !pets.isEmpty()) {

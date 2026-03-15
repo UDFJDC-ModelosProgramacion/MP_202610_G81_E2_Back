@@ -22,6 +22,11 @@ public class AdoptionRequestEntity extends BaseEntity {
     @PodamExclude
     private AdopterEntity adopter;
 
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
+
     @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
     @PodamExclude
     private AdoptionProcessEntity adoptionProcess;

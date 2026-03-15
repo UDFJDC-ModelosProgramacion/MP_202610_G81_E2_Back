@@ -4,152 +4,272 @@ import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.pets.repositories.PetRepository;
-import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
-public class ShelterServiceTest {
+@DataJpaTest
+@Transactional
+@Import(ShelterService.class)
+class ShelterServiceTest {
 
-    @Mock
-    private ShelterRepository shelterRepository;
-
-    @Mock
-    private PetRepository petRepository;
-
-    @InjectMocks
+    @Autowired
     private ShelterService shelterService;
 
+    @Autowired
+    private TestEntityManager entityManager;
+
     private PodamFactory factory = new PodamFactoryImpl();
-    private ShelterEntity shelter;
+
+    private List<ShelterEntity> shelterList = new ArrayList<>();
+    private List<PetEntity> petList = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
-        shelter = factory.manufacturePojo(ShelterEntity.class);
-        shelter.setNit("123456789");
-        shelter.setShelterName("Shelter Test");
-        shelter.setPhoneNumber("1234567");
-        shelter.setAddress("Test Address");
-        shelter.setStatus("Activo");
+        clearData();
+        insertData();
+    }
+
+    private void clearData() {
+        entityManager.getEntityManager().createQuery("delete from PetEntity").executeUpdate();
+        entityManager.getEntityManager().createQuery("delete from ShelterEntity").executeUpdate();
+    }
+
+    private void insertData() {
+        for (int i = 0; i < 3; i++) {
+            ShelterEntity shelterEntity = factory.manufacturePojo(ShelterEntity.class);
+            shelterEntity.setNit("NIT-" + i + "-" + System.nanoTime());
+            shelterEntity.setShelterName("Shelter-" + i + "-" + System.nanoTime());
+            shelterEntity.setPhoneNumber("123456" + i);
+            shelterEntity.setAddress("Address " + i);
+            shelterEntity.setStatus("Activo");
+            entityManager.persist(shelterEntity);
+            shelterList.add(shelterEntity);
+        }
+
+        PetEntity petEntity = factory.manufacturePojo(PetEntity.class);
+        petEntity.setShelter(shelterList.get(0));
+        entityManager.persist(petEntity);
+        petList.add(petEntity);
     }
 
     @Test
-    void testCreateShelterSuccess() throws IllegalOperationException {
-        when(shelterRepository.findByNit(shelter.getNit())).thenReturn(Optional.empty());
-        when(shelterRepository.findByShelterName(shelter.getShelterName())).thenReturn(Collections.emptyList());
-        when(shelterRepository.save(any(ShelterEntity.class))).thenReturn(shelter);
+    void testCreateShelter() throws IllegalOperationException {
+        ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+        newEntity.setNit("NIT-NUEVO-" + System.nanoTime());
+        newEntity.setShelterName("Nuevo Refugio " + System.nanoTime());
+        newEntity.setPhoneNumber("9876543");
+        newEntity.setAddress("New Address");
+        newEntity.setStatus("Activo");
 
-        ShelterEntity result = shelterService.createShelter(shelter);
+        ShelterEntity result = shelterService.createShelter(newEntity);
         assertNotNull(result);
-        assertEquals(shelter.getNit(), result.getNit());
-        assertEquals("Activo", result.getStatus());
+
+        ShelterEntity entity = entityManager.find(ShelterEntity.class, result.getId());
+        assertEquals(newEntity.getId(), entity.getId());
+        assertEquals(newEntity.getNit(), entity.getNit());
+        assertEquals(newEntity.getShelterName(), entity.getShelterName());
+        assertEquals(newEntity.getPhoneNumber(), entity.getPhoneNumber());
+        assertEquals(newEntity.getAddress(), entity.getAddress());
     }
 
     @Test
     void testCreateShelterMissingNit() {
-        shelter.setNit(null);
-        assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit(null);
+            newEntity.setShelterName("Refugio Test");
+            newEntity.setPhoneNumber("1234567");
+            newEntity.setAddress("Address Test");
+            shelterService.createShelter(newEntity);
+        });
+    }
+
+    @Test
+    void testCreateShelterMissingName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit("NIT-UNICO-" + System.nanoTime());
+            newEntity.setShelterName(null);
+            newEntity.setPhoneNumber("1234567");
+            newEntity.setAddress("Address Test");
+            shelterService.createShelter(newEntity);
+        });
+    }
+
+    @Test
+    void testCreateShelterMissingPhoneNumber() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit("NIT-UNICO-" + System.nanoTime());
+            newEntity.setShelterName("Refugio " + System.nanoTime());
+            newEntity.setPhoneNumber(null);
+            newEntity.setAddress("Address Test");
+            shelterService.createShelter(newEntity);
+        });
+    }
+
+    @Test
+    void testCreateShelterMissingAddress() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit("NIT-UNICO-" + System.nanoTime());
+            newEntity.setShelterName("Refugio " + System.nanoTime());
+            newEntity.setPhoneNumber("1234567");
+            newEntity.setAddress("   ");
+            shelterService.createShelter(newEntity);
+        });
     }
 
     @Test
     void testCreateShelterDuplicateNit() {
-        when(shelterRepository.findByNit(shelter.getNit())).thenReturn(Optional.of(shelter));
-        assertThrows(IllegalOperationException.class, () -> shelterService.createShelter(shelter));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
+            newEntity.setNit(shelterList.get(0).getNit());
+            newEntity.setShelterName("Otro Refugio " + System.nanoTime());
+            newEntity.setPhoneNumber("1234567");
+            newEntity.setAddress("Address Test");
+            shelterService.createShelter(newEntity);
+        });
     }
 
     @Test
-    void testSearchShelterSuccess() throws EntityNotFoundException {
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-        ShelterEntity result = shelterService.searchShelter(shelter.getId());
-        assertNotNull(result);
-        assertEquals(shelter.getId(), result.getId());
+    void testSearchShelter() throws EntityNotFoundException {
+        ShelterEntity entity = shelterList.get(0);
+        ShelterEntity resultEntity = shelterService.searchShelter(entity.getId());
+        assertNotNull(resultEntity);
+        assertEquals(entity.getId(), resultEntity.getId());
+        assertEquals(entity.getNit(), resultEntity.getNit());
+        assertEquals(entity.getShelterName(), resultEntity.getShelterName());
     }
 
     @Test
     void testSearchShelterNotFound() {
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.empty());
-        assertThrows(EntityNotFoundException.class, () -> shelterService.searchShelter(shelter.getId()));
+        assertThrows(EntityNotFoundException.class, () -> {
+            shelterService.searchShelter(0L);
+        });
+    }
+
+    @Test
+    void testSearchShelters() {
+        List<ShelterEntity> list = shelterService.searchShelters();
+        assertEquals(shelterList.size(), list.size());
+        for (ShelterEntity entity : list) {
+            boolean found = false;
+            for (ShelterEntity storedEntity : shelterList) {
+                if (entity.getId().equals(storedEntity.getId())) {
+                    found = true;
+                }
+            }
+            assertTrue(found);
+        }
+    }
+
+    @Test
+    void testSearchSheltersByName() {
+        List<ShelterEntity> result = shelterService.searchSheltersByName(shelterList.get(0).getShelterName());
+        assertNotNull(result);
+        assertEquals(1, result.size());
     }
 
     @Test
     void testSearchSheltersByNameNotFound() {
-        when(shelterRepository.findByShelterName("Unknown")).thenReturn(Collections.emptyList());
         List<ShelterEntity> result = shelterService.searchSheltersByName("Unknown");
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void testUpdateShelterSuccess() throws EntityNotFoundException, IllegalOperationException {
-        ShelterEntity updatedShelter = new ShelterEntity();
-        updatedShelter.setNit(shelter.getNit());
+    void testUpdateShelter() throws EntityNotFoundException, IllegalOperationException {
+        ShelterEntity entity = shelterList.get(0);
+        ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
+        updatedShelter.setNit(entity.getNit());
         updatedShelter.setStatus("Activo");
-        updatedShelter.setShelterName("New Name");
+        updatedShelter.setShelterName("Nombre Actualizado " + System.nanoTime());
 
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-        when(shelterRepository.findByShelterName("New Name")).thenReturn(Collections.emptyList());
-        when(shelterRepository.save(any(ShelterEntity.class))).thenReturn(updatedShelter);
-
-        ShelterEntity result = shelterService.updateShelter(shelter.getId(), updatedShelter);
+        ShelterEntity result = shelterService.updateShelter(entity.getId(), updatedShelter);
         assertNotNull(result);
-        assertEquals("New Name", result.getShelterName());
+
+        ShelterEntity resp = entityManager.find(ShelterEntity.class, entity.getId());
+        assertEquals(updatedShelter.getShelterName(), resp.getShelterName());
+    }
+
+    @Test
+    void testUpdateShelterNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
+            shelterService.updateShelter(0L, updatedShelter);
+        });
     }
 
     @Test
     void testUpdateShelterChangeNit() {
-        ShelterEntity updatedShelter = new ShelterEntity();
-        updatedShelter.setNit("987654321"); // Changed NIT
-
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-
-        assertThrows(IllegalOperationException.class,
-                () -> shelterService.updateShelter(shelter.getId(), updatedShelter));
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity entity = shelterList.get(0);
+            ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
+            updatedShelter.setNit("NIT-DIFERENTE-" + System.nanoTime());
+            shelterService.updateShelter(entity.getId(), updatedShelter);
+        });
     }
 
     @Test
     void testUpdateShelterNotActive() {
-        shelter.setStatus("Inactivo");
-        ShelterEntity updatedShelter = new ShelterEntity();
-        updatedShelter.setNit(shelter.getNit());
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity entity = shelterList.get(0);
+            entity.setStatus("Inactivo");
+            entityManager.merge(entity);
 
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-
-        assertThrows(IllegalOperationException.class,
-                () -> shelterService.updateShelter(shelter.getId(), updatedShelter));
+            ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
+            updatedShelter.setNit(entity.getNit());
+            shelterService.updateShelter(entity.getId(), updatedShelter);
+        });
     }
 
     @Test
-    void testDeleteShelterSuccess() throws EntityNotFoundException, IllegalOperationException {
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-        when(petRepository.findByShelterId(shelter.getId())).thenReturn(Collections.emptyList());
+    void testUpdateShelterDuplicateName() {
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity entity = shelterList.get(0);
+            ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
+            updatedShelter.setNit(entity.getNit());
+            updatedShelter.setStatus("Activo");
+            updatedShelter.setShelterName(shelterList.get(1).getShelterName());
+            shelterService.updateShelter(entity.getId(), updatedShelter);
+        });
+    }
 
-        assertDoesNotThrow(() -> shelterService.deleteShelter(shelter.getId()));
-        verify(shelterRepository, times(1)).deleteById(shelter.getId());
+    @Test
+    void testDeleteShelter() throws EntityNotFoundException, IllegalOperationException {
+        ShelterEntity entity = shelterList.get(1);
+        shelterService.deleteShelter(entity.getId());
+        ShelterEntity deleted = entityManager.find(ShelterEntity.class, entity.getId());
+        assertNull(deleted);
+    }
+
+    @Test
+    void testDeleteShelterNotFound() {
+        assertThrows(EntityNotFoundException.class, () -> {
+            shelterService.deleteShelter(0L);
+        });
     }
 
     @Test
     void testDeleteShelterWithPets() {
-        PetEntity pet = factory.manufacturePojo(PetEntity.class);
-        when(shelterRepository.findById(shelter.getId())).thenReturn(Optional.of(shelter));
-        when(petRepository.findByShelterId(shelter.getId())).thenReturn(Arrays.asList(pet));
-
-        assertThrows(IllegalOperationException.class, () -> shelterService.deleteShelter(shelter.getId()));
-        verify(shelterRepository, never()).deleteById(anyLong());
+        assertThrows(IllegalOperationException.class, () -> {
+            ShelterEntity entity = shelterList.get(0);
+            shelterService.deleteShelter(entity.getId());
+        });
     }
 }

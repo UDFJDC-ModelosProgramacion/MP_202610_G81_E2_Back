@@ -3,6 +3,9 @@ package co.edu.udistrital.mdp.pets.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import uk.co.jemos.podam.common.PodamExclude;
 
 @Data
@@ -22,4 +25,13 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
     @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
     @PodamExclude
     private ReturnCaseEntity returnCase;
+
+    @OneToMany(mappedBy = "adoptionProcess")
+    @PodamExclude
+    private List<ReviewEntity> reviews = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "pet_id")
+    @PodamExclude
+    private PetEntity pet;
 }
