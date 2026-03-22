@@ -104,7 +104,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testCreateVaccineEntryHistoryNotFound() {
+    void testCreateVaccineEntryHistoryNotFound() throws Exception {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -112,7 +112,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testGetVaccineEntries() {
+    void testGetVaccineEntries() throws Exception {
         List<VaccineEntryEntity> results = vaccineEntryService.getVaccineEntries(history.getId());
         assertTrue(results.size() >= vaccineList.size());
     }
@@ -131,7 +131,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testUpdateVaccineEntryNotFound() {
+    void testUpdateVaccineEntryNotFound() throws Exception {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -139,7 +139,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testFindVaccinesDue() {
+    void testFindVaccinesDue() throws Exception {
         // We set 3 vaccines to have due dates in the past during setup
         List<VaccineEntryEntity> results = vaccineEntryService.findVaccinesDue();
         assertTrue(results.size() >= 3);

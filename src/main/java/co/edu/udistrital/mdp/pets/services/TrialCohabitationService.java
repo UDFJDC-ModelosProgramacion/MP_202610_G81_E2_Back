@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class TrialCohabitationService {
+    private static final String NOT_FOUND_MSG = "Trial cohabitation not found";
+
+    private static final String TRIAL_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     private TrialCohabitationRepository trialCohabitationRepository;
@@ -35,7 +38,7 @@ public class TrialCohabitationService {
         log.info("Search trial cohabitation with id = {}", id);
 
         return trialCohabitationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Trial cohabitation not found"));
+                .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
     }
 
     public List<TrialCohabitationEntity> searchTrialCohabitations(){
@@ -48,7 +51,7 @@ public class TrialCohabitationService {
         log.info("Updating trial cohabitation");
 
         TrialCohabitationEntity existing = trialCohabitationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Trial cohabitation not found"));
+                .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
 
         existing.setStartDate(trialCohabitation.getStartDate());
         existing.setEndDate(trialCohabitation.getEndDate());
@@ -62,7 +65,7 @@ public class TrialCohabitationService {
         log.info("Delete trial cohabitation");
 
         TrialCohabitationEntity trialCohabitation = trialCohabitationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Trial cohabitation not found"));
+                .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
 
         trialCohabitationRepository.delete(trialCohabitation);
     }

@@ -17,6 +17,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class UserService {
+    private static final String NOT_FOUND_MSG = "The user with the given id was not found";
+
+    private static final String NULL_USER_ID = "userId must not be null";
+
+    private static final String USER_NOT_FOUND = NOT_FOUND_MSG;
+    private static final String USER_ID_NULL = NULL_USER_ID;
 
     @Autowired
     private UserRepository userRepository;
@@ -35,10 +41,10 @@ public class UserService {
     @Transactional
     public UserEntity searchUser(Long userId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el usuario con id = {}", userId);
-        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Long safeUserId = Objects.requireNonNull(userId, USER_ID_NULL);
         Optional<UserEntity> userEntity = userRepository.findById(safeUserId);
         if (userEntity.isEmpty()) {
-            throw new EntityNotFoundException("The user with the given id was not found");
+            throw new EntityNotFoundException(USER_NOT_FOUND);
         }
         log.info("Termina proceso de consultar el usuario con id = {}", userId);
         return userEntity.get();
@@ -60,10 +66,10 @@ public class UserService {
     public UserEntity updateUser(Long userId, UserEntity userEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el usuario con id = {}", userId);
-        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Long safeUserId = Objects.requireNonNull(userId, USER_ID_NULL);
         Optional<UserEntity> persistedUser = userRepository.findById(safeUserId);
         if (persistedUser.isEmpty()) {
-            throw new EntityNotFoundException("The user with the given id was not found");
+            throw new EntityNotFoundException(USER_NOT_FOUND);
         }
         validateUserData(userEntity);
 
@@ -84,10 +90,10 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el usuario con id = {}", userId);
-        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        Long safeUserId = Objects.requireNonNull(userId, USER_ID_NULL);
         Optional<UserEntity> userEntity = userRepository.findById(safeUserId);
         if (userEntity.isEmpty()) {
-            throw new EntityNotFoundException("The user with the given id was not found");
+            throw new EntityNotFoundException(USER_NOT_FOUND);
         }
         UserEntity user = userEntity.get();
         if (!user.getSentMessages().isEmpty() || !user.getReceivedMessages().isEmpty() || !user.getNotifications().isEmpty()) {

@@ -86,7 +86,7 @@ public class PetService {
           @Transactional
           public PetEntity updatePet(Long petId, PetEntity updatedPet) throws EntityNotFoundException {
 
-                    PetEntity pet = getPet(petId);
+                    PetEntity pet = petRepository.findById(petId).orElseThrow(() -> new EntityNotFoundException("Pet not found"));
 
                     pet.setName(updatedPet.getName());
                     pet.setBreed(updatedPet.getBreed());
@@ -106,7 +106,7 @@ public class PetService {
           @Transactional
           public void deletePet(Long petId) throws EntityNotFoundException, IllegalOperationException {
 
-                    PetEntity pet = getPet(petId);
+                    PetEntity pet = petRepository.findById(petId).orElseThrow(() -> new EntityNotFoundException("Pet not found"));
 
                     if (!"ADOPTED".equals(pet.getStatus()) && !"DECEASED".equals(pet.getStatus())) {
 

@@ -81,7 +81,7 @@ public class ShelterService {
     public ShelterEntity updateShelter(Long id, ShelterEntity shelter)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating shelter with id: {}", id);
-        ShelterEntity existing = searchShelter(id);
+        ShelterEntity existing = shelterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El refugio con ID " + id + " no fue encontrado"));
 
         if (shelter.getNit() != null && !existing.getNit().equals(shelter.getNit())) {
             throw new IllegalOperationException("No se permite la modificación del NIT una vez creado");
@@ -115,7 +115,7 @@ public class ShelterService {
     public void deleteShelter(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter with id: {}", id);
         
-        searchShelter(id); // Valida que exista el refugio
+        shelterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El refugio con ID " + id + " no fue encontrado")); // Valida que exista el refugio
 
         List<PetEntity> pets = petRepository.findByShelterId(id);
         if (pets != null && !pets.isEmpty()) {

@@ -22,6 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MedicalHistoryService {
+    private static final String NOT_FOUND_MSG = "Medical history not found";
+
+    private static final String MED_HIST_NOT_FOUND = NOT_FOUND_MSG;
 
           @Autowired
           private MedicalHistoryRepository historyRepository;
@@ -59,7 +62,7 @@ public class MedicalHistoryService {
 
                     return historyRepository.findByPetId(petId)
                                         .orElseThrow(() -> new EntityNotFoundException(
-                                                            "Medical history not found"));
+                                                            MED_HIST_NOT_FOUND));
           }
 
           public List<MedicalHistoryEntity> searchMedicalHistories() {
@@ -75,7 +78,7 @@ public class MedicalHistoryService {
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
-                                                            "Medical history not found"));
+                                                            MED_HIST_NOT_FOUND));
 
                     history.setLastUpdated(LocalDate.now());
 
@@ -90,7 +93,7 @@ public class MedicalHistoryService {
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
-                                                            "Medical history not found"));
+                                                            MED_HIST_NOT_FOUND));
 
                     if (!"ADOPTED".equals(history.getPet().getStatus())) {
                               throw new IllegalOperationException(

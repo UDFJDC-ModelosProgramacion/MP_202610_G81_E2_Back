@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -106,7 +107,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEventHistoryNotFound() {
+    void testCreateMedicalEventHistoryNotFound() throws Exception {
         MedicalEventEntity event = new MedicalEventEntity();
         event.setEventType("Surgery");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -114,7 +115,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEventVetNotFound() {
+    void testCreateMedicalEventVetNotFound() throws Exception {
         MedicalEventEntity event = new MedicalEventEntity();
         event.setEventType("Surgery");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -130,13 +131,13 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testSearchMedicalEventNotFound() {
+    void testSearchMedicalEventNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> 
             medicalEventService.searchMedicalEvent(0L));
     }
 
     @Test
-    void testSearchMedicalEvents() {
+    void testSearchMedicalEvents() throws Exception {
         LocalDate start = LocalDate.now().minusDays(1);
         LocalDate end = LocalDate.now().plusDays(1);
         List<MedicalEventEntity> results = medicalEventService.searchMedicalEvents(start, end);
@@ -158,11 +159,11 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testDeleteMedicalEvent() {
+    void testDeleteMedicalEvent() throws Exception {
         MedicalEventEntity expected = eventList.get(0);
         medicalEventService.deleteMedicalEvent(expected.getId());
         
         MedicalEventEntity deleted = entityManager.find(MedicalEventEntity.class, expected.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
     }
 }

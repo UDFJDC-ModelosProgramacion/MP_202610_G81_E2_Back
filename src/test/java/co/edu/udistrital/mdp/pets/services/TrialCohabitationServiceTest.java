@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -159,17 +160,17 @@ class TrialCohabitationServiceTest {
         trialCohabitationService.deleteTrialCohabitation(expected.getId());
         
         TrialCohabitationEntity deleted = entityManager.find(TrialCohabitationEntity.class, expected.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
     }
 
     @Test
-    void testUpdateTrialCohabitationNotFound() {
+    void testUpdateTrialCohabitationNotFound() throws Exception {
         TrialCohabitationEntity updatedInfo = new TrialCohabitationEntity();
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> trialCohabitationService.updateTrialCohabitation(0L, updatedInfo));
     }
 
     @Test
-    void testDeleteTrialCohabitationNotFound() {
+    void testDeleteTrialCohabitationNotFound() throws Exception {
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> trialCohabitationService.deleteTrialCohabitation(0L));
     }
 }

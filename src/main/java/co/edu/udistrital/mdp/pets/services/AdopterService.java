@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdopterService {
+    private static final String NOT_FOUND_MSG = "The adopter with the given id was not found";
+
+    private static final String ADOPTER_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     private AdopterRepository adopterRepository;
@@ -36,7 +39,7 @@ public class AdopterService {
         log.info("Inicia proceso de consultar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
-            throw new EntityNotFoundException("The adopter with the given id was not found");
+            throw new EntityNotFoundException(ADOPTER_NOT_FOUND);
         }
         log.info("Termina proceso de consultar el adoptante con id = {}", adopterId);
         return adopterEntity.get();
@@ -60,7 +63,7 @@ public class AdopterService {
         log.info("Inicia proceso de actualizar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> persistedAdopter = adopterRepository.findById(adopterId);
         if (persistedAdopter.isEmpty()) {
-            throw new EntityNotFoundException("The adopter with the given id was not found");
+            throw new EntityNotFoundException(ADOPTER_NOT_FOUND);
         }
         validateAdopterData(adopterEntity);
         boolean repeatedEmail = adopterRepository.findByEmail(adopterEntity.getEmail()).stream()
@@ -81,7 +84,7 @@ public class AdopterService {
         log.info("Inicia proceso de borrar el adoptante con id = {}", adopterId);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
-            throw new EntityNotFoundException("The adopter with the given id was not found");
+            throw new EntityNotFoundException(ADOPTER_NOT_FOUND);
         }
         AdopterEntity adopter = adopterEntity.get();
         if (!adopter.getAdoptionRequests().isEmpty()) {

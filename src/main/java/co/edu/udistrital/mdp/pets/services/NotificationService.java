@@ -20,6 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NotificationService {
+    private static final String NOT_FOUND_MSG = "The notification with the given id was not found";
+
+    private static final String NULL_NOTIF_ID = "notificationId must not be null";
+
+    private static final String NOTIF_NOT_FOUND = NOT_FOUND_MSG;
+    private static final String NOTIF_ID_NULL = NULL_NOTIF_ID;
 
     @Autowired
     private NotificationRepository notificationRepository;
@@ -49,10 +55,10 @@ public class NotificationService {
     @Transactional
     public NotificationEntity searchNotification(Long notificationId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la notificación con id = {}", notificationId);
-        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Long safeNotificationId = Objects.requireNonNull(notificationId, NOTIF_ID_NULL);
         Optional<NotificationEntity> notificationEntity = notificationRepository.findById(safeNotificationId);
         if (notificationEntity.isEmpty()) {
-            throw new EntityNotFoundException("The notification with the given id was not found");
+            throw new EntityNotFoundException(NOTIF_NOT_FOUND);
         }
         log.info("Termina proceso de consultar la notificación con id = {}", notificationId);
         return notificationEntity.get();
@@ -68,10 +74,10 @@ public class NotificationService {
     public NotificationEntity updateNotification(Long notificationId, NotificationEntity notificationEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la notificación con id = {}", notificationId);
-        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Long safeNotificationId = Objects.requireNonNull(notificationId, NOTIF_ID_NULL);
         Optional<NotificationEntity> persistedNotification = notificationRepository.findById(safeNotificationId);
         if (persistedNotification.isEmpty()) {
-            throw new EntityNotFoundException("The notification with the given id was not found");
+            throw new EntityNotFoundException(NOTIF_NOT_FOUND);
         }
         if (notificationEntity == null || notificationEntity.getContent() == null || notificationEntity.getContent().isBlank()) {
             throw new IllegalOperationException("Notification content is not valid");
@@ -87,10 +93,10 @@ public class NotificationService {
     @Transactional
     public void deleteNotification(Long notificationId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar la notificación con id = {}", notificationId);
-        Long safeNotificationId = Objects.requireNonNull(notificationId, "notificationId must not be null");
+        Long safeNotificationId = Objects.requireNonNull(notificationId, NOTIF_ID_NULL);
         Optional<NotificationEntity> notificationEntity = notificationRepository.findById(safeNotificationId);
         if (notificationEntity.isEmpty()) {
-            throw new EntityNotFoundException("The notification with the given id was not found");
+            throw new EntityNotFoundException(NOTIF_NOT_FOUND);
         }
         if (Boolean.FALSE.equals(notificationEntity.get().getIsRead())) {
             throw new IllegalOperationException("Unread notifications cannot be deleted");

@@ -106,13 +106,13 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testCreateMedicalHistoryPetNotFound() {
+    void testCreateMedicalHistoryPetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.createMedicalHistory(0L, vetList.get(0).getId())));
     }
 
     @Test
-    void testCreateMedicalHistoryVetNotFound() {
+    void testCreateMedicalHistoryVetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.createMedicalHistory(petList.get(2).getId(), 0L)));
     }
@@ -127,13 +127,13 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testSearchMedicalHistoryNotFound() {
+    void testSearchMedicalHistoryNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.searchMedicalHistory(0L)));
     }
 
     @Test
-    void testSearchMedicalHistories() {
+    void testSearchMedicalHistories() throws Exception {
         List<MedicalHistoryEntity> results = medicalHistoryService.searchMedicalHistories();
         assertTrue(results.size() >= historyList.size());
     }
@@ -145,14 +145,14 @@ class MedicalHistoryServiceTest {
         history.setLastUpdated(oldDate);
         entityManager.persist(history);
 
-        MedicalHistoryEntity result = medicalHistoryService.updateMedicalHistory(history.getId());
+        medicalHistoryService.updateMedicalHistory(history.getId());
 
         MedicalHistoryEntity stored = entityManager.find(MedicalHistoryEntity.class, history.getId());
         assertTrue(stored.getLastUpdated().isAfter(oldDate) || stored.getLastUpdated().isEqual(LocalDate.now()));
     }
 
     @Test
-    void testUpdateMedicalHistoryNotFound() {
+    void testUpdateMedicalHistoryNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.updateMedicalHistory(0L)));
     }
@@ -182,7 +182,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryNotFound() {
+    void testDeleteMedicalHistoryNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.deleteMedicalHistory(0L)));
     }

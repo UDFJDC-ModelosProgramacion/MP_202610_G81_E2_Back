@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ReviewService {
+    private static final String NOT_FOUND_MSG = "Review not found.";
+
+    private static final String REV_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     ReviewRepository reviewRepository;
@@ -38,7 +41,7 @@ public class ReviewService {
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
-            throw new EntityNotFoundException("Review not found.");
+            throw new EntityNotFoundException(REV_NOT_FOUND);
 
         log.info("Termina proceso de consultar la reseña con id = {}", id);
         return reviewEntity.get();
@@ -57,7 +60,7 @@ public class ReviewService {
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
-            throw new EntityNotFoundException("Review not found.");
+            throw new EntityNotFoundException(REV_NOT_FOUND);
 
         ReviewEntity existing = reviewEntity.get();
         existing.setRating(review.getRating());
@@ -74,7 +77,7 @@ public class ReviewService {
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
-            throw new EntityNotFoundException("Review not found.");
+            throw new EntityNotFoundException(REV_NOT_FOUND);
 
         ReviewEntity review = reviewEntity.get();
 

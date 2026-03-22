@@ -72,7 +72,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testCreateReview() throws EntityNotFoundException, IllegalOperationException {
+    void testCreateReview() throws Exception {
         ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
 
         ReviewEntity result = reviewService.createReview(newEntity);
@@ -86,12 +86,12 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testCreateReviewNull() {
+    void testCreateReviewNull() throws Exception {
         assertThrows(IllegalOperationException.class, () -> reviewService.createReview(null));
     }
 
     @Test
-    void testSearchReview() throws EntityNotFoundException {
+    void testSearchReview() throws Exception {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity resultEntity = reviewService.searchReview(entity.getId());
         assertNotNull(resultEntity);
@@ -102,14 +102,14 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testSearchReviewNotFound() {
+    void testSearchReviewNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             reviewService.searchReview(0L);
         });
     }
 
     @Test
-    void testSearchReviews() {
+    void testSearchReviews() throws Exception {
         List<ReviewEntity> list = reviewService.searchReviews();
         assertEquals(reviewList.size(), list.size());
         for (ReviewEntity entity : list) {
@@ -124,7 +124,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testUpdateReview() throws EntityNotFoundException, IllegalOperationException {
+    void testUpdateReview() throws Exception {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
         pojoEntity.setId(entity.getId());
@@ -138,7 +138,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testUpdateReviewNotFound() {
+    void testUpdateReviewNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
             pojoEntity.setId(0L);
@@ -147,7 +147,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReview() throws EntityNotFoundException, IllegalOperationException {
+    void testDeleteReview() throws Exception {
         ReviewEntity entity = reviewList.get(1);
         reviewService.deleteReview(entity.getId());
         ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
@@ -155,14 +155,14 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReviewNotFound() {
+    void testDeleteReviewNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             reviewService.deleteReview(0L);
         });
     }
 
     @Test
-    void testDeleteReviewWithAdopter() {
+    void testDeleteReviewWithAdopter() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ReviewEntity entity = reviewList.get(0);
             entity.setAdopter(adopterList.get(0));
@@ -172,7 +172,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReviewWithShelter() {
+    void testDeleteReviewWithShelter() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ReviewEntity entity = reviewList.get(0);
             entity.setShelter(shelterList.get(0));

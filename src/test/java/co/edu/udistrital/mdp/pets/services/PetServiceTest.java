@@ -119,12 +119,12 @@ class PetServiceTest {
     }
 
     @Test
-    void testGetPetNotFound() {
+    void testGetPetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.getPet(0L)));
     }
 
     @Test
-    void testSearchPets() {
+    void testSearchPets() throws Exception {
         PetEntity pet = petList.get(0);
         List<PetEntity> results = petService.searchPets(pet.getBreed(), pet.getSize(), pet.getTemperament());
         
@@ -146,7 +146,7 @@ class PetServiceTest {
         newData.setName("Updated name");
         newData.setBreed("Updated breed");
 
-        PetEntity result = petService.updatePet(pet.getId(), newData);
+        petService.updatePet(pet.getId(), newData);
 
         PetEntity stored = entityManager.find(PetEntity.class, pet.getId());
         assertEquals("Updated name", stored.getName());
@@ -155,7 +155,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testUpdatePetNotFound() {
+    void testUpdatePetNotFound() throws Exception {
         PetEntity newData = factory.manufacturePojo(PetEntity.class);
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.updatePet(0L, newData)));
     }
@@ -190,7 +190,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePetValidations() {
+    void testCreatePetValidations() throws Exception {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         Long shelterId = shelterList.get(0).getId();
 
@@ -231,7 +231,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetNotFound() {
+    void testDeletePetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.deletePet(0L)));
     }
 }

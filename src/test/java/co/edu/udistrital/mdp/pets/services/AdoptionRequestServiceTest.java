@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -161,7 +162,7 @@ class AdoptionRequestServiceTest {
         adoptionRequestService.deleteAdoptionRequest(expected.getId());
         
         AdoptionRequestEntity deleted = entityManager.find(AdoptionRequestEntity.class, expected.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
     }
 
     @Test
@@ -181,13 +182,13 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testUpdateAdoptionRequestNotFound() {
+    void testUpdateAdoptionRequestNotFound() throws Exception {
         AdoptionRequestEntity update = new AdoptionRequestEntity();
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.updateAdoptionRequest(0L, update));
     }
 
     @Test
-    void testDeleteAdoptionRequestNotFound() {
+    void testDeleteAdoptionRequestNotFound() throws Exception {
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.deleteAdoptionRequest(0L));
     }
 }
