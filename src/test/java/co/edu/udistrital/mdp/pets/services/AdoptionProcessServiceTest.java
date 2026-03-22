@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +24,8 @@ import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ReturnCaseEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -97,7 +100,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testCreateAdoptionProcess() {
+    void testCreateAdoptionProcess() throws IllegalOperationException {
         TrialCohabitationEntity newProcess = new TrialCohabitationEntity();
         newProcess.setCreationDate(LocalDate.now());
         newProcess.setStatus("PENDING");
@@ -131,7 +134,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testSearchAdoptionProcess() {
+    void testSearchAdoptionProcess() throws EntityNotFoundException {
         AdoptionProcessEntity expected = processList.get(0);
         AdoptionProcessEntity result = adoptionProcessService.searchAdoptionProcess(expected.getId());
         assertNotNull(result);
@@ -150,7 +153,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testUpdateAdoptionProcess() {
+    void testUpdateAdoptionProcess() throws EntityNotFoundException {
         AdoptionProcessEntity expected = processList.get(0);
         expected.setStatus("COMPLETED");
 
@@ -160,7 +163,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionProcess() {
+    void testDeleteAdoptionProcess() throws EntityNotFoundException, IllegalOperationException {
         AdoptionProcessEntity expected = processList.get(0);
         adoptionProcessService.deleteAdoptionProcess(expected.getId());
         

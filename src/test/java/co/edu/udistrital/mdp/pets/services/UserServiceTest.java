@@ -62,7 +62,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUser() {
+    void testCreateUser() throws IllegalOperationException {
         AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
         newUser.setEmail("newuser@mail.com");
         newUser.setPassword("Secure123");
@@ -124,7 +124,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testSearchUser() {
+    void testSearchUser() throws EntityNotFoundException {
         UserEntity entity = userList.get(0);
         UserEntity resultEntity = userService.searchUser(entity.getId());
         assertNotNull(resultEntity);
@@ -164,7 +164,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUser() {
+    void testUpdateUser() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updated@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -229,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser() {
+    void testDeleteUser() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity user = factory.manufacturePojo(AdopterEntity.class);
         user.setEmail("delete@mail.com");
         user.setPassword("Secure123");

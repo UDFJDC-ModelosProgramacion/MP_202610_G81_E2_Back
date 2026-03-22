@@ -91,7 +91,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testCreateVaccineEntry() {
+    void testCreateVaccineEntry() throws EntityNotFoundException {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
         newVaccine.setAdminDate(LocalDate.now());
@@ -118,7 +118,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testUpdateVaccineEntry() {
+    void testUpdateVaccineEntry() throws EntityNotFoundException {
         VaccineEntryEntity expected = vaccineList.get(0);
         VaccineEntryEntity updatedInfo = new VaccineEntryEntity();
         updatedInfo.setVaccineName("Distemper");

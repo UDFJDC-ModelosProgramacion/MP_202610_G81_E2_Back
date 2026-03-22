@@ -91,7 +91,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testCreateMedicalHistory() {
+    void testCreateMedicalHistory() throws EntityNotFoundException {
         // Find a pet without history, which is petList.get(2)
         PetEntity pet = petList.get(2);
         VeterinarianEntity vet = vetList.get(0);
@@ -118,7 +118,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testSearchMedicalHistory() {
+    void testSearchMedicalHistory() throws EntityNotFoundException {
         MedicalHistoryEntity expected = historyList.get(0);
         MedicalHistoryEntity result = medicalHistoryService.searchMedicalHistory(expected.getPet().getId());
 
@@ -139,7 +139,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testUpdateMedicalHistory() {
+    void testUpdateMedicalHistory() throws EntityNotFoundException {
         MedicalHistoryEntity history = historyList.get(0);
         LocalDate oldDate = LocalDate.now().minusDays(5);
         history.setLastUpdated(oldDate);
@@ -158,7 +158,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryAdopted() {
+    void testDeleteMedicalHistoryAdopted() throws EntityNotFoundException, IllegalOperationException {
         MedicalHistoryEntity history = historyList.get(0);
         PetEntity pet = history.getPet();
         pet.setStatus("ADOPTED");

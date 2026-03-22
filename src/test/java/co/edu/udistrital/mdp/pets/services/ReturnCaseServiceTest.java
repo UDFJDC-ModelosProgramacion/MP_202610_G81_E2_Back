@@ -57,7 +57,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testCreateReturnCase() {
+    void testCreateReturnCase() throws IllegalOperationException {
         ReturnCaseEntity newEntity = factory.manufacturePojo(ReturnCaseEntity.class);
 
         ReturnCaseEntity result = returnCaseService.createReturnCase(newEntity);
@@ -76,7 +76,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testSearchReturnCase() {
+    void testSearchReturnCase() throws EntityNotFoundException {
         ReturnCaseEntity entity = returnCaseList.get(0);
         ReturnCaseEntity resultEntity = returnCaseService.searchReturnCase(entity.getId());
         assertNotNull(resultEntity);
@@ -109,7 +109,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testUpdateReturnCase() {
+    void testUpdateReturnCase() throws EntityNotFoundException, IllegalOperationException {
         ReturnCaseEntity entity = returnCaseList.get(0);
         ReturnCaseEntity pojoEntity = factory.manufacturePojo(ReturnCaseEntity.class);
         pojoEntity.setId(entity.getId());
@@ -132,7 +132,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testDeleteReturnCase() {
+    void testDeleteReturnCase() throws EntityNotFoundException, IllegalOperationException {
         ReturnCaseEntity entity = returnCaseList.get(1);
         returnCaseService.deleteReturnCase(entity.getId());
         ReturnCaseEntity deleted = entityManager.find(ReturnCaseEntity.class, entity.getId());

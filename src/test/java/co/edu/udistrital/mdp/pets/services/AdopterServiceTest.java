@@ -65,7 +65,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopter() {
+    void testCreateAdopter() throws IllegalOperationException {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("newadopter@mail.com");
         newAdopter.setPassword("Secure123");
@@ -148,7 +148,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testSearchAdopter() {
+    void testSearchAdopter() throws EntityNotFoundException {
         AdopterEntity entity = adopterList.get(0);
         AdopterEntity resultEntity = adopterService.searchAdopter(entity.getId());
         assertNotNull(resultEntity);
@@ -194,7 +194,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testUpdateAdopter() {
+    void testUpdateAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updatedadopter@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -245,7 +245,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testDeleteAdopter() {
+    void testDeleteAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity adopter = factory.manufacturePojo(AdopterEntity.class);
         adopter.setEmail("deleteadopter@mail.com");
         adopter.setPassword("Secure123");

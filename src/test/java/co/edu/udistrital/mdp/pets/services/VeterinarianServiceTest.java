@@ -86,7 +86,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarian() {
+    void testCreateVeterinarian() throws IllegalOperationException, EntityNotFoundException {
         VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
         newEntity.setLicenseNumber("LIC-NEW-" + System.nanoTime());
         newEntity.setSpecialities(new ArrayList<>());
@@ -153,7 +153,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testSearchVeterinarian() {
+    void testSearchVeterinarian() throws EntityNotFoundException {
         VeterinarianEntity entity = veterinarianList.get(0);
         VeterinarianEntity resultEntity = veterinarianService.searchVeterinarian(entity.getId());
         assertNotNull(resultEntity);
@@ -198,7 +198,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testUpdateVeterinarian() {
+    void testUpdateVeterinarian() throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity entity = veterinarianList.get(0);
         VeterinarianEntity updatedVeterinarian = new VeterinarianEntity();
         updatedVeterinarian.setId(entity.getId());
@@ -231,7 +231,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testDeleteVeterinarian() {
+    void testDeleteVeterinarian() throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity entity = veterinarianList.get(1);
         veterinarianService.deleteVeterinarian(entity.getId());
         VeterinarianEntity deleted = entityManager.find(VeterinarianEntity.class, entity.getId());

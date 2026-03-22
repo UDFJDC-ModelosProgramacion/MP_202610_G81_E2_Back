@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,8 @@ import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -94,7 +97,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testCreateTrialCohabitation() {
+    void testCreateTrialCohabitation() throws IllegalOperationException {
         TrialCohabitationEntity newTrial = new TrialCohabitationEntity();
         newTrial.setCreationDate(LocalDate.now());
         newTrial.setStatus("PENDING");
@@ -120,7 +123,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testSearchTrialCohabitation() {
+    void testSearchTrialCohabitation() throws EntityNotFoundException {
         TrialCohabitationEntity expected = trialList.get(0);
         TrialCohabitationEntity result = trialCohabitationService.searchTrialCohabitation(expected.getId());
         assertNotNull(result);
@@ -139,7 +142,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testUpdateTrialCohabitation() {
+    void testUpdateTrialCohabitation() throws EntityNotFoundException {
         TrialCohabitationEntity expected = trialList.get(0);
         TrialCohabitationEntity updatedInfo = new TrialCohabitationEntity();
         updatedInfo.setStartDate(LocalDate.now().minusDays(2));
@@ -154,7 +157,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testDeleteTrialCohabitation() {
+    void testDeleteTrialCohabitation() throws EntityNotFoundException, IllegalOperationException {
         TrialCohabitationEntity expected = trialList.get(0);
         trialCohabitationService.deleteTrialCohabitation(expected.getId());
         

@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +22,8 @@ import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
 
@@ -83,7 +86,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequest() {
+    void testCreateAdoptionRequest() throws IllegalOperationException {
         AdoptionRequestEntity newReq = new AdoptionRequestEntity();
         newReq.setRequestDate(LocalDate.now());
         newReq.setPet(pet);
@@ -125,7 +128,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testSearchAdoptionRequest() {
+    void testSearchAdoptionRequest() throws EntityNotFoundException {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity result = adoptionRequestService.searchAdoptionRequest(expected.getId());
         assertNotNull(result);
@@ -144,7 +147,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testUpdateAdoptionRequest() {
+    void testUpdateAdoptionRequest() throws EntityNotFoundException {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity updatedInfo = new AdoptionRequestEntity();
         updatedInfo.setStatus("APPROVED");
@@ -156,7 +159,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequest() {
+    void testDeleteAdoptionRequest() throws EntityNotFoundException, IllegalOperationException {
         AdoptionRequestEntity expected = requestList.get(0);
         adoptionRequestService.deleteAdoptionRequest(expected.getId());
         

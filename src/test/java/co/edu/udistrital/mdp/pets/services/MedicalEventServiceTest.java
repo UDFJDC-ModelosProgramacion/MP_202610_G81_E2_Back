@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +94,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEvent() {
+    void testCreateMedicalEvent() throws EntityNotFoundException {
         MedicalEventEntity newEvent = new MedicalEventEntity();
         newEvent.setEventType("Surgery");
         newEvent.setDescription("Surgery procedure");
@@ -122,7 +123,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testSearchMedicalEvent() {
+    void testSearchMedicalEvent() throws EntityNotFoundException {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity result = medicalEventService.searchMedicalEvent(expected.getId());
         assertNotNull(result);
@@ -144,7 +145,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testUpdateMedicalEvent() {
+    void testUpdateMedicalEvent() throws EntityNotFoundException {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity updatedInfo = new MedicalEventEntity();
         updatedInfo.setEventType("Vaccination");

@@ -20,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MessageService {
-    private static final String NULL_MSG_ID = NULL_MSG_ID;
+    private static final String NOT_FOUND_MSG = "Source not found";
 
-    private static final String MSG_ID_NULL = NULL_MSG_ID;
+    private static final String MSG_ID_NULL = "Id is null";
 
     @Autowired
     private MessageRepository messageRepository;
