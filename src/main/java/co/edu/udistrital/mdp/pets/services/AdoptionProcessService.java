@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdoptionProcessService {
-    private static final String NOT_FOUND_MSG = NOT_FOUND_MSG;
+    private static final String NOT_FOUND_MSG = "Adoption process not found";
 
     private static final String ADPROCESS_NOT_FOUND = NOT_FOUND_MSG;
 

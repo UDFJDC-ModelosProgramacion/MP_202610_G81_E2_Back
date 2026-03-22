@@ -66,7 +66,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testCreateShelterMedia() {
+    void testCreateShelterMedia() throws Exception {
         ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
         newEntity.setMediaUrl("nueva_imagen.jpg");
         newEntity.setMediaType("Foto de Galería");
@@ -82,7 +82,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testCreateShelterMediaInvalidFormat() {
+    void testCreateShelterMediaInvalidFormat() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
             newEntity.setMediaUrl("document.pdf");
@@ -92,7 +92,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testCreateShelterMediaExceedsSize() {
+    void testCreateShelterMediaExceedsSize() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
             newEntity.setMediaUrl("image.jpg");
@@ -103,7 +103,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testCreateShelterMediaNoUrl() {
+    void testCreateShelterMediaNoUrl() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
             newEntity.setMediaUrl("");
@@ -113,7 +113,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testCreateShelterMediaNullUrl() {
+    void testCreateShelterMediaNullUrl() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity newEntity = factory.manufacturePojo(ShelterMediaEntity.class);
             newEntity.setMediaUrl(null);
@@ -123,7 +123,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testSearchShelterMedia() {
+    void testSearchShelterMedia() throws Exception {
         ShelterMediaEntity entity = mediaList.get(0);
         ShelterMediaEntity resultEntity = shelterMediaService.searchShelterMedia(entity.getId());
         assertNotNull(resultEntity);
@@ -133,21 +133,21 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testSearchShelterMediaNotFound() {
+    void testSearchShelterMediaNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             shelterMediaService.searchShelterMedia(0L);
         });
     }
 
     @Test
-    void testSearchShelterMediasByShelterId() {
+    void testSearchShelterMediasByShelterId() throws Exception {
         List<ShelterMediaEntity> result = shelterMediaService.searchShelterMediasByShelterId(shelterList.get(0).getId());
         assertNotNull(result);
         assertEquals(3, result.size());
     }
 
     @Test
-    void testUpdateShelterMedia() {
+    void testUpdateShelterMedia() throws Exception {
         ShelterMediaEntity entity = mediaList.get(0);
         ShelterMediaEntity updatedMedia = new ShelterMediaEntity();
         updatedMedia.setDescription("Nueva descripción");
@@ -160,7 +160,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testUpdateShelterMediaNotFound() {
+    void testUpdateShelterMediaNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             ShelterMediaEntity updatedMedia = new ShelterMediaEntity();
             updatedMedia.setDescription("Nueva descripción");
@@ -169,7 +169,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testDeleteShelterMediaNotProfilePhoto() {
+    void testDeleteShelterMediaNotProfilePhoto() throws Exception {
         ShelterMediaEntity entity = mediaList.get(0);
         entity.setMediaType("Video Tour");
         entityManager.merge(entity);
@@ -180,7 +180,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testDeleteShelterMediaProfilePhotoWithBackup() {
+    void testDeleteShelterMediaProfilePhotoWithBackup() throws Exception {
         ShelterMediaEntity entity1 = mediaList.get(0);
         entity1.setMediaType("Foto de Perfil");
         entityManager.merge(entity1);
@@ -195,7 +195,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testDeleteShelterMediaProfilePhotoNoBackup() {
+    void testDeleteShelterMediaProfilePhotoNoBackup() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity entity = mediaList.get(0);
             entity.setMediaType("Foto de Perfil");
@@ -205,7 +205,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testDeleteShelterMediaProfilePhotoNullShelter() {
+    void testDeleteShelterMediaProfilePhotoNullShelter() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterMediaEntity entity = mediaList.get(0);
             entity.setMediaType("Foto de Perfil");
@@ -216,7 +216,7 @@ class ShelterMediaServiceTest {
     }
 
     @Test
-    void testDeleteShelterMediaNotFound() {
+    void testDeleteShelterMediaNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             shelterMediaService.deleteShelterMedia(0L);
         });

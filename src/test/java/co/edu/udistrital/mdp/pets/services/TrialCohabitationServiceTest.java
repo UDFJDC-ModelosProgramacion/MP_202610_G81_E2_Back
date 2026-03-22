@@ -6,6 +6,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -94,7 +95,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testCreateTrialCohabitation() {
+    void testCreateTrialCohabitation() throws Exception {
         TrialCohabitationEntity newTrial = new TrialCohabitationEntity();
         newTrial.setCreationDate(LocalDate.now());
         newTrial.setStatus("PENDING");
@@ -107,12 +108,12 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testCreateTrialCohabitationNull(){
+    void testCreateTrialCohabitationNull() throws Exception {
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> trialCohabitationService.createTrialCohabitation(null));
     }
 
     @Test
-    void testCreateTrialCohabitationWithoutStartDate(){
+    void testCreateTrialCohabitationWithoutStartDate() throws Exception {
         TrialCohabitationEntity trial = new TrialCohabitationEntity();
         trial.setCreationDate(LocalDate.now());
         trial.setAdoptionRequest(adoptionRequest);
@@ -120,7 +121,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testSearchTrialCohabitation() {
+    void testSearchTrialCohabitation() throws Exception {
         TrialCohabitationEntity expected = trialList.get(0);
         TrialCohabitationEntity result = trialCohabitationService.searchTrialCohabitation(expected.getId());
         assertNotNull(result);
@@ -128,18 +129,18 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testSearchTrialCohabitationNotFound(){
+    void testSearchTrialCohabitationNotFound() throws Exception {
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> trialCohabitationService.searchTrialCohabitation(0L));
     }
 
     @Test
-    void testSearchTrialCohabitations(){
+    void testSearchTrialCohabitations() throws Exception {
         List<TrialCohabitationEntity> results = trialCohabitationService.searchTrialCohabitations();
         assertTrue(results.size() >= trialList.size());
     }
 
     @Test
-    void testUpdateTrialCohabitation() {
+    void testUpdateTrialCohabitation() throws Exception {
         TrialCohabitationEntity expected = trialList.get(0);
         TrialCohabitationEntity updatedInfo = new TrialCohabitationEntity();
         updatedInfo.setStartDate(LocalDate.now().minusDays(2));
@@ -154,7 +155,7 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testDeleteTrialCohabitation() {
+    void testDeleteTrialCohabitation() throws Exception {
         TrialCohabitationEntity expected = trialList.get(0);
         trialCohabitationService.deleteTrialCohabitation(expected.getId());
         
@@ -163,13 +164,13 @@ class TrialCohabitationServiceTest {
     }
 
     @Test
-    void testUpdateTrialCohabitationNotFound() {
+    void testUpdateTrialCohabitationNotFound() throws Exception {
         TrialCohabitationEntity updatedInfo = new TrialCohabitationEntity();
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> trialCohabitationService.updateTrialCohabitation(0L, updatedInfo));
     }
 
     @Test
-    void testDeleteTrialCohabitationNotFound() {
+    void testDeleteTrialCohabitationNotFound() throws Exception {
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> trialCohabitationService.deleteTrialCohabitation(0L));
     }
 }

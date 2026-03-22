@@ -56,7 +56,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testCreateAdoption() {
+    void testCreateAdoption() throws Exception {
         AdoptionEntity newEntity = factory.manufacturePojo(AdoptionEntity.class);
 
         AdoptionEntity result = adoptionService.createAdoption(newEntity);
@@ -69,12 +69,12 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testCreateAdoptionNull() {
+    void testCreateAdoptionNull() throws Exception {
         assertThrows(IllegalOperationException.class, () -> adoptionService.createAdoption(null));
     }
 
     @Test
-    void testSearchAdoption() {
+    void testSearchAdoption() throws Exception {
         AdoptionEntity entity = adoptionList.get(0);
         AdoptionEntity resultEntity = adoptionService.searchAdoption(entity.getId());
         assertNotNull(resultEntity);
@@ -84,14 +84,14 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testSearchAdoptionNotFound() {
+    void testSearchAdoptionNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             adoptionService.searchAdoption(0L);
         });
     }
 
     @Test
-    void testSearchAdoptions() {
+    void testSearchAdoptions() throws Exception {
         List<AdoptionEntity> list = adoptionService.searchAdoptions();
         assertEquals(adoptionList.size(), list.size());
         for (AdoptionEntity entity : list) {
@@ -106,7 +106,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testUpdateAdoption() {
+    void testUpdateAdoption() throws Exception {
         AdoptionEntity entity = adoptionList.get(0);
         AdoptionEntity pojoEntity = factory.manufacturePojo(AdoptionEntity.class);
         pojoEntity.setId(entity.getId());
@@ -119,7 +119,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testUpdateAdoptionNotFound() {
+    void testUpdateAdoptionNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             AdoptionEntity pojoEntity = factory.manufacturePojo(AdoptionEntity.class);
             pojoEntity.setId(0L);
@@ -128,7 +128,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testDeleteAdoption() {
+    void testDeleteAdoption() throws Exception {
         AdoptionEntity entity = adoptionList.get(1);
         adoptionService.deleteAdoption(entity.getId());
         AdoptionEntity deleted = entityManager.find(AdoptionEntity.class, entity.getId());
@@ -136,14 +136,14 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionNotFound() {
+    void testDeleteAdoptionNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             adoptionService.deleteAdoption(0L);
         });
     }
 
     @Test
-    void testDeleteAdoptionWithTrialCohabitation() {
+    void testDeleteAdoptionWithTrialCohabitation() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             AdoptionEntity entity = adoptionList.get(0);
             TrialCohabitationEntity trial = factory.manufacturePojo(TrialCohabitationEntity.class);
@@ -155,7 +155,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionWithPet() {
+    void testDeleteAdoptionWithPet() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             AdoptionEntity entity = adoptionList.get(0);
             PetEntity pet = factory.manufacturePojo(PetEntity.class);

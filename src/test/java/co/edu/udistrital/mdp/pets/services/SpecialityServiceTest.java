@@ -70,7 +70,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testCreateSpeciality() {
+    void testCreateSpeciality() throws Exception {
         VetSpecialityEntity newEntity = factory.manufacturePojo(VetSpecialityEntity.class);
         newEntity.setName("Nueva Especialidad " + System.nanoTime());
         newEntity.setVeterinarians(new ArrayList<>());
@@ -85,7 +85,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testCreateSpecialityMissingName() {
+    void testCreateSpecialityMissingName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             VetSpecialityEntity newEntity = factory.manufacturePojo(VetSpecialityEntity.class);
             newEntity.setName(null);
@@ -94,7 +94,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testCreateSpecialityEmptyName() {
+    void testCreateSpecialityEmptyName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             VetSpecialityEntity newEntity = factory.manufacturePojo(VetSpecialityEntity.class);
             newEntity.setName("");
@@ -103,7 +103,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testCreateSpecialityDuplicateName() {
+    void testCreateSpecialityDuplicateName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             VetSpecialityEntity newEntity = factory.manufacturePojo(VetSpecialityEntity.class);
             newEntity.setName(specialityList.get(0).getName());
@@ -112,7 +112,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testSearchSpeciality() {
+    void testSearchSpeciality() throws Exception {
         VetSpecialityEntity entity = specialityList.get(0);
         VetSpecialityEntity resultEntity = specialityService.searchSpeciality(entity.getId());
         assertNotNull(resultEntity);
@@ -122,28 +122,28 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testSearchSpecialityNotFound() {
+    void testSearchSpecialityNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             specialityService.searchSpeciality(0L);
         });
     }
 
     @Test
-    void testSearchSpecialitiesAll() {
+    void testSearchSpecialitiesAll() throws Exception {
         List<VetSpecialityEntity> result = specialityService.searchSpecialities(null);
         assertNotNull(result);
         assertEquals(specialityList.size(), result.size());
     }
 
     @Test
-    void testSearchSpecialitiesEmpty() {
+    void testSearchSpecialitiesEmpty() throws Exception {
         List<VetSpecialityEntity> result = specialityService.searchSpecialities("");
         assertNotNull(result);
         assertEquals(specialityList.size(), result.size());
     }
 
     @Test
-    void testSearchSpecialitiesByName() {
+    void testSearchSpecialitiesByName() throws Exception {
         String searchTerm = specialityList.get(0).getName().substring(0, 10);
         List<VetSpecialityEntity> result = specialityService.searchSpecialities(searchTerm);
         assertNotNull(result);
@@ -151,7 +151,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testUpdateSpeciality() {
+    void testUpdateSpeciality() throws Exception {
         VetSpecialityEntity entity = specialityList.get(0);
         VetSpecialityEntity updated = new VetSpecialityEntity();
         updated.setName("Nombre Actualizado " + System.nanoTime());
@@ -164,7 +164,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testUpdateSpecialityNotFound() {
+    void testUpdateSpecialityNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             VetSpecialityEntity updated = new VetSpecialityEntity();
             updated.setName("Nombre Nuevo");
@@ -173,7 +173,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testUpdateSpecialityDuplicateName() {
+    void testUpdateSpecialityDuplicateName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             VetSpecialityEntity entity = specialityList.get(0);
             VetSpecialityEntity updated = new VetSpecialityEntity();
@@ -183,7 +183,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testUpdateSpecialityDescriptionOnly() {
+    void testUpdateSpecialityDescriptionOnly() throws Exception {
         VetSpecialityEntity entity = specialityList.get(0);
         VetSpecialityEntity updated = new VetSpecialityEntity();
         updated.setDescription("Nueva descripción");
@@ -196,7 +196,7 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testDeleteSpeciality() {
+    void testDeleteSpeciality() throws Exception {
         VetSpecialityEntity entity = specialityList.get(1);
         specialityService.deleteSpeciality(entity.getId());
         VetSpecialityEntity deleted = entityManager.find(VetSpecialityEntity.class, entity.getId());
@@ -204,14 +204,14 @@ class SpecialityServiceTest {
     }
 
     @Test
-    void testDeleteSpecialityNotFound() {
+    void testDeleteSpecialityNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             specialityService.deleteSpeciality(0L);
         });
     }
 
     @Test
-    void testDeleteSpecialityWithVeterinarians() {
+    void testDeleteSpecialityWithVeterinarians() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             VetSpecialityEntity entity = specialityList.get(0);
             specialityService.deleteSpeciality(entity.getId());
