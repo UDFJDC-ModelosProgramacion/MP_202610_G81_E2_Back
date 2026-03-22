@@ -1,0 +1,43 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------< co.edu.udistrital.mdp:MP_202610_G81_E2_Back >-------------
+[INFO] Building MP_202610_G81_E2_Back 0.0.1-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-clean-plugin:3.4.1:clean (default-clean) @ MP_202610_G81_E2_Back ---
+[INFO] Deleting /home/leo/GitHub/MP_202610_G81_E2_Back/target
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.11:prepare-agent (jacoco-initialize) @ MP_202610_G81_E2_Back ---
+[INFO] argLine set to -javaagent:/home/leo/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar=destfile=/home/leo/GitHub/MP_202610_G81_E2_Back/target/jacoco.exec
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ MP_202610_G81_E2_Back ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.1:compile (default-compile) @ MP_202610_G81_E2_Back ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 63 source files with javac [debug parameters release 21] to target/classes
+[INFO] Annotation processing is enabled because one or more processors were found
+  on the class path. A future release of javac may disable annotation processing
+  unless at least one processor is specified by name (-processor), or a search
+  path is specified (--processor-path, --processor-module-path), or annotation
+  processing is enabled explicitly (-proc:only, -proc:full).
+  Use -Xlint:-options to suppress this message.
+  Use -proc:none to disable annotation processing.
+[INFO] 
+[INFO] --- jacoco-maven-plugin:0.8.11:prepare-agent (jacoco-initialize) @ MP_202610_G81_E2_Back ---
+[INFO] argLine set to -javaagent:/home/leo/.m2/repository/org/jacoco/org.jacoco.agent/0.8.11/org.jacoco.agent-0.8.11-runtime.jar=destfile=/home/leo/GitHub/MP_202610_G81_E2_Back/target/jacoco.exec
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:resources (default-resources) @ MP_202610_G81_E2_Back ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 0 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.1:compile (default-compile) @ MP_202610_G81_E2_Back ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.3.1:testResources (default-testResources) @ MP_202610_G81_E2_Back ---
+[INFO] skip non existing resourceDirectory /home/leo/GitHub/MP_202610_G81_E2_Back/src/test/resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.14.1:testCompile (default-testCompile) @ MP_202610_G81_E2_Back ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 36 source files with javac [debug parameters release 21] to target/test-classes

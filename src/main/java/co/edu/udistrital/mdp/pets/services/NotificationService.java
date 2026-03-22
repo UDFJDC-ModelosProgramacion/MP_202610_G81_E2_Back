@@ -20,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class NotificationService {
-    private static final String NOT_FOUND_MSG = "Source not found";
+    private static final String NOT_FOUND_MSG = "The notification with the given id was not found";
 
-    private static final String NULL_NOTIF_ID = "ID is null";
+    private static final String NULL_NOTIF_ID = "notificationId must not be null";
 
     private static final String NOTIF_NOT_FOUND = NOT_FOUND_MSG;
     private static final String NOTIF_ID_NULL = NULL_NOTIF_ID;

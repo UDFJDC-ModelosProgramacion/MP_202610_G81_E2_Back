@@ -71,7 +71,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePet() throws IllegalOperationException, EntityNotFoundException {
+    void testCreatePet() throws Exception {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName("New Pet");
         newPet.setBreed("New Breed");
@@ -87,7 +87,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePetExists(){
+    void testCreatePetExists() throws Exception {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName(petList.get(0).getName());
         newPet.setBreed(petList.get(0).getBreed());
@@ -98,7 +98,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePetShelterNotFound(){
+    void testCreatePetShelterNotFound() throws Exception {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName("New Pet");
         newPet.setBreed("New Breed");
@@ -109,7 +109,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testGetPet() throws EntityNotFoundException {
+    void testGetPet() throws Exception {
         PetEntity pet = petList.get(0);
         PetEntity result = petService.getPet(pet.getId());
         
@@ -119,12 +119,12 @@ class PetServiceTest {
     }
 
     @Test
-    void testGetPetNotFound() {
+    void testGetPetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.getPet(0L)));
     }
 
     @Test
-    void testSearchPets() {
+    void testSearchPets() throws Exception {
         PetEntity pet = petList.get(0);
         List<PetEntity> results = petService.searchPets(pet.getBreed(), pet.getSize(), pet.getTemperament());
         
@@ -140,7 +140,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testUpdatePet() throws EntityNotFoundException {
+    void testUpdatePet() throws Exception {
         PetEntity pet = petList.get(0);
         PetEntity newData = factory.manufacturePojo(PetEntity.class);
         newData.setName("Updated name");
@@ -155,13 +155,13 @@ class PetServiceTest {
     }
 
     @Test
-    void testUpdatePetNotFound() {
+    void testUpdatePetNotFound() throws Exception {
         PetEntity newData = factory.manufacturePojo(PetEntity.class);
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.updatePet(0L, newData)));
     }
 
     @Test
-    void testDeletePetAdopted() throws EntityNotFoundException, IllegalOperationException {
+    void testDeletePetAdopted() throws Exception {
         PetEntity pet = petList.get(0);
         pet.setStatus("ADOPTED");
         entityManager.persist(pet);
@@ -172,7 +172,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetDeceased() throws EntityNotFoundException, IllegalOperationException {
+    void testDeletePetDeceased() throws Exception {
         PetEntity pet = petList.get(0);
         pet.setStatus("DECEASED");
         entityManager.persist(pet);
@@ -183,14 +183,14 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetInShelter(){
+    void testDeletePetInShelter() throws Exception {
         PetEntity pet = petList.get(0); // Status is IN_SHELTER by default in insertData()
         
         assertNotNull(assertThrows(IllegalOperationException.class, () -> petService.deletePet(pet.getId())));
     }
 
     @Test
-    void testCreatePetValidations() {
+    void testCreatePetValidations() throws Exception {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         Long shelterId = shelterList.get(0).getId();
 
@@ -231,7 +231,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetNotFound() {
+    void testDeletePetNotFound() throws Exception {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.deletePet(0L)));
     }
 }

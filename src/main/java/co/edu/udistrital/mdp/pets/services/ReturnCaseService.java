@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ReturnCaseService {
-    private static final String NOT_FOUND_MSG = "Source not found";
+    private static final String NOT_FOUND_MSG = "Return case not found";
 
     private static final String RC_NOT_FOUND = NOT_FOUND_MSG;
 

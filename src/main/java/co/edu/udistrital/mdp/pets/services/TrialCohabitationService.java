@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class TrialCohabitationService {
-    private static final String NOT_FOUND_MSG = "Source not found";
+    private static final String NOT_FOUND_MSG = "Trial cohabitation not found";
 
     private static final String TRIAL_NOT_FOUND = NOT_FOUND_MSG;
 

@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdoptionRequestService {
-    private static final String NOT_FOUND_MSG = "Source not found";
+    private static final String NOT_FOUND_MSG = "Adoption request not found";
 
     private static final String ADREQ_NOT_FOUND = NOT_FOUND_MSG;
 

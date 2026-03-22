@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdopterService {
-    private static final String NOT_FOUND_MSG = "Source not found";
+    private static final String NOT_FOUND_MSG = "The adopter with the given id was not found";
 
     private static final String ADOPTER_NOT_FOUND = NOT_FOUND_MSG;
 

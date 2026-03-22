@@ -69,7 +69,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelter() throws IllegalOperationException {
+    void testCreateShelter() throws Exception {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-NUEVO-" + System.nanoTime());
         newEntity.setShelterName("Nuevo Refugio " + System.nanoTime());
@@ -89,7 +89,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingNit() {
+    void testCreateShelterMissingNit() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit(null);
@@ -101,7 +101,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingName() {
+    void testCreateShelterMissingName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
@@ -113,7 +113,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingPhoneNumber() {
+    void testCreateShelterMissingPhoneNumber() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
@@ -125,7 +125,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingAddress() {
+    void testCreateShelterMissingAddress() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
@@ -137,7 +137,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterDuplicateName() {
+    void testCreateShelterDuplicateName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
@@ -147,7 +147,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterNullStatus() throws IllegalOperationException {
+    void testCreateShelterNullStatus() throws Exception {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-UNICO-" + System.nanoTime());
         newEntity.setShelterName("Refugio Null " + System.nanoTime());
@@ -159,7 +159,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterDuplicateNit() {
+    void testCreateShelterDuplicateNit() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit(shelterList.get(0).getNit());
@@ -171,7 +171,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchShelter() throws EntityNotFoundException {
+    void testSearchShelter() throws Exception {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity resultEntity = shelterService.searchShelter(entity.getId());
         assertNotNull(resultEntity);
@@ -181,14 +181,14 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchShelterNotFound() {
+    void testSearchShelterNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             shelterService.searchShelter(0L);
         });
     }
 
     @Test
-    void testSearchShelters() {
+    void testSearchShelters() throws Exception {
         List<ShelterEntity> list = shelterService.searchShelters();
         assertEquals(shelterList.size(), list.size());
         for (ShelterEntity entity : list) {
@@ -203,21 +203,21 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchSheltersByName() {
+    void testSearchSheltersByName() throws Exception {
         List<ShelterEntity> result = shelterService.searchSheltersByName(shelterList.get(0).getShelterName());
         assertNotNull(result);
         assertEquals(1, result.size());
     }
 
     @Test
-    void testSearchSheltersByNameNotFound() {
+    void testSearchSheltersByNameNotFound() throws Exception {
         List<ShelterEntity> result = shelterService.searchSheltersByName("Unknown");
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void testUpdateShelter() throws EntityNotFoundException, IllegalOperationException {
+    void testUpdateShelter() throws Exception {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
         updatedShelter.setNit(entity.getNit());
@@ -232,7 +232,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterNotFound() {
+    void testUpdateShelterNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
             shelterService.updateShelter(0L, updatedShelter);
@@ -240,7 +240,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterChangeNit() {
+    void testUpdateShelterChangeNit() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
@@ -250,7 +250,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterNotActive() {
+    void testUpdateShelterNotActive() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             entity.setStatus("Inactivo");
@@ -263,7 +263,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterDuplicateName() {
+    void testUpdateShelterDuplicateName() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
@@ -275,7 +275,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testDeleteShelter() throws EntityNotFoundException, IllegalOperationException {
+    void testDeleteShelter() throws Exception {
         ShelterEntity entity = shelterList.get(1);
         shelterService.deleteShelter(entity.getId());
         ShelterEntity deleted = entityManager.find(ShelterEntity.class, entity.getId());
@@ -283,14 +283,14 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testDeleteShelterNotFound() {
+    void testDeleteShelterNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> {
             shelterService.deleteShelter(0L);
         });
     }
 
     @Test
-    void testDeleteShelterWithPets() {
+    void testDeleteShelterWithPets() throws Exception {
         assertThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             shelterService.deleteShelter(entity.getId());

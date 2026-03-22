@@ -94,7 +94,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEvent() throws EntityNotFoundException {
+    void testCreateMedicalEvent() throws Exception {
         MedicalEventEntity newEvent = new MedicalEventEntity();
         newEvent.setEventType("Surgery");
         newEvent.setDescription("Surgery procedure");
@@ -107,7 +107,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEventHistoryNotFound() {
+    void testCreateMedicalEventHistoryNotFound() throws Exception {
         MedicalEventEntity event = new MedicalEventEntity();
         event.setEventType("Surgery");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -115,7 +115,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEventVetNotFound() {
+    void testCreateMedicalEventVetNotFound() throws Exception {
         MedicalEventEntity event = new MedicalEventEntity();
         event.setEventType("Surgery");
         assertThrows(EntityNotFoundException.class, () -> 
@@ -123,7 +123,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testSearchMedicalEvent() throws EntityNotFoundException {
+    void testSearchMedicalEvent() throws Exception {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity result = medicalEventService.searchMedicalEvent(expected.getId());
         assertNotNull(result);
@@ -131,13 +131,13 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testSearchMedicalEventNotFound() {
+    void testSearchMedicalEventNotFound() throws Exception {
         assertThrows(EntityNotFoundException.class, () -> 
             medicalEventService.searchMedicalEvent(0L));
     }
 
     @Test
-    void testSearchMedicalEvents() {
+    void testSearchMedicalEvents() throws Exception {
         LocalDate start = LocalDate.now().minusDays(1);
         LocalDate end = LocalDate.now().plusDays(1);
         List<MedicalEventEntity> results = medicalEventService.searchMedicalEvents(start, end);
@@ -145,7 +145,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testUpdateMedicalEvent() throws EntityNotFoundException {
+    void testUpdateMedicalEvent() throws Exception {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity updatedInfo = new MedicalEventEntity();
         updatedInfo.setEventType("Vaccination");
@@ -159,7 +159,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testDeleteMedicalEvent() {
+    void testDeleteMedicalEvent() throws Exception {
         MedicalEventEntity expected = eventList.get(0);
         medicalEventService.deleteMedicalEvent(expected.getId());
         
