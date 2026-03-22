@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdoptionProcessService {
+    private static final String NOT_FOUND_MSG = NOT_FOUND_MSG;
+
+    private static final String ADPROCESS_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     private AdoptionProcessRepository adoptionProcessRepository;
@@ -39,7 +42,7 @@ public class AdoptionProcessService {
         log.info("Search adoption process with id = {}", id);
 
         return adoptionProcessRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption process not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));
     }
 
     public List<AdoptionProcessEntity> searchAdoptionProcesses(){
@@ -52,7 +55,7 @@ public class AdoptionProcessService {
         log.info("Updating adoption process");
 
         AdoptionProcessEntity existing = adoptionProcessRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption process not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));
 
         existing.setCreationDate(adoptionProcess.getCreationDate());
         existing.setStatus(adoptionProcess.getStatus());
@@ -64,7 +67,7 @@ public class AdoptionProcessService {
         log.info("Delete adoption process");
 
         AdoptionProcessEntity adoptionProcess = adoptionProcessRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption process not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));
 
         if(adoptionProcess.getReturnCase() != null){
             throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Can't delete adoption process because it has a return case");

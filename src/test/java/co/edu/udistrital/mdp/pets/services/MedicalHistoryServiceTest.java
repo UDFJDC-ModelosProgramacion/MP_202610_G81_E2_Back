@@ -91,7 +91,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testCreateMedicalHistory() throws Exception {
+    void testCreateMedicalHistory() {
         // Find a pet without history, which is petList.get(2)
         PetEntity pet = petList.get(2);
         VeterinarianEntity vet = vetList.get(0);
@@ -118,7 +118,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testSearchMedicalHistory() throws Exception {
+    void testSearchMedicalHistory() {
         MedicalHistoryEntity expected = historyList.get(0);
         MedicalHistoryEntity result = medicalHistoryService.searchMedicalHistory(expected.getPet().getId());
 
@@ -139,13 +139,13 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testUpdateMedicalHistory() throws Exception {
+    void testUpdateMedicalHistory() {
         MedicalHistoryEntity history = historyList.get(0);
         LocalDate oldDate = LocalDate.now().minusDays(5);
         history.setLastUpdated(oldDate);
         entityManager.persist(history);
 
-        MedicalHistoryEntity result = medicalHistoryService.updateMedicalHistory(history.getId());
+        medicalHistoryService.updateMedicalHistory(history.getId());
 
         MedicalHistoryEntity stored = entityManager.find(MedicalHistoryEntity.class, history.getId());
         assertTrue(stored.getLastUpdated().isAfter(oldDate) || stored.getLastUpdated().isEqual(LocalDate.now()));
@@ -158,7 +158,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryAdopted() throws Exception {
+    void testDeleteMedicalHistoryAdopted() {
         MedicalHistoryEntity history = historyList.get(0);
         PetEntity pet = history.getPet();
         pet.setStatus("ADOPTED");
@@ -171,7 +171,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryNotAdopted() throws Exception {
+    void testDeleteMedicalHistoryNotAdopted(){
         MedicalHistoryEntity history = historyList.get(0);
         PetEntity pet = history.getPet();
         pet.setStatus("IN_SHELTER");

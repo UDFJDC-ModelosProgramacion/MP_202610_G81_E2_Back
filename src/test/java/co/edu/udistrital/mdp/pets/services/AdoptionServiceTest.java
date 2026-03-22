@@ -56,7 +56,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testCreateAdoption() throws EntityNotFoundException, IllegalOperationException {
+    void testCreateAdoption() {
         AdoptionEntity newEntity = factory.manufacturePojo(AdoptionEntity.class);
 
         AdoptionEntity result = adoptionService.createAdoption(newEntity);
@@ -74,7 +74,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testSearchAdoption() throws EntityNotFoundException {
+    void testSearchAdoption() {
         AdoptionEntity entity = adoptionList.get(0);
         AdoptionEntity resultEntity = adoptionService.searchAdoption(entity.getId());
         assertNotNull(resultEntity);
@@ -106,7 +106,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testUpdateAdoption() throws EntityNotFoundException, IllegalOperationException {
+    void testUpdateAdoption() {
         AdoptionEntity entity = adoptionList.get(0);
         AdoptionEntity pojoEntity = factory.manufacturePojo(AdoptionEntity.class);
         pojoEntity.setId(entity.getId());
@@ -128,7 +128,7 @@ class AdoptionServiceTest {
     }
 
     @Test
-    void testDeleteAdoption() throws EntityNotFoundException, IllegalOperationException {
+    void testDeleteAdoption() {
         AdoptionEntity entity = adoptionList.get(1);
         adoptionService.deleteAdoption(entity.getId());
         AdoptionEntity deleted = entityManager.find(AdoptionEntity.class, entity.getId());

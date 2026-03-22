@@ -65,7 +65,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopter() throws Exception {
+    void testCreateAdopter() {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("newadopter@mail.com");
         newAdopter.setPassword("Secure123");
@@ -148,7 +148,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testSearchAdopter() throws Exception {
+    void testSearchAdopter() {
         AdopterEntity entity = adopterList.get(0);
         AdopterEntity resultEntity = adopterService.searchAdopter(entity.getId());
         assertNotNull(resultEntity);
@@ -194,7 +194,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testUpdateAdopter() throws Exception {
+    void testUpdateAdopter() {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updatedadopter@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -245,7 +245,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testDeleteAdopter() throws Exception {
+    void testDeleteAdopter() {
         AdopterEntity adopter = factory.manufacturePojo(AdopterEntity.class);
         adopter.setEmail("deleteadopter@mail.com");
         adopter.setPassword("Secure123");

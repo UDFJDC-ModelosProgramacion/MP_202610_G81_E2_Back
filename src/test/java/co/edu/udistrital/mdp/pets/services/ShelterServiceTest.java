@@ -69,7 +69,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelter() throws IllegalOperationException {
+    void testCreateShelter() {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-NUEVO-" + System.nanoTime());
         newEntity.setShelterName("Nuevo Refugio " + System.nanoTime());
@@ -147,7 +147,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterNullStatus() throws IllegalOperationException {
+    void testCreateShelterNullStatus() {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-UNICO-" + System.nanoTime());
         newEntity.setShelterName("Refugio Null " + System.nanoTime());
@@ -171,7 +171,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchShelter() throws EntityNotFoundException {
+    void testSearchShelter() {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity resultEntity = shelterService.searchShelter(entity.getId());
         assertNotNull(resultEntity);
@@ -217,7 +217,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelter() throws EntityNotFoundException, IllegalOperationException {
+    void testUpdateShelter() {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
         updatedShelter.setNit(entity.getNit());
@@ -275,7 +275,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testDeleteShelter() throws EntityNotFoundException, IllegalOperationException {
+    void testDeleteShelter() {
         ShelterEntity entity = shelterList.get(1);
         shelterService.deleteShelter(entity.getId());
         ShelterEntity deleted = entityManager.find(ShelterEntity.class, entity.getId());

@@ -62,7 +62,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUser() throws Exception {
+    void testCreateUser() {
         AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
         newUser.setEmail("newuser@mail.com");
         newUser.setPassword("Secure123");
@@ -124,7 +124,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testSearchUser() throws Exception {
+    void testSearchUser() {
         UserEntity entity = userList.get(0);
         UserEntity resultEntity = userService.searchUser(entity.getId());
         assertNotNull(resultEntity);
@@ -164,7 +164,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUser() throws Exception {
+    void testUpdateUser() {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updated@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -229,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser() throws Exception {
+    void testDeleteUser() {
         AdopterEntity user = factory.manufacturePojo(AdopterEntity.class);
         user.setEmail("delete@mail.com");
         user.setPassword("Secure123");

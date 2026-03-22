@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ReturnCaseService {
+    private static final String NOT_FOUND_MSG = NOT_FOUND_MSG;
+
+    private static final String RC_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     private ReturnCaseRepository returnCaseRepository;
@@ -38,7 +41,7 @@ public class ReturnCaseService {
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())
-            throw new EntityNotFoundException("Return case not found");
+            throw new EntityNotFoundException(RC_NOT_FOUND);
 
         log.info("Termina proceso de consultar el caso de devolución con id = {}", id);
         return returnCaseEntity.get();
@@ -57,7 +60,7 @@ public class ReturnCaseService {
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())
-            throw new EntityNotFoundException("Return case not found");
+            throw new EntityNotFoundException(RC_NOT_FOUND);
 
         ReturnCaseEntity existing = returnCaseEntity.get();
         existing.setReturnDate(returnCase.getReturnDate());
@@ -74,7 +77,7 @@ public class ReturnCaseService {
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())
-            throw new EntityNotFoundException("Return case not found");
+            throw new EntityNotFoundException(RC_NOT_FOUND);
 
         ReturnCaseEntity returnCase = returnCaseEntity.get();
 

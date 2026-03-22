@@ -83,7 +83,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequest() throws Exception {
+    void testCreateAdoptionRequest() {
         AdoptionRequestEntity newReq = new AdoptionRequestEntity();
         newReq.setRequestDate(LocalDate.now());
         newReq.setPet(pet);
@@ -96,12 +96,12 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequestNull() throws Exception {
+    void testCreateAdoptionRequestNull(){
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(null));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutDate() throws Exception {
+    void testCreateAdoptionRequestWithoutDate(){
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setPet(pet);
         req.setAdopter(adopter);
@@ -109,7 +109,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutPet() throws Exception {
+    void testCreateAdoptionRequestWithoutPet(){
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setAdopter(adopter);
@@ -117,7 +117,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutAdopter() throws Exception {
+    void testCreateAdoptionRequestWithoutAdopter(){
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setPet(pet);
@@ -125,7 +125,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testSearchAdoptionRequest() throws Exception {
+    void testSearchAdoptionRequest() {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity result = adoptionRequestService.searchAdoptionRequest(expected.getId());
         assertNotNull(result);
@@ -133,18 +133,18 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testSearchAdoptionRequestNotFound() throws Exception {
+    void testSearchAdoptionRequestNotFound(){
         assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.searchAdoptionRequest(0L));
     }
 
     @Test
-    void testSearchAdoptionRequests() throws Exception {
+    void testSearchAdoptionRequests(){
         List<AdoptionRequestEntity> results = adoptionRequestService.searchAdoptionRequests();
         assertTrue(results.size() >= requestList.size());
     }
 
     @Test
-    void testUpdateAdoptionRequest() throws Exception {
+    void testUpdateAdoptionRequest() {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity updatedInfo = new AdoptionRequestEntity();
         updatedInfo.setStatus("APPROVED");
@@ -156,16 +156,16 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequest() throws Exception {
+    void testDeleteAdoptionRequest() {
         AdoptionRequestEntity expected = requestList.get(0);
         adoptionRequestService.deleteAdoptionRequest(expected.getId());
         
         AdoptionRequestEntity deleted = entityManager.find(AdoptionRequestEntity.class, expected.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
     }
 
     @Test
-    void testDeleteAdoptionRequestWithProcess() throws Exception {
+    void testDeleteAdoptionRequestWithProcess(){
         AdoptionRequestEntity expected = requestList.get(0);
         
         TrialCohabitationEntity process = new TrialCohabitationEntity();

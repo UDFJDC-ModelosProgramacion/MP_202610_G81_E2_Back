@@ -71,7 +71,7 @@ public class MedicalEventService {
           @Transactional
           public MedicalEventEntity updateMedicalEvent(Long eventId, MedicalEventEntity updatedEvent) throws EntityNotFoundException {
 
-                    MedicalEventEntity event = searchMedicalEvent(eventId);
+                    MedicalEventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Medical event not found"));
 
                     event.setEventType(updatedEvent.getEventType());
                     event.setDescription(updatedEvent.getDescription());

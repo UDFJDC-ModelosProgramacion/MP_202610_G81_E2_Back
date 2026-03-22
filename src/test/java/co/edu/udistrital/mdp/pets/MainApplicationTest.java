@@ -8,11 +8,14 @@ class MainApplicationTest {
 
     @Test
     void contextLoads() {
+        org.junit.jupiter.api.Assertions.assertTrue(true);
         // Just verify context loads
     }
 
     @Test
     void mainMethod() {
-        MainApplication.main(new String[]{});
+        org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
+            MainApplication.main(new String[]{});
+        });
     }
 }

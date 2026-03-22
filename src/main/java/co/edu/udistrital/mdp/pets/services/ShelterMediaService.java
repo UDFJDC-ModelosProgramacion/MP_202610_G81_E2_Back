@@ -32,7 +32,7 @@ public class ShelterMediaService {
             throw new IllegalOperationException("Formato no permitido. Solo se permiten .jpg, .png y .mp4");
         }
 
-        long maxSizeBytes = 5 * 1024 * 1024;
+        long maxSizeBytes = 5L * 1024L * 1024L;
         if (fileSizeBytes > maxSizeBytes) {
             throw new IllegalOperationException("El tamaño del archivo no debe exceder los 5MB");
         }
@@ -57,7 +57,7 @@ public class ShelterMediaService {
     public ShelterMediaEntity updateShelterMedia(Long id, ShelterMediaEntity updatedMedia)
             throws EntityNotFoundException {
         log.info("Updating shelter media with id: {}", id);
-        ShelterMediaEntity existing = searchShelterMedia(id);
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El media con ID " + id + " no fue encontrado"));
 
         if (updatedMedia.getDescription() != null) {
             existing.setDescription(updatedMedia.getDescription());
@@ -69,7 +69,7 @@ public class ShelterMediaService {
     @Transactional
     public void deleteShelterMedia(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter media with id: {}", id);
-        ShelterMediaEntity existing = searchShelterMedia(id);
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El media con ID " + id + " no fue encontrado"));
 
         if ("Foto de Perfil".equalsIgnoreCase(existing.getMediaType())) {
             if (existing.getShelter() == null) {

@@ -93,7 +93,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testCreateMedicalEvent() throws Exception {
+    void testCreateMedicalEvent() {
         MedicalEventEntity newEvent = new MedicalEventEntity();
         newEvent.setEventType("Surgery");
         newEvent.setDescription("Surgery procedure");
@@ -122,7 +122,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testSearchMedicalEvent() throws Exception {
+    void testSearchMedicalEvent() {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity result = medicalEventService.searchMedicalEvent(expected.getId());
         assertNotNull(result);
@@ -144,7 +144,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testUpdateMedicalEvent() throws Exception {
+    void testUpdateMedicalEvent() {
         MedicalEventEntity expected = eventList.get(0);
         MedicalEventEntity updatedInfo = new MedicalEventEntity();
         updatedInfo.setEventType("Vaccination");
@@ -163,6 +163,6 @@ class MedicalEventServiceTest {
         medicalEventService.deleteMedicalEvent(expected.getId());
         
         MedicalEventEntity deleted = entityManager.find(MedicalEventEntity.class, expected.getId());
-        assertTrue(deleted == null);
+        assertNull(deleted);
     }
 }

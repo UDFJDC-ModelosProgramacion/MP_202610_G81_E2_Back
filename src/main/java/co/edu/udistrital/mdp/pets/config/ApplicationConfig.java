@@ -19,7 +19,7 @@ public class ApplicationConfig {
 		return new WebMvcConfigurer() {
 			@Override
 			public void addCorsMappings(@NonNull CorsRegistry registry) {
-				registry.addMapping("/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "DELETE")
+				registry.addMapping("/**").allowedOrigins("http://localhost:4200", "http://localhost:8080").allowedMethods("GET", "POST", "PUT", "DELETE")
 						.maxAge(3600);
 			}
 

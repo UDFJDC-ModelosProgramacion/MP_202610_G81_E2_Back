@@ -13,6 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdoptionRequestService {
+    private static final String NOT_FOUND_MSG = NOT_FOUND_MSG;
+
+    private static final String ADREQ_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     private AdoptionRequestRepository adoptionRequestRepository;
@@ -45,7 +48,7 @@ public class AdoptionRequestService {
         log.info("Search adoption request with id = {}", id);
 
         return adoptionRequestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption request not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
     }
 
     public List<AdoptionRequestEntity> searchAdoptionRequests(){
@@ -60,7 +63,7 @@ public class AdoptionRequestService {
         log.info("Updating adoption request");
 
         AdoptionRequestEntity existing = adoptionRequestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption request not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
 
         existing.setRequestDate(adoptionRequest.getRequestDate());
         existing.setStatus(adoptionRequest.getStatus());
@@ -73,7 +76,7 @@ public class AdoptionRequestService {
         log.info("Delete adoption request");
 
         AdoptionRequestEntity adoptionRequest = adoptionRequestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Adoption request not found"));
+                .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
 
         if(adoptionRequest.getAdoptionProcess() != null){
             throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Can't delete adoption request because it is associated with an adoption process");

@@ -72,7 +72,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testCreateReview() throws EntityNotFoundException, IllegalOperationException {
+    void testCreateReview() {
         ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
 
         ReviewEntity result = reviewService.createReview(newEntity);
@@ -91,7 +91,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testSearchReview() throws EntityNotFoundException {
+    void testSearchReview() {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity resultEntity = reviewService.searchReview(entity.getId());
         assertNotNull(resultEntity);
@@ -124,7 +124,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testUpdateReview() throws EntityNotFoundException, IllegalOperationException {
+    void testUpdateReview() {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
         pojoEntity.setId(entity.getId());
@@ -147,7 +147,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReview() throws EntityNotFoundException, IllegalOperationException {
+    void testDeleteReview() {
         ReviewEntity entity = reviewList.get(1);
         reviewService.deleteReview(entity.getId());
         ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());

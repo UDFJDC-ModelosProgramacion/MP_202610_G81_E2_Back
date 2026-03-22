@@ -5,7 +5,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,7 +73,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessage() throws Exception {
+    void testCreateMessage() {
         MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
         newMessage.setContent("Hello world");
         newMessage.setSender(userList.get(0));
@@ -153,7 +152,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testSearchMessage() throws Exception {
+    void testSearchMessage() {
         MessageEntity entity = messageList.get(0);
         MessageEntity resultEntity = messageService.searchMessage(entity.getId());
         assertNotNull(resultEntity);
@@ -183,7 +182,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testUpdateMessage() throws Exception {
+    void testUpdateMessage() {
         MessageEntity newData = factory.manufacturePojo(MessageEntity.class);
         newData.setContent("Updated message");
         newData.setIsRead(Boolean.TRUE);
@@ -218,7 +217,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testDeleteMessage() throws Exception {
+    void testDeleteMessage() {
         MessageEntity deletable = factory.manufacturePojo(MessageEntity.class);
         deletable.setContent("Delete message");
         deletable.setSender(userList.get(0));

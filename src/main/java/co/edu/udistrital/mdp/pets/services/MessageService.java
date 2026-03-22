@@ -20,6 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MessageService {
+    private static final String NULL_MSG_ID = NULL_MSG_ID;
+
+    private static final String MSG_ID_NULL = NULL_MSG_ID;
 
     @Autowired
     private MessageRepository messageRepository;
@@ -50,7 +53,7 @@ public class MessageService {
     @Transactional
     public MessageEntity searchMessage(Long messageId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el mensaje con id = {}", messageId);
-        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Long safeMessageId = Objects.requireNonNull(messageId, MSG_ID_NULL);
         Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
         if (messageEntity.isEmpty()) {
             throw new EntityNotFoundException("The message with the given id was not found");
@@ -69,7 +72,7 @@ public class MessageService {
     public MessageEntity updateMessage(Long messageId, MessageEntity messageEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el mensaje con id = {}", messageId);
-        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Long safeMessageId = Objects.requireNonNull(messageId, MSG_ID_NULL);
         Optional<MessageEntity> persistedMessage = messageRepository.findById(safeMessageId);
         if (persistedMessage.isEmpty() || !Boolean.TRUE.equals(persistedMessage.get().getActive())) {
             throw new EntityNotFoundException("The message with the given id was not found or is deleted");
@@ -85,7 +88,7 @@ public class MessageService {
     @Transactional
     public void deleteMessage(Long messageId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el mensaje con id = {}", messageId);
-        Long safeMessageId = Objects.requireNonNull(messageId, "messageId must not be null");
+        Long safeMessageId = Objects.requireNonNull(messageId, MSG_ID_NULL);
         Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
         if (messageEntity.isEmpty() || !Boolean.TRUE.equals(messageEntity.get().getActive())) {
             throw new EntityNotFoundException("The message with the given id was not found");

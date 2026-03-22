@@ -16,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class AdoptionService {
+    private static final String NOT_FOUND_MSG = NOT_FOUND_MSG;
+
+    private static final String AD_NOT_FOUND = NOT_FOUND_MSG;
 
     @Autowired
     AdoptionRepository adoptionRepository;
@@ -38,7 +41,7 @@ public class AdoptionService {
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())
-            throw new EntityNotFoundException("Adoption not found.");
+            throw new EntityNotFoundException(AD_NOT_FOUND);
 
         log.info("Termina proceso de consultar la adopción con id = {}", id);
         return adoptionEntity.get();
@@ -57,7 +60,7 @@ public class AdoptionService {
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())
-            throw new EntityNotFoundException("Adoption not found.");
+            throw new EntityNotFoundException(AD_NOT_FOUND);
 
         AdoptionEntity existing = adoptionEntity.get();
         existing.setOfficialDate(adoption.getOfficialDate());
@@ -73,7 +76,7 @@ public class AdoptionService {
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())
-            throw new EntityNotFoundException("Adoption not found.");
+            throw new EntityNotFoundException(AD_NOT_FOUND);
 
         AdoptionEntity adoption = adoptionEntity.get();
 

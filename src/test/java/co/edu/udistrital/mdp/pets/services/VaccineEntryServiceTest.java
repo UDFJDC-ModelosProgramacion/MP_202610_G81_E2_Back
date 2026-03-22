@@ -91,7 +91,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testCreateVaccineEntry() throws Exception {
+    void testCreateVaccineEntry() {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
         newVaccine.setAdminDate(LocalDate.now());
@@ -118,7 +118,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testUpdateVaccineEntry() throws Exception {
+    void testUpdateVaccineEntry() {
         VaccineEntryEntity expected = vaccineList.get(0);
         VaccineEntryEntity updatedInfo = new VaccineEntryEntity();
         updatedInfo.setVaccineName("Distemper");
