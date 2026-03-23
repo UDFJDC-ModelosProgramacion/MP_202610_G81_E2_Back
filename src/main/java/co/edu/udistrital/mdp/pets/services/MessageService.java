@@ -77,7 +77,7 @@ public class MessageService {
         if (persistedMessage.isEmpty() || !Boolean.TRUE.equals(persistedMessage.get().getActive())) {
             throw new EntityNotFoundException("The message with the given id was not found or is deleted");
         }
-        MessageEntity storedMessage = persistedMessage.get();
+        MessageEntity storedMessage = Objects.requireNonNull(persistedMessage.get(), "Stored message cannot be null");
         if (messageEntity != null && messageEntity.getIsRead() != null) {
             storedMessage.setIsRead(messageEntity.getIsRead());
         }
@@ -96,7 +96,7 @@ public class MessageService {
         if (Boolean.TRUE.equals(messageEntity.get().getIsRead())) {
             throw new IllegalOperationException("Read messages cannot be deleted");
         }
-        MessageEntity storedMessage = messageEntity.get();
+        MessageEntity storedMessage = Objects.requireNonNull(messageEntity.get(), "Stored message cannot be null");
         storedMessage.setActive(Boolean.FALSE);
         messageRepository.save(storedMessage);
         log.info("Termina proceso de borrar el mensaje con id = {}", messageId);
