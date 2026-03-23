@@ -1,9 +1,0 @@
-$kind: http-request
-name: Get User Notifications
-url: http://localhost:8080/api/users/1/notifications
-method: GET
-body:
-  type: json
-  content: "{\r\n}"
-examples: ./.resources/Get User Notifications.resources/examples
-order: 5000

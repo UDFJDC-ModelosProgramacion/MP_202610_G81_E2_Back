@@ -1,5 +1,5 @@
 $kind: http-request
-name: Get Adopters
 url: http://localhost:8080/api/adopters
 method: GET
+examples: .resources/Get Adopters.resources/examples
 order: 3000

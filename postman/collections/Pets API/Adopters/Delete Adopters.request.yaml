@@ -1,5 +1,5 @@
 $kind: http-request
-name: Delete Adopters
 url: http://localhost:8080/api/adopters/1
 method: DELETE
+examples: .resources/Delete Adopters.resources/examples
 order: 4275952485755308

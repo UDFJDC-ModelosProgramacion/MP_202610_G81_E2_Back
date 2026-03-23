@@ -1,16 +1,21 @@
 $kind: http-request
-name: Create Adopter
 url: http://localhost:8080/api/adopters
 method: POST
 body:
   type: json
   content: "{\r
 
-    \    \"user\": {\r
+    \    \"name\": \"Juan Pérez\",\r
 
-    \        \"id\": 1\r
+    \    \"email\": \"adopter@email.com\",\r
 
-    \    },\r
+    \    \"password\": \"123456\",\r
+
+    \    \"phoneNumber\": \"3001234567\",\r
+
+    \    \"profileImageUrl\": \"https://example.com/profile.jpg\",\r
+
+    \    \"registerDate\": \"2026-03-23T10:00:00\",\r
 
     \    \"address\": \"Calle 123\",\r
 
@@ -21,4 +26,5 @@ body:
     \    \"status\": \"ACTIVE\"\r
 
     }"
+examples: .resources/Create Adopter.resources/examples
 order: 1000

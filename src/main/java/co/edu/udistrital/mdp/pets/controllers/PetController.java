@@ -1,72 +1,65 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
-
-import java.util.*;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
-import org.springframework.web.bind.annotation.GetMapping;
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.services.PetService;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 
+import java.util.*;
 
 @RestController
 @RequestMapping("/pets")
 public class PetController {
-    private List<Map<String, Object>> pets = new ArrayList<>();
+
+    @Autowired
+    private PetService petService;
+
+    // Mantenemos tus asociaciones en memoria para no borrarlas
     private Map<Long, List<Map<String, Object>>> medicalHistory = new HashMap<>();
     private Map<Long, List<Map<String, Object>>> vaccines = new HashMap<>();
 
     @PostMapping
-    public Map<String, Object> createPet(@RequestBody Map<String, Object> pet) {
-        pet.put("id", pets.size() + 1);
-        pets.add(pet);
-        return pet;
+    @ResponseStatus(HttpStatus.CREATED)
+    public PetEntity createPet(@RequestBody PetEntity pet) 
+            throws IllegalOperationException, EntityNotFoundException {
+        
+        // Tu Service pide shelterId. Lo obtenemos del objeto shelter dentro del JSON
+        Long shelterId = pet.getShelter().getId(); 
+        return petService.createPet(shelterId, pet);
     }
 
     @GetMapping
-    public List<Map<String, Object>> getPets() {
-        return pets;
+    public List<PetEntity> getPets(
+            @RequestParam(required = false) String breed,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) String temperament) {
+        // Usamos el método searchPets con sus filtros
+        return petService.searchPets(breed, size, temperament);
     }
 
     @GetMapping("/{id}")
-    public Map<String, Object> getPetById(@PathVariable Long id) {
-        for (Map<String, Object> pet : pets){
-            Object petId = pet.get("id");
-
-            if(petId != null && Long.valueOf(petId.toString()).equals(id)){
-                return pet;
-            }
-        }
-        
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
-    }
-
-    @DeleteMapping("/{id}")
-    public void deletePet(@PathVariable Long id){
-        boolean removed = pets.removeIf(pet ->
-            Long.valueOf(pet.get("id").toString()).equals(id)
-        );
-
-        if(!removed){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found");
-        }
+    public PetEntity getPetById(@PathVariable Long id) throws EntityNotFoundException {
+        // Cambiado a getPet(id) para coincidir con tu Service
+        return petService.getPet(id);
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> updatePet(@PathVariable Long id, @RequestBody Map<String, Object> updatePet) {
-        
-        for (Map<String, Object> pet : pets){
-            Long petId = Long.valueOf(pet.get("id").toString());
-
-            if(petId.equals(id)){
-                pet.putAll(updatePet);
-                pet.put("id", id);
-                return pet;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pet not found");
+    public PetEntity updatePet(@PathVariable Long id, @RequestBody PetEntity pet) 
+            throws EntityNotFoundException {
+        return petService.updatePet(id, pet);
     }
-    
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletePet(@PathVariable Long id) 
+            throws EntityNotFoundException, IllegalOperationException {
+        petService.deletePet(id);
+    }
+
+    // --- Mantenemos tus asociaciones de Historia Clínica y Vacunas ---
     @GetMapping("/{id}/medical-history")
     public List<Map<String, Object>> getMedicalHistory(@PathVariable Long id) {
         return medicalHistory.getOrDefault(id, new ArrayList<>());
@@ -76,21 +69,18 @@ public class PetController {
     public List<Map<String, Object>> addMedicalEvent(@PathVariable Long id, @RequestBody Map<String, Object> event) {
         medicalHistory.putIfAbsent(id, new ArrayList<>());
         medicalHistory.get(id).add(event);
-        
         return medicalHistory.get(id);
     }
-    
+
     @PostMapping("/{id}/vaccines")
     public List<Map<String, Object>> addVaccine(@PathVariable Long id, @RequestBody Map<String, Object> vaccine) {
         vaccines.putIfAbsent(id, new ArrayList<>());
         vaccines.get(id).add(vaccine);
-        
         return vaccines.get(id);
     }
-    
+
     @GetMapping("/{id}/vaccines")
     public List<Map<String, Object>> getVaccines(@PathVariable Long id) {
         return vaccines.getOrDefault(id, new ArrayList<>());
     }
-    
 }

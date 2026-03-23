@@ -1,9 +1,0 @@
-$kind: http-request
-name: Get User By Id
-url: http://localhost:8080/api/users/1
-method: GET
-body:
-  type: json
-  content: "{\r\n}"
-examples: ./.resources/Get User By Id.resources/examples
-order: 3000

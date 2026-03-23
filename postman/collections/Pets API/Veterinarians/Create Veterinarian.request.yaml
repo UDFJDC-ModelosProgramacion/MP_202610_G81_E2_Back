@@ -6,27 +6,27 @@ body:
   type: json
   content: "{\r
 
-    \    \"licenseNumber\": \"VET-001\",\r
+    \    \"name\": \"Dr. Carlos López\",\r
 
-    \    \"availabilitySchedule\": \"Weekends\",\r
+    \    \"email\": \"veterinario@email.com\",\r
 
-    \    \"user\":{\r
+    \    \"password\": \"123456\",\r
+
+    \    \"phoneNumber\": \"3009876543\",\r
+
+    \    \"profileImageUrl\": \"https://example.com/vet.jpg\",\r
+
+    \    \"registerDate\": \"2026-03-23T10:00:00\",\r
+
+    \    \"licenseNumber\": \"VET-2024-001\",\r
+
+    \    \"availabilitySchedule\": \"Lunes a Viernes 8am-6pm\",\r
+
+    \    \"shelter\": {\r
 
     \        \"id\": 1\r
 
-    \    },\r
-
-    \    \"specialities\": [\r
-
-    \        {\r
-
-    \            \"name\": \"Surgery\",\r
-
-    \            \"description\": \"Surgical producers\"\r
-
-    \        }\r
-
-    \    ]\r
+    \    }\r
 
     }"
 examples: .resources/Create Veterinarian.resources/examples

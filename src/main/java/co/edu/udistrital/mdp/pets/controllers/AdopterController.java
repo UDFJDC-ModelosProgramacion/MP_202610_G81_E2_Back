@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/adopters")
 public class AdopterController {
+    
     @Autowired
     private AdopterService adopterService;
 
