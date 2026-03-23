@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AdoptionRequestService {
     private static final String NOT_FOUND_MSG = "Adoption request not found";
+        private static final String ADOPTION_REQUEST_ID_NULL_MSG = "Adoption request id cannot be null";
 
     private static final String ADREQ_NOT_FOUND = NOT_FOUND_MSG;
 
@@ -47,7 +48,7 @@ public class AdoptionRequestService {
     public AdoptionRequestEntity searchAdoptionRequest(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
 
         log.info("Search adoption request with id = {}", id);
-        Objects.requireNonNull(id, "Adoption request id cannot be null");
+        Objects.requireNonNull(id, ADOPTION_REQUEST_ID_NULL_MSG);
 
         return adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
@@ -63,7 +64,7 @@ public class AdoptionRequestService {
     public AdoptionRequestEntity updateAdoptionRequest(Long id, AdoptionRequestEntity adoptionRequest) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
 
         log.info("Updating adoption request");
-        Objects.requireNonNull(id, "Adoption request id cannot be null");
+        Objects.requireNonNull(id, ADOPTION_REQUEST_ID_NULL_MSG);
 
         AdoptionRequestEntity existing = adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
@@ -77,7 +78,7 @@ public class AdoptionRequestService {
     public void deleteAdoptionRequest(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
 
         log.info("Delete adoption request");
-        Objects.requireNonNull(id, "Adoption request id cannot be null");
+        Objects.requireNonNull(id, ADOPTION_REQUEST_ID_NULL_MSG);
 
         AdoptionRequestEntity adoptionRequest = adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));

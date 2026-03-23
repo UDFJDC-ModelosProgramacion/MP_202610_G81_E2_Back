@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TrialCohabitationService {
     private static final String NOT_FOUND_MSG = "Trial cohabitation not found";
+    private static final String TRIAL_COHABITATION_ID_NULL_MSG = "Trial cohabitation id cannot be null";
 
     private static final String TRIAL_NOT_FOUND = NOT_FOUND_MSG;
 
@@ -37,7 +38,7 @@ public class TrialCohabitationService {
 
     public TrialCohabitationEntity searchTrialCohabitation(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Search trial cohabitation with id = {}", id);
-        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
+        Objects.requireNonNull(id, TRIAL_COHABITATION_ID_NULL_MSG);
 
         return trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
@@ -51,7 +52,7 @@ public class TrialCohabitationService {
 
     public TrialCohabitationEntity updateTrialCohabitation(Long id, TrialCohabitationEntity trialCohabitation) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Updating trial cohabitation");
-        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
+        Objects.requireNonNull(id, TRIAL_COHABITATION_ID_NULL_MSG);
 
         TrialCohabitationEntity existing = trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
@@ -66,7 +67,7 @@ public class TrialCohabitationService {
 
     public void deleteTrialCohabitation(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         log.info("Delete trial cohabitation");
-        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
+        Objects.requireNonNull(id, TRIAL_COHABITATION_ID_NULL_MSG);
 
         TrialCohabitationEntity trialCohabitation = trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));

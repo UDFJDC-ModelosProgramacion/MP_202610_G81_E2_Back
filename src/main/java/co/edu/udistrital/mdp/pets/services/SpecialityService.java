@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SpecialityService {
 
     private static final String SPECIALITY_NOT_FOUND = "Especialidad no encontrada";
+    private static final String SPECIALITY_ID_NULL_MSG = "Speciality id cannot be null";
 
     @Autowired
     private VetSpecialityRepository specialityRepository;
@@ -42,7 +43,7 @@ public class SpecialityService {
     @Transactional(readOnly = true)
     public VetSpecialityEntity searchSpeciality(Long id) throws EntityNotFoundException {
         log.info("Searching speciality with id: {}", id);
-        Objects.requireNonNull(id, "Speciality id cannot be null");
+        Objects.requireNonNull(id, SPECIALITY_ID_NULL_MSG);
         return specialityRepository.findById(id).orElseThrow(this::notFound);
     }
 
@@ -60,7 +61,7 @@ public class SpecialityService {
     public VetSpecialityEntity updateSpeciality(Long id, VetSpecialityEntity speciality)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating speciality with id: {}", id);
-        Objects.requireNonNull(id, "Speciality id cannot be null");
+        Objects.requireNonNull(id, SPECIALITY_ID_NULL_MSG);
         VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(this::notFound);
 
         if (speciality.getName() != null && !speciality.getName().equalsIgnoreCase(existing.getName())) {
@@ -85,7 +86,7 @@ public class SpecialityService {
     @Transactional
     public void deleteSpeciality(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting speciality with id: {}", id);
-        Objects.requireNonNull(id, "Speciality id cannot be null");
+        Objects.requireNonNull(id, SPECIALITY_ID_NULL_MSG);
         VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(this::notFound);
 
         if (existing.getVeterinarians() != null && !existing.getVeterinarians().isEmpty()) {

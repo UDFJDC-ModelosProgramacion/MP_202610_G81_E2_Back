@@ -7,7 +7,10 @@ import java.util.List;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootApplication
+@Slf4j
 public class MainApplication {
 	private static final String DEFAULT_PORT = "8080";
 	private static final String SERVER_PORT_PREFIX = "--server.port=";
@@ -17,8 +20,8 @@ public class MainApplication {
 			SpringApplication.run(MainApplication.class, ensureDefaultPortArg(args));
 		} catch (RuntimeException exception) {
 			if (isPortConflict(exception)) {
-				System.err.println("Puerto " + DEFAULT_PORT
-						+ " ocupado. Se inicia en puerto dinámico y se debe revisar el log de arranque para el puerto asignado.");
+				log.warn("Puerto {} ocupado. Se inicia en puerto dinámico y se debe revisar el log de arranque para el puerto asignado.",
+						DEFAULT_PORT);
 				SpringApplication.run(MainApplication.class, withPort(args, "0"));
 				return;
 			}

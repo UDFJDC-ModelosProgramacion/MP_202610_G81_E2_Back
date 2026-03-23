@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MedicalEventService {
+          private static final String MEDICAL_EVENT_ID_NULL_MSG = "Medical event id cannot be null";
 
           @Autowired
           private MedicalEventRepository eventRepository;
@@ -59,7 +60,7 @@ public class MedicalEventService {
 
           @Transactional(readOnly = true)
           public MedicalEventEntity searchMedicalEvent(Long eventId) throws EntityNotFoundException {
-                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     return eventRepository.findById(eventId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -74,7 +75,7 @@ public class MedicalEventService {
 
           @Transactional
           public MedicalEventEntity updateMedicalEvent(Long eventId, MedicalEventEntity updatedEvent) throws EntityNotFoundException {
-                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     MedicalEventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Medical event not found"));
 
@@ -87,7 +88,7 @@ public class MedicalEventService {
 
           @Transactional
           public void deleteMedicalEvent(Long eventId) {
-                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     eventRepository.deleteById(eventId);
           }

@@ -22,6 +22,7 @@ public class ShelterService {
 
     private static final String SHELTER_ID_PREFIX = "El refugio con ID ";
     private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
+    private static final String SHELTER_ID_NULL_MSG = "Shelter id cannot be null";
 
     @Autowired
     private ShelterRepository shelterRepository;
@@ -66,7 +67,7 @@ public class ShelterService {
     @Transactional(readOnly = true)
     public ShelterEntity searchShelter(Long id) throws EntityNotFoundException {
         log.info("Searching shelter with id: {}", id);
-        Objects.requireNonNull(id, "Shelter id cannot be null");
+        Objects.requireNonNull(id, SHELTER_ID_NULL_MSG);
         return shelterRepository.findById(id).orElseThrow(() -> notFound(id));
     }
 
@@ -86,7 +87,7 @@ public class ShelterService {
     public ShelterEntity updateShelter(Long id, ShelterEntity shelter)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating shelter with id: {}", id);
-        Objects.requireNonNull(id, "Shelter id cannot be null");
+        Objects.requireNonNull(id, SHELTER_ID_NULL_MSG);
         ShelterEntity existing = shelterRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if (shelter.getNit() != null && !existing.getNit().equals(shelter.getNit())) {
@@ -120,7 +121,7 @@ public class ShelterService {
     @Transactional
     public void deleteShelter(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter with id: {}", id);
-        Objects.requireNonNull(id, "Shelter id cannot be null");
+        Objects.requireNonNull(id, SHELTER_ID_NULL_MSG);
         
         shelterRepository.findById(id).orElseThrow(() -> notFound(id)); // Valida que exista el refugio
 

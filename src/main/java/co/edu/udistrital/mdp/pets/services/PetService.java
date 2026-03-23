@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PetService {
 
           private static final String PET_NOT_FOUND = "Pet not found";
+          private static final String PET_ID_NULL_MSG = "Pet id cannot be null";
 
           @Autowired
           private PetRepository petRepository;
@@ -75,7 +76,7 @@ public class PetService {
 
           @Transactional(readOnly = true)
           public PetEntity getPet(Long petId) throws EntityNotFoundException {
-                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    Objects.requireNonNull(petId, PET_ID_NULL_MSG);
                     return petRepository.findById(petId).orElseThrow(this::petNotFound);
           }
 
@@ -86,7 +87,7 @@ public class PetService {
 
           @Transactional
           public PetEntity updatePet(Long petId, PetEntity updatedPet) throws EntityNotFoundException {
-                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    Objects.requireNonNull(petId, PET_ID_NULL_MSG);
                     PetEntity pet = petRepository.findById(petId).orElseThrow(this::petNotFound);
 
                     pet.setName(updatedPet.getName());
@@ -106,7 +107,7 @@ public class PetService {
            */
           @Transactional
           public void deletePet(Long petId) throws EntityNotFoundException, IllegalOperationException {
-                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    Objects.requireNonNull(petId, PET_ID_NULL_MSG);
                     PetEntity pet = petRepository.findById(petId).orElseThrow(this::petNotFound);
 
                     if (!"ADOPTED".equals(pet.getStatus()) && !"DECEASED".equals(pet.getStatus())) {
