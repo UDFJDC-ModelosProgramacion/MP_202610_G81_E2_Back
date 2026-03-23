@@ -15,6 +15,8 @@ import java.util.List;
 @Service
 public class ShelterMediaService {
 
+    private static final String MEDIA_NOT_FOUND = "Media not found";
+
     @Autowired
     private ShelterMediaRepository shelterMediaRepository;
 
@@ -44,7 +46,7 @@ public class ShelterMediaService {
     public ShelterMediaEntity searchShelterMedia(Long id) throws EntityNotFoundException {
         log.info("Searching shelter media with id: {}", id);
         return shelterMediaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El media con ID " + id + " no fue encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -57,7 +59,7 @@ public class ShelterMediaService {
     public ShelterMediaEntity updateShelterMedia(Long id, ShelterMediaEntity updatedMedia)
             throws EntityNotFoundException {
         log.info("Updating shelter media with id: {}", id);
-        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El media con ID " + id + " no fue encontrado"));
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
 
         if (updatedMedia.getDescription() != null) {
             existing.setDescription(updatedMedia.getDescription());
@@ -69,7 +71,7 @@ public class ShelterMediaService {
     @Transactional
     public void deleteShelterMedia(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter media with id: {}", id);
-        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El media con ID " + id + " no fue encontrado"));
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
 
         if ("Foto de Perfil".equalsIgnoreCase(existing.getMediaType())) {
             if (existing.getShelter() == null) {

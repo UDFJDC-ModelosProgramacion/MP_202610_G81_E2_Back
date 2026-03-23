@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/users/1/notifications
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Juan\",\r
+
+    \    \"email\": \"juan@email.com\"\r
+
+    }"
+examples: ./.resources/Get User Notifications.resources/examples
+order: 5000

@@ -17,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class SpecialityService {
 
+    private static String SPECIALITY_NOT_FOUND = "Speciality not found";
+
     @Autowired
     private VetSpecialityRepository specialityRepository;
 
@@ -40,7 +42,7 @@ public class SpecialityService {
     public VetSpecialityEntity searchSpeciality(Long id) throws EntityNotFoundException {
         log.info("Searching speciality with id: {}", id);
         return specialityRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+                .orElseThrow(() -> new EntityNotFoundException(SPECIALITY_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -56,7 +58,7 @@ public class SpecialityService {
     public VetSpecialityEntity updateSpeciality(Long id, VetSpecialityEntity speciality)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating speciality with id: {}", id);
-        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(SPECIALITY_NOT_FOUND));
 
         if (speciality.getName() != null && !speciality.getName().equalsIgnoreCase(existing.getName())) {
             if (speciality.getName().trim().isEmpty()) {
@@ -80,7 +82,7 @@ public class SpecialityService {
     @Transactional
     public void deleteSpeciality(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting speciality with id: {}", id);
-        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(SPECIALITY_NOT_FOUND));
 
         if (existing.getVeterinarians() != null && !existing.getVeterinarians().isEmpty()) {
             throw new IllegalOperationException(

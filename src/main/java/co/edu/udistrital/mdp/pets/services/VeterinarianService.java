@@ -16,6 +16,8 @@ import java.util.List;
 @Service
 public class VeterinarianService {
 
+    private static String VET_NOT_FOUND = "Veterinarian not found";
+
     @Autowired
     private VeterinarianRepository veterinarianRepository;
 
@@ -48,7 +50,7 @@ public class VeterinarianService {
     public VeterinarianEntity searchVeterinarian(Long id) throws EntityNotFoundException {
         log.info("Searching veterinarian with id: {}", id);
         return veterinarianRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El veterinario con ID " + id + " no fue encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(VET_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -73,7 +75,7 @@ public class VeterinarianService {
     public VeterinarianEntity updateVeterinarian(Long id, VeterinarianEntity veterinarian)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating veterinarian with id: {}", id);
-        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El veterinario con ID " + id + " no fue encontrado"));
+        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(VET_NOT_FOUND));
 
         if (veterinarian.getId() != null && !existing.getId().equals(veterinarian.getId())) {
             throw new IllegalOperationException("No se puede desvincular del UserEntity original");
@@ -92,7 +94,7 @@ public class VeterinarianService {
     @Transactional
     public void deleteVeterinarian(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting veterinarian with id: {}", id);
-        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El veterinario con ID " + id + " no fue encontrado"));
+        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(VET_NOT_FOUND));
 
         if (existing.getMedicalHistories() != null && !existing.getMedicalHistories().isEmpty()) {
             throw new IllegalOperationException("No se puede eliminar porque es responsable de una historia clínica");

@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/users/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Juan Update\",\r
+
+    \    \"email\": \"juan@email.com Update\"\r
+
+    }"
+examples: ./.resources/Update User.resources/examples
+order: 7000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/users
+method: GET
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Juan\",\r
+
+    \    \"email\": \"juan@email.com\"\r
+
+    }"
+examples: ./.resources/Get User.resources/examples
+order: 2000
