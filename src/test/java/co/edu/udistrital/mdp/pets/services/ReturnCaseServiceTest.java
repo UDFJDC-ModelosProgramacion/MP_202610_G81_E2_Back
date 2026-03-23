@@ -34,11 +34,17 @@ class ReturnCaseServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    private PodamFactory factory = new PodamFactoryImpl();
+    private final PodamFactory factory = new PodamFactoryImpl();
 
-    private List<ReturnCaseEntity> returnCaseList = new ArrayList<>();
+    private final List<ReturnCaseEntity> returnCaseList = new ArrayList<>();
+
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
 
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -57,7 +63,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testCreateReturnCase() throws Exception {
+    void testCreateReturnCase() throws IllegalOperationException {
         ReturnCaseEntity newEntity = factory.manufacturePojo(ReturnCaseEntity.class);
 
         ReturnCaseEntity result = returnCaseService.createReturnCase(newEntity);
@@ -71,12 +77,12 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testCreateReturnCaseNull() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> returnCaseService.createReturnCase(null));
+    void testCreateReturnCaseNull() {
+        expectThrows(IllegalOperationException.class, () -> returnCaseService.createReturnCase(null));
     }
 
     @Test
-    void testSearchReturnCase() throws Exception {
+    void testSearchReturnCase() throws EntityNotFoundException {
         ReturnCaseEntity entity = returnCaseList.get(0);
         ReturnCaseEntity resultEntity = returnCaseService.searchReturnCase(entity.getId());
         assertNotNull(resultEntity);
@@ -87,14 +93,14 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testSearchReturnCaseNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testSearchReturnCaseNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             returnCaseService.searchReturnCase(0L);
         });
     }
 
     @Test
-    void testSearchReturnCases() throws Exception {
+    void testSearchReturnCases() {
         List<ReturnCaseEntity> list = returnCaseService.searchReturnCases();
         assertEquals(returnCaseList.size(), list.size());
         for (ReturnCaseEntity entity : list) {
@@ -109,7 +115,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testUpdateReturnCase() throws Exception {
+    void testUpdateReturnCase() throws EntityNotFoundException, IllegalOperationException {
         ReturnCaseEntity entity = returnCaseList.get(0);
         ReturnCaseEntity pojoEntity = factory.manufacturePojo(ReturnCaseEntity.class);
         pojoEntity.setId(entity.getId());
@@ -123,8 +129,8 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testUpdateReturnCaseNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testUpdateReturnCaseNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             ReturnCaseEntity pojoEntity = factory.manufacturePojo(ReturnCaseEntity.class);
             pojoEntity.setId(0L);
             returnCaseService.updateReturnCase(0L, pojoEntity);
@@ -132,7 +138,7 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testDeleteReturnCase() throws Exception {
+    void testDeleteReturnCase() throws EntityNotFoundException, IllegalOperationException {
         ReturnCaseEntity entity = returnCaseList.get(1);
         returnCaseService.deleteReturnCase(entity.getId());
         ReturnCaseEntity deleted = entityManager.find(ReturnCaseEntity.class, entity.getId());
@@ -140,15 +146,15 @@ class ReturnCaseServiceTest {
     }
 
     @Test
-    void testDeleteReturnCaseNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testDeleteReturnCaseNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             returnCaseService.deleteReturnCase(0L);
         });
     }
 
     @Test
-    void testDeleteReturnCaseWithAdoptionProcess() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteReturnCaseWithAdoptionProcess() {
+        expectThrows(IllegalOperationException.class, () -> {
             ReturnCaseEntity entity = returnCaseList.get(0);
             TrialCohabitationEntity adoptionProcess = factory.manufacturePojo(TrialCohabitationEntity.class);
             entityManager.persist(adoptionProcess);

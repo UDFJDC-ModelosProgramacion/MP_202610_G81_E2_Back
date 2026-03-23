@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class AdopterService {
     private static final String NOT_FOUND_MSG = "The adopter with the given id was not found";
+    private static final String ADOPTER_ID_NULL_MSG = "Adopter id cannot be null";
 
     private static final String ADOPTER_NOT_FOUND = NOT_FOUND_MSG;
 
@@ -37,6 +39,7 @@ public class AdopterService {
     @Transactional
     public AdopterEntity searchAdopter(Long adopterId) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el adoptante con id = {}", adopterId);
+        Objects.requireNonNull(adopterId, ADOPTER_ID_NULL_MSG);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
             throw new EntityNotFoundException(ADOPTER_NOT_FOUND);
@@ -61,6 +64,7 @@ public class AdopterService {
     public AdopterEntity updateAdopter(Long adopterId, AdopterEntity adopterEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el adoptante con id = {}", adopterId);
+        Objects.requireNonNull(adopterId, ADOPTER_ID_NULL_MSG);
         Optional<AdopterEntity> persistedAdopter = adopterRepository.findById(adopterId);
         if (persistedAdopter.isEmpty()) {
             throw new EntityNotFoundException(ADOPTER_NOT_FOUND);
@@ -82,6 +86,7 @@ public class AdopterService {
     @Transactional
     public void deleteAdopter(Long adopterId) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el adoptante con id = {}", adopterId);
+        Objects.requireNonNull(adopterId, ADOPTER_ID_NULL_MSG);
         Optional<AdopterEntity> adopterEntity = adopterRepository.findById(adopterId);
         if (adopterEntity.isEmpty()) {
             throw new EntityNotFoundException(ADOPTER_NOT_FOUND);

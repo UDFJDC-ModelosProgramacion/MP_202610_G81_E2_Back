@@ -43,6 +43,7 @@ class MedicalHistoryServiceTest {
     private final List<MedicalHistoryEntity> historyList = new ArrayList<>();
 
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -91,7 +92,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testCreateMedicalHistory() throws Exception {
+    void testCreateMedicalHistory() throws EntityNotFoundException {
         // Find a pet without history, which is petList.get(2)
         PetEntity pet = petList.get(2);
         VeterinarianEntity vet = vetList.get(0);
@@ -106,19 +107,19 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testCreateMedicalHistoryPetNotFound() throws Exception {
+    void testCreateMedicalHistoryPetNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.createMedicalHistory(0L, vetList.get(0).getId())));
     }
 
     @Test
-    void testCreateMedicalHistoryVetNotFound() throws Exception {
+    void testCreateMedicalHistoryVetNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.createMedicalHistory(petList.get(2).getId(), 0L)));
     }
 
     @Test
-    void testSearchMedicalHistory() throws Exception {
+    void testSearchMedicalHistory() throws EntityNotFoundException {
         MedicalHistoryEntity expected = historyList.get(0);
         MedicalHistoryEntity result = medicalHistoryService.searchMedicalHistory(expected.getPet().getId());
 
@@ -127,19 +128,19 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testSearchMedicalHistoryNotFound() throws Exception {
+    void testSearchMedicalHistoryNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.searchMedicalHistory(0L)));
     }
 
     @Test
-    void testSearchMedicalHistories() throws Exception {
+    void testSearchMedicalHistories() {
         List<MedicalHistoryEntity> results = medicalHistoryService.searchMedicalHistories();
         assertTrue(results.size() >= historyList.size());
     }
 
     @Test
-    void testUpdateMedicalHistory() throws Exception {
+    void testUpdateMedicalHistory() throws EntityNotFoundException {
         MedicalHistoryEntity history = historyList.get(0);
         LocalDate oldDate = LocalDate.now().minusDays(5);
         history.setLastUpdated(oldDate);
@@ -152,13 +153,13 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testUpdateMedicalHistoryNotFound() throws Exception {
+    void testUpdateMedicalHistoryNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.updateMedicalHistory(0L)));
     }
 
     @Test
-    void testDeleteMedicalHistoryAdopted() throws Exception {
+    void testDeleteMedicalHistoryAdopted() throws EntityNotFoundException, IllegalOperationException {
         MedicalHistoryEntity history = historyList.get(0);
         PetEntity pet = history.getPet();
         pet.setStatus("ADOPTED");
@@ -171,7 +172,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryNotAdopted() throws Exception {
+    void testDeleteMedicalHistoryNotAdopted() {
         MedicalHistoryEntity history = historyList.get(0);
         PetEntity pet = history.getPet();
         pet.setStatus("IN_SHELTER");
@@ -182,7 +183,7 @@ class MedicalHistoryServiceTest {
     }
 
     @Test
-    void testDeleteMedicalHistoryNotFound() throws Exception {
+    void testDeleteMedicalHistoryNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, 
             () -> medicalHistoryService.deleteMedicalHistory(0L)));
     }

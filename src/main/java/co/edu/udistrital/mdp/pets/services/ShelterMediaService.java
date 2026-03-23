@@ -1,21 +1,25 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.util.List;
+import java.util.Objects;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import co.edu.udistrital.mdp.pets.entities.ShelterMediaEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.ShelterMediaRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
 public class ShelterMediaService {
 
-    private static final String MEDIA_NOT_FOUND = "Media not found";
+    private static final String MEDIA_ID_PREFIX = "El media con ID ";
+    private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
+    private static final String MEDIA_ID_NULL_MSG = "Media id cannot be null";
 
     @Autowired
     private ShelterMediaRepository shelterMediaRepository;
@@ -45,21 +49,24 @@ public class ShelterMediaService {
     @Transactional(readOnly = true)
     public ShelterMediaEntity searchShelterMedia(Long id) throws EntityNotFoundException {
         log.info("Searching shelter media with id: {}", id);
-        return shelterMediaRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
+        Objects.requireNonNull(id, MEDIA_ID_NULL_MSG);
+        return shelterMediaRepository.findById(id).orElseThrow(() -> notFound(id));
     }
 
     @Transactional(readOnly = true)
     public List<ShelterMediaEntity> searchShelterMediasByShelterId(Long shelterId) {
         log.info("Searching shelter medias by shelter id: {}", shelterId);
+        Objects.requireNonNull(shelterId, "Shelter id cannot be null");
         return shelterMediaRepository.findByShelterId(shelterId);
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public ShelterMediaEntity updateShelterMedia(Long id, ShelterMediaEntity updatedMedia)
             throws EntityNotFoundException {
         log.info("Updating shelter media with id: {}", id);
-        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
+        Objects.requireNonNull(id, MEDIA_ID_NULL_MSG);
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if (updatedMedia.getDescription() != null) {
             existing.setDescription(updatedMedia.getDescription());
@@ -71,7 +78,8 @@ public class ShelterMediaService {
     @Transactional
     public void deleteShelterMedia(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter media with id: {}", id);
-        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(MEDIA_NOT_FOUND));
+        Objects.requireNonNull(id, MEDIA_ID_NULL_MSG);
+        ShelterMediaEntity existing = shelterMediaRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if ("Foto de Perfil".equalsIgnoreCase(existing.getMediaType())) {
             if (existing.getShelter() == null) {
@@ -86,5 +94,9 @@ public class ShelterMediaService {
         }
 
         shelterMediaRepository.deleteById(id);
+    }
+
+    private EntityNotFoundException notFound(Long id) {
+        return new EntityNotFoundException(MEDIA_ID_PREFIX + id + NOT_FOUND_SUFFIX);
     }
 }

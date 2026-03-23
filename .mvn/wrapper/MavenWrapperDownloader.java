@@ -15,6 +15,7 @@
  */
 import java.net.*;
 import java.io.*;
+import java.net.URI;
 import java.nio.channels.*;
 import java.util.Properties;
 
@@ -55,22 +56,12 @@ public class MavenWrapperDownloader {
         File mavenWrapperPropertyFile = new File(baseDirectory, MAVEN_WRAPPER_PROPERTIES_PATH);
         String url = DEFAULT_DOWNLOAD_URL;
         if(mavenWrapperPropertyFile.exists()) {
-            FileInputStream mavenWrapperPropertyFileInputStream = null;
-            try {
-                mavenWrapperPropertyFileInputStream = new FileInputStream(mavenWrapperPropertyFile);
+            try (FileInputStream mavenWrapperPropertyFileInputStream = new FileInputStream(mavenWrapperPropertyFile)) {
                 Properties mavenWrapperProperties = new Properties();
                 mavenWrapperProperties.load(mavenWrapperPropertyFileInputStream);
                 url = mavenWrapperProperties.getProperty(PROPERTY_NAME_WRAPPER_URL, url);
             } catch (IOException e) {
                 System.out.println("- ERROR loading '" + MAVEN_WRAPPER_PROPERTIES_PATH + "'");
-            } finally {
-                try {
-                    if(mavenWrapperPropertyFileInputStream != null) {
-                        mavenWrapperPropertyFileInputStream.close();
-                    }
-                } catch (IOException e) {
-                    // Ignore ...
-                }
             }
         }
         System.out.println("- Downloading from: " + url);
@@ -87,14 +78,13 @@ public class MavenWrapperDownloader {
             downloadFileFromURL(url, outputFile);
             System.out.println("Done");
             System.exit(0);
-        } catch (Throwable e) {
-            System.out.println("- Error downloading");
-            e.printStackTrace();
+        } catch (IOException | RuntimeException e) {
+            System.out.println("- Error downloading: " + e.getMessage());
             System.exit(1);
         }
     }
 
-    private static void downloadFileFromURL(String urlString, File destination) throws Exception {
+    private static void downloadFileFromURL(String urlString, File destination) throws IOException {
         if (System.getenv("MVNW_USERNAME") != null && System.getenv("MVNW_PASSWORD") != null) {
             String username = System.getenv("MVNW_USERNAME");
             char[] password = System.getenv("MVNW_PASSWORD").toCharArray();
@@ -105,13 +95,11 @@ public class MavenWrapperDownloader {
                 }
             });
         }
-        URL website = new URL(urlString);
-        ReadableByteChannel rbc;
-        rbc = Channels.newChannel(website.openStream());
-        FileOutputStream fos = new FileOutputStream(destination);
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        fos.close();
-        rbc.close();
+        URL website = URI.create(urlString).toURL();
+        try (ReadableByteChannel rbc = Channels.newChannel(website.openStream());
+             FileOutputStream fos = new FileOutputStream(destination)) {
+            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        }
     }
 
 }

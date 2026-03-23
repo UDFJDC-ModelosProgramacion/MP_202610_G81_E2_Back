@@ -42,7 +42,13 @@ class AdoptionProcessServiceTest {
     private final List<TrialCohabitationEntity> processList = new ArrayList<>();
     private AdoptionRequestEntity adoptionRequest;
 
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
+
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -98,7 +104,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testCreateAdoptionProcess() throws Exception {
+    void testCreateAdoptionProcess() throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         TrialCohabitationEntity newProcess = new TrialCohabitationEntity();
         newProcess.setCreationDate(LocalDate.now());
         newProcess.setStatus("PENDING");
@@ -111,28 +117,28 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testCreateAdoptionProcessNull() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(null));
+    void testCreateAdoptionProcessNull() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(null));
     }
 
     @Test
-    void testCreateAdoptionProcessWithoutDate() throws Exception {
+    void testCreateAdoptionProcessWithoutDate() {
         TrialCohabitationEntity process = new TrialCohabitationEntity();
         process.setAdoptionRequest(adoptionRequest);
         process.setStartDate(LocalDate.now());
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
     }
 
     @Test
-    void testCreateAdoptionProcessWithoutRequest() throws Exception {
+    void testCreateAdoptionProcessWithoutRequest() {
         TrialCohabitationEntity process = new TrialCohabitationEntity();
         process.setCreationDate(LocalDate.now());
         process.setStartDate(LocalDate.now());
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.createAdoptionProcess(process));
     }
 
     @Test
-    void testSearchAdoptionProcess() throws Exception {
+    void testSearchAdoptionProcess() throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         AdoptionProcessEntity expected = processList.get(0);
         AdoptionProcessEntity result = adoptionProcessService.searchAdoptionProcess(expected.getId());
         assertNotNull(result);
@@ -140,18 +146,18 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testSearchAdoptionProcessNotFound() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.searchAdoptionProcess(0L));
+    void testSearchAdoptionProcessNotFound() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.searchAdoptionProcess(0L));
     }
 
     @Test
-    void testSearchAdoptionProcesses() throws Exception {
+    void testSearchAdoptionProcesses() {
         List<AdoptionProcessEntity> results = adoptionProcessService.searchAdoptionProcesses();
         assertTrue(results.size() >= processList.size());
     }
 
     @Test
-    void testUpdateAdoptionProcess() throws Exception {
+    void testUpdateAdoptionProcess() throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         AdoptionProcessEntity expected = processList.get(0);
         expected.setStatus("COMPLETED");
 
@@ -161,7 +167,9 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionProcess() throws Exception {
+    void testDeleteAdoptionProcess()
+            throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException,
+            co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         AdoptionProcessEntity expected = processList.get(0);
         adoptionProcessService.deleteAdoptionProcess(expected.getId());
         
@@ -170,7 +178,7 @@ class AdoptionProcessServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionProcessWithReturnCase() throws Exception {
+    void testDeleteAdoptionProcessWithReturnCase() {
         AdoptionProcessEntity expected = processList.get(0);
         
         ReturnCaseEntity returnCase = new ReturnCaseEntity();
@@ -181,17 +189,17 @@ class AdoptionProcessServiceTest {
         expected.setReturnCase(returnCase);
         entityManager.persist(expected);
 
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.deleteAdoptionProcess(expected.getId()));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionProcessService.deleteAdoptionProcess(expected.getId()));
     }
 
     @Test
-    void testUpdateAdoptionProcessNotFound() throws Exception {
+    void testUpdateAdoptionProcessNotFound() {
         AdoptionProcessEntity update = new TrialCohabitationEntity();
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.updateAdoptionProcess(0L, update));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.updateAdoptionProcess(0L, update));
     }
 
     @Test
-    void testDeleteAdoptionProcessNotFound() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.deleteAdoptionProcess(0L));
+    void testDeleteAdoptionProcessNotFound() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionProcessService.deleteAdoptionProcess(0L));
     }
 }

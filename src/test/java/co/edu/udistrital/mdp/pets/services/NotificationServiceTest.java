@@ -74,7 +74,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotification() throws Exception {
+    void testCreateNotification() throws EntityNotFoundException, IllegalOperationException {
         NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
         newNotification.setTitle("New notification");
         newNotification.setContent("New content");
@@ -92,12 +92,12 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationNull() throws Exception {
+    void testCreateNotificationNull() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> notificationService.createNotification(null)));
     }
 
     @Test
-    void testCreateNotificationWithNullUser() throws Exception {
+    void testCreateNotificationWithNullUser() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
             newNotification.setTitle("No user");
@@ -108,7 +108,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationNullUser() throws Exception {
+    void testCreateNotificationNullUser() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
             newNotification.setTitle("Invalid user");
@@ -128,7 +128,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testUpdateNotificationMissingContent() throws Exception {
+    void testUpdateNotificationMissingContent() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             NotificationEntity notification = new NotificationEntity();
             notification.setContent("");
@@ -137,7 +137,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationWithDefaults() throws Exception {
+    void testCreateNotificationWithDefaults() throws EntityNotFoundException, IllegalOperationException {
         NotificationEntity notification = new NotificationEntity();
         notification.setContent("Content without default");
         notification.setUser(userList.get(0));
@@ -147,7 +147,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationWithInvalidUser() throws Exception {
+    void testCreateNotificationWithInvalidUser() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
             newNotification.setTitle("Invalid user");
@@ -160,7 +160,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationWithoutContent() throws Exception {
+    void testCreateNotificationWithoutContent() {
         NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
         newNotification.setTitle("Invalid");
         newNotification.setContent("");
@@ -170,7 +170,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testSearchNotification() throws Exception {
+    void testSearchNotification() throws EntityNotFoundException {
         NotificationEntity entity = notificationList.get(0);
         NotificationEntity resultEntity = notificationService.searchNotification(entity.getId());
         assertNotNull(resultEntity);
@@ -181,12 +181,12 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testSearchInvalidNotification() throws Exception {
+    void testSearchInvalidNotification() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> notificationService.searchNotification(0L)));
     }
 
     @Test
-    void testSearchNotifications() throws Exception {
+    void testSearchNotifications() {
         List<NotificationEntity> notifications = notificationService.searchNotifications();
         assertEquals(notificationList.size(), notifications.size());
         for (NotificationEntity entity : notifications) {
@@ -201,7 +201,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testUpdateNotification() throws Exception {
+    void testUpdateNotification() throws EntityNotFoundException, IllegalOperationException {
         NotificationEntity newData = factory.manufacturePojo(NotificationEntity.class);
         newData.setTitle("Updated title");
         newData.setContent("Updated notification");
@@ -216,7 +216,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testUpdateNotificationNotFound() throws Exception {
+    void testUpdateNotificationNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             NotificationEntity newData = factory.manufacturePojo(NotificationEntity.class);
             newData.setContent("Updated notification");
@@ -225,7 +225,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testDeleteUnreadNotification() throws Exception {
+    void testDeleteUnreadNotification() {
         NotificationEntity unreadNotification = factory.manufacturePojo(NotificationEntity.class);
         unreadNotification.setTitle("Unread");
         unreadNotification.setContent("Unread notification");
@@ -237,7 +237,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testDeleteNotification() throws Exception {
+    void testDeleteNotification() throws EntityNotFoundException, IllegalOperationException {
         NotificationEntity deletable = factory.manufacturePojo(NotificationEntity.class);
         deletable.setTitle("Delete");
         deletable.setContent("Delete notification");
@@ -251,7 +251,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testDeleteInvalidNotification() throws Exception {
+    void testDeleteInvalidNotification() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> notificationService.deleteNotification(0L)));
     }
 }

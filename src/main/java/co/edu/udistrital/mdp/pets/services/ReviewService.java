@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ReviewService {
     private static final String NOT_FOUND_MSG = "Review not found.";
+    private static final String REVIEW_ID_NULL_MSG = "Review id cannot be null";
 
     private static final String REV_NOT_FOUND = NOT_FOUND_MSG;
 
@@ -38,6 +40,7 @@ public class ReviewService {
     @Transactional
     public ReviewEntity searchReview(Long id) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la reseña con id = {}", id);
+        Objects.requireNonNull(id, REVIEW_ID_NULL_MSG);
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
@@ -57,6 +60,7 @@ public class ReviewService {
     public ReviewEntity updateReview(Long id, ReviewEntity review)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la reseña con id = {}", id);
+        Objects.requireNonNull(id, REVIEW_ID_NULL_MSG);
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
@@ -74,6 +78,7 @@ public class ReviewService {
     @Transactional
     public void deleteReview(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar la reseña con id = {}", id);
+        Objects.requireNonNull(id, REVIEW_ID_NULL_MSG);
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())

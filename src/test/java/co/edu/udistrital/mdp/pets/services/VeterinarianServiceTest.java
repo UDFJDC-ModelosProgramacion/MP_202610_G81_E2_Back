@@ -35,13 +35,19 @@ class VeterinarianServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    private PodamFactory factory = new PodamFactoryImpl();
+    private final PodamFactory factory = new PodamFactoryImpl();
 
-    private List<VeterinarianEntity> veterinarianList = new ArrayList<>();
-    private List<ShelterEntity> shelterList = new ArrayList<>();
-    private List<VetSpecialityEntity> specialityList = new ArrayList<>();
+    private final List<VeterinarianEntity> veterinarianList = new ArrayList<>();
+    private final List<ShelterEntity> shelterList = new ArrayList<>();
+    private final List<VetSpecialityEntity> specialityList = new ArrayList<>();
+
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
 
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -86,7 +92,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarian() throws Exception {
+    void testCreateVeterinarian() throws IllegalOperationException, EntityNotFoundException {
         VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
         newEntity.setLicenseNumber("LIC-NEW-" + System.nanoTime());
         newEntity.setSpecialities(new ArrayList<>());
@@ -103,8 +109,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarianNoLicense() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateVeterinarianNoLicense() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
             newEntity.setLicenseNumber(null);
             newEntity.setSpecialities(new ArrayList<>());
@@ -115,8 +121,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarianEmptyLicense() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateVeterinarianEmptyLicense() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
             newEntity.setLicenseNumber("   ");
             newEntity.setSpecialities(new ArrayList<>());
@@ -127,8 +133,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarianNoId() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateVeterinarianNoId() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
             newEntity.setId(null);
             newEntity.setLicenseNumber("LIC-TEST");
@@ -140,8 +146,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarianUserNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testCreateVeterinarianUserNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
             newEntity.setId(0L);
             newEntity.setLicenseNumber("LIC-TEST");
@@ -153,7 +159,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testSearchVeterinarian() throws Exception {
+    void testSearchVeterinarian() throws EntityNotFoundException {
         VeterinarianEntity entity = veterinarianList.get(0);
         VeterinarianEntity resultEntity = veterinarianService.searchVeterinarian(entity.getId());
         assertNotNull(resultEntity);
@@ -162,14 +168,14 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testSearchVeterinarianNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testSearchVeterinarianNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             veterinarianService.searchVeterinarian(0L);
         });
     }
 
     @Test
-    void testSearchVeterinarians() throws Exception {
+    void testSearchVeterinarians() {
         List<VeterinarianEntity> list = veterinarianService.searchVeterinarians();
         assertEquals(veterinarianList.size(), list.size());
         for (VeterinarianEntity entity : list) {
@@ -184,21 +190,21 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testSearchVeterinariansBySpeciality() throws Exception {
+    void testSearchVeterinariansBySpeciality() {
         List<VeterinarianEntity> list = veterinarianService.searchVeterinariansBySpeciality(specialityList.get(0).getId());
         assertNotNull(list);
         assertFalse(list.isEmpty());
     }
 
     @Test
-    void testSearchVeterinariansByShelter() throws Exception {
+    void testSearchVeterinariansByShelter() {
         List<VeterinarianEntity> list = veterinarianService.searchVeterinariansByShelter(shelterList.get(0).getId());
         assertNotNull(list);
         assertFalse(list.isEmpty());
     }
 
     @Test
-    void testUpdateVeterinarian() throws Exception {
+    void testUpdateVeterinarian() throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity entity = veterinarianList.get(0);
         VeterinarianEntity updatedVeterinarian = new VeterinarianEntity();
         updatedVeterinarian.setId(entity.getId());
@@ -212,8 +218,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testUpdateVeterinarianNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testUpdateVeterinarianNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             VeterinarianEntity updatedVeterinarian = new VeterinarianEntity();
             updatedVeterinarian.setId(0L);
             veterinarianService.updateVeterinarian(0L, updatedVeterinarian);
@@ -221,8 +227,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testUpdateVeterinarianChangeIdFails() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testUpdateVeterinarianChangeIdFails() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity entity = veterinarianList.get(0);
             VeterinarianEntity updatedVeterinarian = new VeterinarianEntity();
             updatedVeterinarian.setId(999L);
@@ -231,7 +237,7 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testDeleteVeterinarian() throws Exception {
+    void testDeleteVeterinarian() throws EntityNotFoundException, IllegalOperationException {
         VeterinarianEntity entity = veterinarianList.get(1);
         veterinarianService.deleteVeterinarian(entity.getId());
         VeterinarianEntity deleted = entityManager.find(VeterinarianEntity.class, entity.getId());
@@ -239,15 +245,15 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testDeleteVeterinarianNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testDeleteVeterinarianNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             veterinarianService.deleteVeterinarian(0L);
         });
     }
 
     @Test
-    void testDeleteVeterinarianWithMedicalHistory() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteVeterinarianWithMedicalHistory() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity entity = veterinarianList.get(0);
             MedicalHistoryEntity history = factory.manufacturePojo(MedicalHistoryEntity.class);
             history.setVeterinarian(entity);
@@ -259,8 +265,8 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testDeleteVeterinarianWithMedicalEvents() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteVeterinarianWithMedicalEvents() {
+        expectThrows(IllegalOperationException.class, () -> {
             VeterinarianEntity entity = veterinarianList.get(0);
             MedicalEventEntity event = factory.manufacturePojo(MedicalEventEntity.class);
             event.setVeterinarian(entity);

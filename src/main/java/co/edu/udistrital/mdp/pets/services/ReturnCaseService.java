@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class ReturnCaseService {
     private static final String NOT_FOUND_MSG = "Return case not found";
+    private static final String RETURN_CASE_ID_NULL_MSG = "Return case id cannot be null";
 
     private static final String RC_NOT_FOUND = NOT_FOUND_MSG;
 
@@ -38,6 +40,7 @@ public class ReturnCaseService {
     @Transactional
     public ReturnCaseEntity searchReturnCase(Long id) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar el caso de devolución con id = {}", id);
+        Objects.requireNonNull(id, RETURN_CASE_ID_NULL_MSG);
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())
@@ -57,6 +60,7 @@ public class ReturnCaseService {
     public ReturnCaseEntity updateReturnCase(Long id, ReturnCaseEntity returnCase)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar el caso de devolución con id = {}", id);
+        Objects.requireNonNull(id, RETURN_CASE_ID_NULL_MSG);
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())
@@ -74,6 +78,7 @@ public class ReturnCaseService {
     @Transactional
     public void deleteReturnCase(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar el caso de devolución con id = {}", id);
+        Objects.requireNonNull(id, RETURN_CASE_ID_NULL_MSG);
 
         Optional<ReturnCaseEntity> returnCaseEntity = returnCaseRepository.findById(id);
         if (returnCaseEntity.isEmpty())

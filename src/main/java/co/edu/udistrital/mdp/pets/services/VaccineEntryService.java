@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class VaccineEntryService {
           public VaccineEntryEntity createVaccineEntry(
                               Long medicalHistoryId,
                               VaccineEntryEntity entry) throws EntityNotFoundException {
+                    Objects.requireNonNull(medicalHistoryId, "Medical history id cannot be null");
 
                     MedicalHistoryEntity history = historyRepository.findById(medicalHistoryId)
                                         .orElseThrow(() -> new EntityNotFoundException("Medical history not found"));
@@ -43,6 +45,7 @@ public class VaccineEntryService {
           }
 
           public List<VaccineEntryEntity> getVaccineEntries(Long medicalHistoryId) {
+                    Objects.requireNonNull(medicalHistoryId, "Medical history id cannot be null");
 
                     return vaccineRepository.findByMedicalHistoryId(medicalHistoryId);
           }
@@ -50,6 +53,7 @@ public class VaccineEntryService {
           public VaccineEntryEntity updateVaccineEntry(
                               Long entryId,
                               VaccineEntryEntity updatedEntry) throws EntityNotFoundException {
+                    Objects.requireNonNull(entryId, "Vaccine entry id cannot be null");
 
                     VaccineEntryEntity entry = vaccineRepository.findById(entryId)
                                         .orElseThrow(() -> new EntityNotFoundException("Vaccine entry not found"));

@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class MedicalEventService {
+          private static final String MEDICAL_EVENT_ID_NULL_MSG = "Medical event id cannot be null";
 
           @Autowired
           private MedicalEventRepository eventRepository;
@@ -37,6 +39,8 @@ public class MedicalEventService {
                               Long historyId,
                               Long veterinarianId,
                               MedicalEventEntity event) throws EntityNotFoundException {
+                    Objects.requireNonNull(historyId, "Medical history id cannot be null");
+                    Objects.requireNonNull(veterinarianId, "Veterinarian id cannot be null");
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -56,6 +60,7 @@ public class MedicalEventService {
 
           @Transactional(readOnly = true)
           public MedicalEventEntity searchMedicalEvent(Long eventId) throws EntityNotFoundException {
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     return eventRepository.findById(eventId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -70,6 +75,7 @@ public class MedicalEventService {
 
           @Transactional
           public MedicalEventEntity updateMedicalEvent(Long eventId, MedicalEventEntity updatedEvent) throws EntityNotFoundException {
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     MedicalEventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Medical event not found"));
 
@@ -82,6 +88,7 @@ public class MedicalEventService {
 
           @Transactional
           public void deleteMedicalEvent(Long eventId) {
+                    Objects.requireNonNull(eventId, MEDICAL_EVENT_ID_NULL_MSG);
 
                     eventRepository.deleteById(eventId);
           }
