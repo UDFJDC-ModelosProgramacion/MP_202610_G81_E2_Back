@@ -165,7 +165,7 @@ class MedicalEventServiceTest {
     }
 
     @Test
-    void testDeleteMedicalEvent() throws EntityNotFoundException {
+    void testDeleteMedicalEvent() {
         MedicalEventEntity expected = eventList.get(0);
         medicalEventService.deleteMedicalEvent(expected.getId());
         

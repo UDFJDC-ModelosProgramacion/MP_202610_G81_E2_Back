@@ -20,6 +20,7 @@ public class VeterinarianService {
 
     private static final String VET_ID_PREFIX = "El veterinario con ID ";
     private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
+    private static final String VETERINARIAN_ID_NULL_MSG = "Veterinarian id cannot be null";
 
     @Autowired
     private VeterinarianRepository veterinarianRepository;
@@ -41,7 +42,7 @@ public class VeterinarianService {
                     "El veterinario debe estar vinculado a un UserEntity ya existente en el sistema");
         }
 
-        Long veterinarianId = Objects.requireNonNull(veterinarian.getId(), "Veterinarian id cannot be null");
+        Long veterinarianId = Objects.requireNonNull(veterinarian.getId(), VETERINARIAN_ID_NULL_MSG);
 
         // Verifica si existe el usuario original
         if (!userRepository.existsById(veterinarianId)) {
@@ -54,7 +55,7 @@ public class VeterinarianService {
     @Transactional(readOnly = true)
     public VeterinarianEntity searchVeterinarian(Long id) throws EntityNotFoundException {
         log.info("Searching veterinarian with id: {}", id);
-        Objects.requireNonNull(id, "Veterinarian id cannot be null");
+        Objects.requireNonNull(id, VETERINARIAN_ID_NULL_MSG);
         return veterinarianRepository.findById(id).orElseThrow(() -> notFound(id));
     }
 
@@ -82,7 +83,7 @@ public class VeterinarianService {
     public VeterinarianEntity updateVeterinarian(Long id, VeterinarianEntity veterinarian)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating veterinarian with id: {}", id);
-        Objects.requireNonNull(id, "Veterinarian id cannot be null");
+        Objects.requireNonNull(id, VETERINARIAN_ID_NULL_MSG);
         VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if (veterinarian.getId() != null && !existing.getId().equals(veterinarian.getId())) {
@@ -102,7 +103,7 @@ public class VeterinarianService {
     @Transactional
     public void deleteVeterinarian(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting veterinarian with id: {}", id);
-        Objects.requireNonNull(id, "Veterinarian id cannot be null");
+        Objects.requireNonNull(id, VETERINARIAN_ID_NULL_MSG);
         VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if (existing.getMedicalHistories() != null && !existing.getMedicalHistories().isEmpty()) {
