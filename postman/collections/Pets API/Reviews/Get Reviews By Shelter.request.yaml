@@ -1,0 +1,7 @@
+$kind: http-request
+url: http://localhost:8080/api/reviews?shelterId=1
+method: GET
+queryParams:
+  shelterId: "1"
+examples: .resources/Get Reviews By Shelter.resources/examples
+order: 5000

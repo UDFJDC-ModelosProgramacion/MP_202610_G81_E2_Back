@@ -1,14 +1,9 @@
 $kind: http-request
+name: Get User Pets
 url: http://localhost:8080/api/users/1/pets
 method: GET
 body:
   type: json
-  content: "{\r
-
-    \    \"name\": \"Juan\",\r
-
-    \    \"email\": \"juan@email.com\"\r
-
-    }"
+  content: "{\r\n}"
 examples: ./.resources/Get User Pets.resources/examples
 order: 4000

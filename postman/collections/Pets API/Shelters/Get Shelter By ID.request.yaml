@@ -1,0 +1,5 @@
+$kind: http-request
+url: http://localhost:8080/api/shelters/1
+method: GET
+examples: .resources/Get Shelter By ID.resources/examples
+order: 3000

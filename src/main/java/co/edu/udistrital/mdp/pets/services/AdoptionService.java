@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.services;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
+import co.edu.udistrital.mdp.pets.entities.*;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRepository;
@@ -32,6 +33,9 @@ public class AdoptionService {
         if (adoption == null) {
             throw new IllegalOperationException("Adoption can not be null.");
         }
+
+        adoption.setStatus(AdoptionStatus.REQUESTED);
+        adoption.setContractSigned(false);
 
         log.info("Termina proceso de creación de la adopción");
         return adoptionRepository.save(adoption);
@@ -72,6 +76,63 @@ public class AdoptionService {
 
         log.info("Termina proceso de actualizar la adopción con id = {}", id);
         return adoptionRepository.save(existing);
+    }
+
+    @Transactional
+    public AdoptionEntity requestAdoption(Long id) throws EntityNotFoundException, IllegalOperationException{
+        AdoptionEntity adoption = searchAdoption(id);
+
+        if (adoption.getStatus() != AdoptionStatus.REQUESTED) {
+            throw new IllegalOperationException("Adoption already requested or in invalid state");
+        }
+
+        adoption.setStatus(AdoptionStatus.REQUESTED);
+        return adoptionRepository.save(adoption);
+    }
+
+    @Transactional
+    public AdoptionEntity approveAdoption(Long id) throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity adoption = searchAdoption(id);
+
+        if (adoption.getStatus() != AdoptionStatus.REQUESTED) {
+            throw new IllegalOperationException("Only requested adoptions can be approved");
+        }
+
+        adoption.setStatus(AdoptionStatus.APPROVED);
+        adoption.setContractSigned(true);
+        adoption.setOfficialDate(LocalDate.now());
+
+        return adoptionRepository.save(adoption);
+    }
+
+    @Transactional
+    public AdoptionEntity returnPet(Long id) throws EntityNotFoundException, IllegalOperationException {
+        AdoptionEntity adoption = searchAdoption(id);
+
+        if (adoption.getStatus() != AdoptionStatus.APPROVED &&
+            adoption.getStatus() != AdoptionStatus.IN_TRIAL) {
+            throw new IllegalOperationException("Adoption not in a returnable state");
+        }
+
+        adoption.setStatus(AdoptionStatus.RETURNED);
+
+        return adoptionRepository.save(adoption);
+    }
+
+    @Transactional
+    public AdoptionEntity startTrial(Long id, TrialCohabitationEntity trial)
+            throws EntityNotFoundException, IllegalOperationException {
+
+        AdoptionEntity adoption = searchAdoption(id);
+
+        if (adoption.getStatus() != AdoptionStatus.APPROVED) {
+            throw new IllegalOperationException("Trial only allowed after approval");
+        }
+
+        adoption.setTrialCohabitation(trial);
+        adoption.setStatus(AdoptionStatus.IN_TRIAL);
+
+        return adoptionRepository.save(adoption);
     }
 
     @Transactional

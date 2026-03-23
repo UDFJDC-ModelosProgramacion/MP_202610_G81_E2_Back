@@ -1,14 +1,9 @@
 $kind: http-request
+name: Delete User
 url: http://localhost:8080/api/users/1
 method: DELETE
 body:
   type: json
-  content: "{\r
-
-    \    \"name\": \"Juan\",\r
-
-    \    \"email\": \"juan@email.com\"\r
-
-    }"
+  content: "{\r\n}"
 examples: ./.resources/Delete User.resources/examples
 order: 6000

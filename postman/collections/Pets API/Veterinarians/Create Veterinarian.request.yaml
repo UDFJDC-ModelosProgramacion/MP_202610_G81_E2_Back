@@ -1,0 +1,33 @@
+$kind: http-request
+name: Create Veterinarian
+url: http://localhost:8080/api/veterinarians
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"licenseNumber\": \"VET-001\",\r
+
+    \    \"availabilitySchedule\": \"Weekends\",\r
+
+    \    \"user\":{\r
+
+    \        \"id\": 1\r
+
+    \    },\r
+
+    \    \"specialities\": [\r
+
+    \        {\r
+
+    \            \"name\": \"Surgery\",\r
+
+    \            \"description\": \"Surgical producers\"\r
+
+    \        }\r
+
+    \    ]\r
+
+    }"
+examples: .resources/Create Veterinarian.resources/examples
+order: 2000

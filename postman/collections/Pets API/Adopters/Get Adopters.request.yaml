@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Adopters
+url: http://localhost:8080/api/adopters
+method: GET
+order: 3000

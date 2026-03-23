@@ -1,4 +1,19 @@
 $kind: http-request
-url: ""
-method: GET
-order: 1000
+name: Create Adoption
+url: http://localhost:8080/api/adoptions
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"adopterId\": 1,\r
+
+    \    \"petId\": 1,\r
+
+    \    \"officialDate\": \"2026-03-23\",\r
+
+    \    \"contractSigned\": false\r
+
+    }"
+examples: .resources/Create Adoption.resources/examples
+order: 27

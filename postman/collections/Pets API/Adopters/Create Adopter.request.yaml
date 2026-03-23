@@ -1,0 +1,24 @@
+$kind: http-request
+name: Create Adopter
+url: http://localhost:8080/api/adopters
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"user\": {\r
+
+    \        \"id\": 1\r
+
+    \    },\r
+
+    \    \"address\": \"Calle 123\",\r
+
+    \    \"city\": \"Bogota\",\r
+
+    \    \"housingType\": \"HOUSE\",\r
+
+    \    \"status\": \"ACTIVE\"\r
+
+    }"
+order: 1000

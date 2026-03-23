@@ -38,4 +38,7 @@ public class PetEntity extends BaseEntity {
 
     @OneToMany(mappedBy = "pet")
     private List<AdoptionEntity> adoptionRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pet")
+    private List<AdoptionEntity> adoptions;
 }

@@ -1,4 +1,5 @@
 $kind: http-request
+name: Create User
 url: http://localhost:8080/api/users
 method: POST
 body:
@@ -7,7 +8,15 @@ body:
 
     \    \"name\": \"Juan\",\r
 
-    \    \"email\": \"juan@email.com\"\r
+    \    \"email\": \"juan@email.com\",\r
+
+    \    \"password\": \"123456\",\r
+
+    \    \"phoneNumber\": \"3001234567\",\r
+
+    \    \"profileImageUrl\": \"url\",\r
+
+    \    \"registerDate\": \"2026-03-23T10:00:00\"\r
 
     }"
 examples: ./.resources/Create User.resources/examples

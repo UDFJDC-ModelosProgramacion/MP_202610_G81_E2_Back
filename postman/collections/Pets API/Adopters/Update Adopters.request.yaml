@@ -1,0 +1,18 @@
+$kind: http-request
+name: Update Adopters
+url: http://localhost:8080/api/adopters/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"address\": \"Nueva direccion\",\r
+
+    \    \"city\": \"Medellin\",\r
+
+    \    \"housingType\": \"APARTMENT\",\r
+
+    \    \"status\": \"INACTIVE\"\r
+
+    }"
+order: 3583901483139684

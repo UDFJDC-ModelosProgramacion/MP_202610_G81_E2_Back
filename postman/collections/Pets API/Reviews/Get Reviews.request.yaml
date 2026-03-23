@@ -1,0 +1,5 @@
+$kind: http-request
+url: http://localhost:8080/api/reviews
+method: GET
+examples: .resources/Get Reviews.resources/examples
+order: 4000

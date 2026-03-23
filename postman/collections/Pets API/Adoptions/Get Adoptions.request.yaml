@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Adoptions
+url: http://localhost:8080/api/adoptions
+method: GET
+order: 5000
