@@ -3,7 +3,6 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,10 +21,13 @@ public class PetService {
           private static final String PET_NOT_FOUND = "Pet not found";
           private static final String PET_ID_NULL_MSG = "Pet id cannot be null";
 
-          @Autowired
-          private PetRepository petRepository;
-          @Autowired
-          private ShelterRepository shelterRepository;
+          private final PetRepository petRepository;
+          private final ShelterRepository shelterRepository;
+
+          public PetService(PetRepository petRepository, ShelterRepository shelterRepository) {
+                    this.petRepository = petRepository;
+                    this.shelterRepository = shelterRepository;
+          }
 
           /**
            * Regla:
