@@ -1,0 +1,10 @@
+$kind: http-request
+url: http://localhost:8080/api/messages/sent?userId=1
+method: GET
+queryParams:
+  userId: "1"
+body:
+  type: json
+  content: ""
+examples: .resources/Get Sent Messages.resources/examples
+order: 7000

@@ -1,0 +1,23 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/notifications/1
+  method: PATCH
+  body:
+    type: json
+    content: "{\r\n    \"read\": true\r\n}"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 04:50:55 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '{"userId":1,"title":"Adoption Approved","content":"Your adoption
+      request was
+      accepted","id":2,"createdAt":"2026-03-22T23:48:31.2717127","isRead":true}'
+order: 1774241479207
