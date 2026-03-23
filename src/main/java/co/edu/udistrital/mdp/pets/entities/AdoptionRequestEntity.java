@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
@@ -27,7 +28,8 @@ public class AdoptionRequestEntity extends BaseEntity {
     @PodamExclude
     private PetEntity pet;
 
-    @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "adoptionRequest", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     @PodamExclude
     private AdoptionProcessEntity adoptionProcess;
 }

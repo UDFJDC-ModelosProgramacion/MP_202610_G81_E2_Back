@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -19,10 +20,12 @@ public abstract class AdoptionProcessEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "adoption_request_id")
+    @JsonIgnore
     @PodamExclude
     private AdoptionRequestEntity adoptionRequest;
 
-    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "adoptionProcess", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     @PodamExclude
     private ReturnCaseEntity returnCase;
 
