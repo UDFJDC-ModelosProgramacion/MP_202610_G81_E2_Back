@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class AdoptionService {
     @Transactional
     public AdoptionEntity searchAdoption(Long id) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la adopción con id = {}", id);
+        Objects.requireNonNull(id, "Adoption id cannot be null");
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())
@@ -57,6 +59,7 @@ public class AdoptionService {
     public AdoptionEntity updateAdoption(Long id, AdoptionEntity adoption)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la adopción con id = {}", id);
+        Objects.requireNonNull(id, "Adoption id cannot be null");
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())
@@ -73,6 +76,7 @@ public class AdoptionService {
     @Transactional
     public void deleteAdoption(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar la adopción con id = {}", id);
+        Objects.requireNonNull(id, "Adoption id cannot be null");
 
         Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
         if (adoptionEntity.isEmpty())

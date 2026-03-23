@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class AdoptionRequestService {
     public AdoptionRequestEntity searchAdoptionRequest(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
 
         log.info("Search adoption request with id = {}", id);
+        Objects.requireNonNull(id, "Adoption request id cannot be null");
 
         return adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
@@ -61,6 +63,7 @@ public class AdoptionRequestService {
     public AdoptionRequestEntity updateAdoptionRequest(Long id, AdoptionRequestEntity adoptionRequest) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
 
         log.info("Updating adoption request");
+        Objects.requireNonNull(id, "Adoption request id cannot be null");
 
         AdoptionRequestEntity existing = adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));
@@ -74,6 +77,7 @@ public class AdoptionRequestService {
     public void deleteAdoptionRequest(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
 
         log.info("Delete adoption request");
+        Objects.requireNonNull(id, "Adoption request id cannot be null");
 
         AdoptionRequestEntity adoptionRequest = adoptionRequestRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADREQ_NOT_FOUND));

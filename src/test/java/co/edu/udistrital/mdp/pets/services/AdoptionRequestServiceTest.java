@@ -41,7 +41,13 @@ class AdoptionRequestServiceTest {
     private AdopterEntity adopter;
     private PetEntity pet;
 
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
+
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -84,7 +90,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequest() throws Exception {
+    void testCreateAdoptionRequest() throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         AdoptionRequestEntity newReq = new AdoptionRequestEntity();
         newReq.setRequestDate(LocalDate.now());
         newReq.setPet(pet);
@@ -97,36 +103,36 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequestNull() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(null));
+    void testCreateAdoptionRequestNull() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(null));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutDate() throws Exception {
+    void testCreateAdoptionRequestWithoutDate() {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setPet(pet);
         req.setAdopter(adopter);
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutPet() throws Exception {
+    void testCreateAdoptionRequestWithoutPet() {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setAdopter(adopter);
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testCreateAdoptionRequestWithoutAdopter() throws Exception {
+    void testCreateAdoptionRequestWithoutAdopter() {
         AdoptionRequestEntity req = new AdoptionRequestEntity();
         req.setRequestDate(LocalDate.now());
         req.setPet(pet);
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.createAdoptionRequest(req));
     }
 
     @Test
-    void testSearchAdoptionRequest() throws Exception {
+    void testSearchAdoptionRequest() throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity result = adoptionRequestService.searchAdoptionRequest(expected.getId());
         assertNotNull(result);
@@ -134,18 +140,18 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testSearchAdoptionRequestNotFound() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.searchAdoptionRequest(0L));
+    void testSearchAdoptionRequestNotFound() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.searchAdoptionRequest(0L));
     }
 
     @Test
-    void testSearchAdoptionRequests() throws Exception {
+    void testSearchAdoptionRequests() {
         List<AdoptionRequestEntity> results = adoptionRequestService.searchAdoptionRequests();
         assertTrue(results.size() >= requestList.size());
     }
 
     @Test
-    void testUpdateAdoptionRequest() throws Exception {
+    void testUpdateAdoptionRequest() throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         AdoptionRequestEntity expected = requestList.get(0);
         AdoptionRequestEntity updatedInfo = new AdoptionRequestEntity();
         updatedInfo.setStatus("APPROVED");
@@ -157,7 +163,9 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequest() throws Exception {
+        void testDeleteAdoptionRequest()
+            throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException,
+            co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         AdoptionRequestEntity expected = requestList.get(0);
         adoptionRequestService.deleteAdoptionRequest(expected.getId());
         
@@ -166,7 +174,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testDeleteAdoptionRequestWithProcess() throws Exception {
+    void testDeleteAdoptionRequestWithProcess() {
         AdoptionRequestEntity expected = requestList.get(0);
         
         TrialCohabitationEntity process = new TrialCohabitationEntity();
@@ -178,17 +186,17 @@ class AdoptionRequestServiceTest {
         expected.setAdoptionProcess(process);
         entityManager.persist(expected);
 
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.deleteAdoptionRequest(expected.getId()));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException.class, () -> adoptionRequestService.deleteAdoptionRequest(expected.getId()));
     }
 
     @Test
-    void testUpdateAdoptionRequestNotFound() throws Exception {
+    void testUpdateAdoptionRequestNotFound() {
         AdoptionRequestEntity update = new AdoptionRequestEntity();
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.updateAdoptionRequest(0L, update));
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.updateAdoptionRequest(0L, update));
     }
 
     @Test
-    void testDeleteAdoptionRequestNotFound() throws Exception {
-        assertThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.deleteAdoptionRequest(0L));
+    void testDeleteAdoptionRequestNotFound() {
+        expectThrows(co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException.class, () -> adoptionRequestService.deleteAdoptionRequest(0L));
     }
 }

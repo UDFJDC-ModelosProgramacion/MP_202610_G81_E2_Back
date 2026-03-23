@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class TrialCohabitationService {
 
     public TrialCohabitationEntity searchTrialCohabitation(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Search trial cohabitation with id = {}", id);
+        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
 
         return trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
@@ -49,6 +51,7 @@ public class TrialCohabitationService {
 
     public TrialCohabitationEntity updateTrialCohabitation(Long id, TrialCohabitationEntity trialCohabitation) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Updating trial cohabitation");
+        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
 
         TrialCohabitationEntity existing = trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
@@ -63,10 +66,13 @@ public class TrialCohabitationService {
 
     public void deleteTrialCohabitation(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         log.info("Delete trial cohabitation");
+        Objects.requireNonNull(id, "Trial cohabitation id cannot be null");
 
         TrialCohabitationEntity trialCohabitation = trialCohabitationRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(TRIAL_NOT_FOUND));
 
-        trialCohabitationRepository.delete(trialCohabitation);
+        TrialCohabitationEntity safeTrialCohabitation = Objects.requireNonNull(trialCohabitation,
+            "Trial cohabitation cannot be null");
+        trialCohabitationRepository.delete(safeTrialCohabitation);
     }
 }

@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,7 @@ public class AdoptionProcessService {
 
     public AdoptionProcessEntity searchAdoptionProcess(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Search adoption process with id = {}", id);
+        Objects.requireNonNull(id, "Adoption process id cannot be null");
 
         return adoptionProcessRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));
@@ -53,6 +55,7 @@ public class AdoptionProcessService {
 
     public AdoptionProcessEntity updateAdoptionProcess(Long id, AdoptionProcessEntity adoptionProcess) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         log.info("Updating adoption process");
+        Objects.requireNonNull(id, "Adoption process id cannot be null");
 
         AdoptionProcessEntity existing = adoptionProcessRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));
@@ -65,6 +68,7 @@ public class AdoptionProcessService {
 
     public void deleteAdoptionProcess(Long id) throws co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException, co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
         log.info("Delete adoption process");
+        Objects.requireNonNull(id, "Adoption process id cannot be null");
 
         AdoptionProcessEntity adoptionProcess = adoptionProcessRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(ADPROCESS_NOT_FOUND));

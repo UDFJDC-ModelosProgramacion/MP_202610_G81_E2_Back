@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,16 +9,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
-import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.PetRepository;
 import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
-import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class PetService {
+
+          private static final String PET_NOT_FOUND = "Pet not found";
 
           @Autowired
           private PetRepository petRepository;
@@ -32,6 +34,7 @@ public class PetService {
           @Transactional
           public PetEntity createPet(Long shelterId, PetEntity pet) throws IllegalOperationException, EntityNotFoundException {
                     log.info("Creating pet");
+                    Objects.requireNonNull(shelterId, "Shelter id cannot be null");
 
                     if (pet.getName() == null || pet.getName().trim().isEmpty()) {
                               throw new IllegalOperationException("El nombre de la mascota es obligatorio");
@@ -72,21 +75,19 @@ public class PetService {
 
           @Transactional(readOnly = true)
           public PetEntity getPet(Long petId) throws EntityNotFoundException {
-
-                    return petRepository.findById(petId)
-                                        .orElseThrow(() -> new EntityNotFoundException("Pet not found"));
+                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    return petRepository.findById(petId).orElseThrow(this::petNotFound);
           }
 
           @Transactional(readOnly = true)
           public List<PetEntity> searchPets(String breed, String size, String temperament) {
-
                     return petRepository.searchPets(breed, size, temperament);
           }
 
           @Transactional
           public PetEntity updatePet(Long petId, PetEntity updatedPet) throws EntityNotFoundException {
-
-                    PetEntity pet = petRepository.findById(petId).orElseThrow(() -> new EntityNotFoundException("Pet not found"));
+                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    PetEntity pet = petRepository.findById(petId).orElseThrow(this::petNotFound);
 
                     pet.setName(updatedPet.getName());
                     pet.setBreed(updatedPet.getBreed());
@@ -105,14 +106,17 @@ public class PetService {
            */
           @Transactional
           public void deletePet(Long petId) throws EntityNotFoundException, IllegalOperationException {
-
-                    PetEntity pet = petRepository.findById(petId).orElseThrow(() -> new EntityNotFoundException("Pet not found"));
+                    Objects.requireNonNull(petId, "Pet id cannot be null");
+                    PetEntity pet = petRepository.findById(petId).orElseThrow(this::petNotFound);
 
                     if (!"ADOPTED".equals(pet.getStatus()) && !"DECEASED".equals(pet.getStatus())) {
-
                               throw new IllegalOperationException("Pet cannot be deleted unless adopted or deceased");
                     }
 
                     petRepository.delete(pet);
+          }
+
+          private EntityNotFoundException petNotFound() {
+                    return new EntityNotFoundException(PET_NOT_FOUND);
           }
 }

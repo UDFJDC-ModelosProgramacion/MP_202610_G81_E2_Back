@@ -1,22 +1,27 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
-import co.edu.udistrital.mdp.pets.entities.PetEntity;
-import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
-import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
-import co.edu.udistrital.mdp.pets.repositories.PetRepository;
-import lombok.extern.slf4j.Slf4j;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.repositories.PetRepository;
+import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 public class ShelterService {
+
+    private static final String SHELTER_ID_PREFIX = "El refugio con ID ";
+    private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
 
     @Autowired
     private ShelterRepository shelterRepository;
@@ -61,8 +66,8 @@ public class ShelterService {
     @Transactional(readOnly = true)
     public ShelterEntity searchShelter(Long id) throws EntityNotFoundException {
         log.info("Searching shelter with id: {}", id);
-        return shelterRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("El refugio con ID " + id + " no fue encontrado"));
+        Objects.requireNonNull(id, "Shelter id cannot be null");
+        return shelterRepository.findById(id).orElseThrow(() -> notFound(id));
     }
 
     @Transactional(readOnly = true)
@@ -81,7 +86,8 @@ public class ShelterService {
     public ShelterEntity updateShelter(Long id, ShelterEntity shelter)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating shelter with id: {}", id);
-        ShelterEntity existing = shelterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El refugio con ID " + id + " no fue encontrado"));
+        Objects.requireNonNull(id, "Shelter id cannot be null");
+        ShelterEntity existing = shelterRepository.findById(id).orElseThrow(() -> notFound(id));
 
         if (shelter.getNit() != null && !existing.getNit().equals(shelter.getNit())) {
             throw new IllegalOperationException("No se permite la modificación del NIT una vez creado");
@@ -114,8 +120,9 @@ public class ShelterService {
     @Transactional
     public void deleteShelter(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting shelter with id: {}", id);
+        Objects.requireNonNull(id, "Shelter id cannot be null");
         
-        shelterRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("El refugio con ID " + id + " no fue encontrado")); // Valida que exista el refugio
+        shelterRepository.findById(id).orElseThrow(() -> notFound(id)); // Valida que exista el refugio
 
         List<PetEntity> pets = petRepository.findByShelterId(id);
         if (pets != null && !pets.isEmpty()) {
@@ -123,5 +130,9 @@ public class ShelterService {
         }
 
         shelterRepository.deleteById(id);
+    }
+
+    private EntityNotFoundException notFound(Long id) {
+        return new EntityNotFoundException(SHELTER_ID_PREFIX + id + NOT_FOUND_SUFFIX);
     }
 }

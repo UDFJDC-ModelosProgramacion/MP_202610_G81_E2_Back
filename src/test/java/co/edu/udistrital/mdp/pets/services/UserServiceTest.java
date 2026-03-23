@@ -62,7 +62,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUser() throws Exception {
+    void testCreateUser() throws IllegalOperationException {
         AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
         newUser.setEmail("newuser@mail.com");
         newUser.setPassword("Secure123");
@@ -78,12 +78,12 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUserNull() throws Exception {
+    void testCreateUserNull() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> userService.createUser(null)));
     }
 
     @Test
-    void testCreateUserWithInvalidEmail() throws Exception {
+    void testCreateUserWithInvalidEmail() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
             newUser.setName("Valid Name");
@@ -94,7 +94,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUserWithInvalidName() throws Exception {
+    void testCreateUserWithInvalidName() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
             newUser.setName("");
@@ -105,7 +105,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUserWithInvalidPassword() throws Exception {
+    void testCreateUserWithInvalidPassword() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
             newUser.setEmail("valid@mail.com");
@@ -115,7 +115,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testCreateUserWithDuplicateEmail() throws Exception {
+    void testCreateUserWithDuplicateEmail() {
         AdopterEntity newUser = factory.manufacturePojo(AdopterEntity.class);
         newUser.setEmail(userList.get(0).getEmail());
         newUser.setPassword("Secure123");
@@ -124,7 +124,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testSearchUser() throws Exception {
+    void testSearchUser() throws EntityNotFoundException {
         UserEntity entity = userList.get(0);
         UserEntity resultEntity = userService.searchUser(entity.getId());
         assertNotNull(resultEntity);
@@ -135,12 +135,12 @@ class UserServiceTest {
     }
 
     @Test
-    void testSearchInvalidUser() throws Exception {
+    void testSearchInvalidUser() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> userService.searchUser(0L)));
     }
 
     @Test
-    void testSearchUsers() throws Exception {
+    void testSearchUsers() {
         List<UserEntity> users = userService.searchUsers();
         assertEquals(userList.size(), users.size());
         for (UserEntity entity : users) {
@@ -155,16 +155,16 @@ class UserServiceTest {
     }
 
     @Test
-    void testSearchUsersWithFilters() throws Exception {
+    void testSearchUsersWithFilters() {
         List<UserEntity> usersByName = userService.searchUsers(userList.get(0).getName(), null);
-        assertTrue(usersByName.size() > 0);
+        assertTrue(!usersByName.isEmpty());
         
         List<UserEntity> usersByEmail = userService.searchUsers(null, userList.get(0).getEmail());
-        assertTrue(usersByEmail.size() > 0);
+        assertTrue(!usersByEmail.isEmpty());
     }
 
     @Test
-    void testUpdateUser() throws Exception {
+    void testUpdateUser() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updated@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -178,7 +178,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUserNotFound() throws Exception {
+    void testUpdateUserNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
             pojoEntity.setEmail("updated@mail.com");
@@ -188,7 +188,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testUpdateUserDuplicateEmail() throws Exception {
+    void testUpdateUserDuplicateEmail() {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail(userList.get(1).getEmail());
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
@@ -197,7 +197,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUserWithSentMessages() throws Exception {
+    void testDeleteUserWithSentMessages() {
         AdopterEntity user = userList.get(0);
         co.edu.udistrital.mdp.pets.entities.MessageEntity msg = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.MessageEntity.class);
         msg.setSender(user);
@@ -207,7 +207,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUserWithReceivedMessages() throws Exception {
+    void testDeleteUserWithReceivedMessages() {
         AdopterEntity user = userList.get(0);
         co.edu.udistrital.mdp.pets.entities.MessageEntity msg = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.MessageEntity.class);
         msg.setSender(userList.get(1));
@@ -218,7 +218,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUserWithAssociations() throws Exception {
+    void testDeleteUserWithAssociations() {
         AdopterEntity user = userList.get(0);
         NotificationEntity notification = factory.manufacturePojo(NotificationEntity.class);
         notification.setContent("Notification");
@@ -229,7 +229,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteUser() throws Exception {
+    void testDeleteUser() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity user = factory.manufacturePojo(AdopterEntity.class);
         user.setEmail("delete@mail.com");
         user.setPassword("Secure123");
@@ -244,7 +244,7 @@ class UserServiceTest {
     }
 
     @Test
-    void testDeleteInvalidUser() throws Exception {
+    void testDeleteInvalidUser() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(0L)));
     }
 }
