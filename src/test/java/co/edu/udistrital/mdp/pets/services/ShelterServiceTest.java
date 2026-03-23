@@ -6,7 +6,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,12 +33,17 @@ class ShelterServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    private PodamFactory factory = new PodamFactoryImpl();
+    private final PodamFactory factory = new PodamFactoryImpl();
 
-    private List<ShelterEntity> shelterList = new ArrayList<>();
-    private List<PetEntity> petList = new ArrayList<>();
+    private final List<ShelterEntity> shelterList = new ArrayList<>();
+
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(org.junit.jupiter.api.Assertions.assertThrows(expectedType, executable));
+    }
 
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -65,11 +69,10 @@ class ShelterServiceTest {
         PetEntity petEntity = factory.manufacturePojo(PetEntity.class);
         petEntity.setShelter(shelterList.get(0));
         entityManager.persist(petEntity);
-        petList.add(petEntity);
     }
 
     @Test
-    void testCreateShelter() throws Exception {
+    void testCreateShelter() throws IllegalOperationException {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-NUEVO-" + System.nanoTime());
         newEntity.setShelterName("Nuevo Refugio " + System.nanoTime());
@@ -89,8 +92,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingNit() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterMissingNit() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit(null);
             newEntity.setShelterName("Refugio Test");
@@ -101,8 +104,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingName() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterMissingName() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
             newEntity.setShelterName(null);
@@ -113,8 +116,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingPhoneNumber() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterMissingPhoneNumber() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
             newEntity.setShelterName("Refugio " + System.nanoTime());
@@ -125,8 +128,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterMissingAddress() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterMissingAddress() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
             newEntity.setShelterName("Refugio " + System.nanoTime());
@@ -137,8 +140,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterDuplicateName() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterDuplicateName() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit("NIT-UNICO-" + System.nanoTime());
             newEntity.setShelterName(shelterList.get(0).getShelterName());
@@ -147,7 +150,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterNullStatus() throws Exception {
+    void testCreateShelterNullStatus() throws IllegalOperationException {
         ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
         newEntity.setNit("NIT-UNICO-" + System.nanoTime());
         newEntity.setShelterName("Refugio Null " + System.nanoTime());
@@ -159,8 +162,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testCreateShelterDuplicateNit() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testCreateShelterDuplicateNit() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity newEntity = factory.manufacturePojo(ShelterEntity.class);
             newEntity.setNit(shelterList.get(0).getNit());
             newEntity.setShelterName("Otro Refugio " + System.nanoTime());
@@ -171,7 +174,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchShelter() throws Exception {
+    void testSearchShelter() throws EntityNotFoundException {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity resultEntity = shelterService.searchShelter(entity.getId());
         assertNotNull(resultEntity);
@@ -181,14 +184,14 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchShelterNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testSearchShelterNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             shelterService.searchShelter(0L);
         });
     }
 
     @Test
-    void testSearchShelters() throws Exception {
+    void testSearchShelters() {
         List<ShelterEntity> list = shelterService.searchShelters();
         assertEquals(shelterList.size(), list.size());
         for (ShelterEntity entity : list) {
@@ -203,21 +206,21 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testSearchSheltersByName() throws Exception {
+    void testSearchSheltersByName() {
         List<ShelterEntity> result = shelterService.searchSheltersByName(shelterList.get(0).getShelterName());
         assertNotNull(result);
         assertEquals(1, result.size());
     }
 
     @Test
-    void testSearchSheltersByNameNotFound() throws Exception {
+    void testSearchSheltersByNameNotFound() {
         List<ShelterEntity> result = shelterService.searchSheltersByName("Unknown");
         assertNotNull(result);
         assertTrue(result.isEmpty());
     }
 
     @Test
-    void testUpdateShelter() throws Exception {
+    void testUpdateShelter() throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity entity = shelterList.get(0);
         ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
         updatedShelter.setNit(entity.getNit());
@@ -232,16 +235,16 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testUpdateShelterNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
             shelterService.updateShelter(0L, updatedShelter);
         });
     }
 
     @Test
-    void testUpdateShelterChangeNit() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testUpdateShelterChangeNit() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
             updatedShelter.setNit("NIT-DIFERENTE-" + System.nanoTime());
@@ -250,8 +253,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterNotActive() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testUpdateShelterNotActive() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             entity.setStatus("Inactivo");
             entityManager.merge(entity);
@@ -263,8 +266,8 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testUpdateShelterDuplicateName() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testUpdateShelterDuplicateName() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             ShelterEntity updatedShelter = factory.manufacturePojo(ShelterEntity.class);
             updatedShelter.setNit(entity.getNit());
@@ -275,7 +278,7 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testDeleteShelter() throws Exception {
+    void testDeleteShelter() throws EntityNotFoundException, IllegalOperationException {
         ShelterEntity entity = shelterList.get(1);
         shelterService.deleteShelter(entity.getId());
         ShelterEntity deleted = entityManager.find(ShelterEntity.class, entity.getId());
@@ -283,15 +286,15 @@ class ShelterServiceTest {
     }
 
     @Test
-    void testDeleteShelterNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testDeleteShelterNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             shelterService.deleteShelter(0L);
         });
     }
 
     @Test
-    void testDeleteShelterWithPets() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteShelterWithPets() {
+        expectThrows(IllegalOperationException.class, () -> {
             ShelterEntity entity = shelterList.get(0);
             shelterService.deleteShelter(entity.getId());
         });

@@ -1,11 +1,13 @@
 package co.edu.udistrital.mdp.pets.services;
 
-import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
-import co.edu.udistrital.mdp.pets.entities.ReviewEntity;
-import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
-import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
-import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import java.util.ArrayList;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +16,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
+import co.edu.udistrital.mdp.pets.entities.ReviewEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @Transactional
@@ -33,13 +35,19 @@ class ReviewServiceTest {
     @Autowired
     private TestEntityManager entityManager;
 
-    private PodamFactory factory = new PodamFactoryImpl();
+    private final PodamFactory factory = new PodamFactoryImpl();
 
-    private List<ReviewEntity> reviewList = new ArrayList<>();
-    private List<AdopterEntity> adopterList = new ArrayList<>();
-    private List<ShelterEntity> shelterList = new ArrayList<>();
+    private final List<ReviewEntity> reviewList = new ArrayList<>();
+    private final List<AdopterEntity> adopterList = new ArrayList<>();
+    private final List<ShelterEntity> shelterList = new ArrayList<>();
+
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
 
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -72,7 +80,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testCreateReview() throws Exception {
+    void testCreateReview() throws IllegalOperationException {
         ReviewEntity newEntity = factory.manufacturePojo(ReviewEntity.class);
 
         ReviewEntity result = reviewService.createReview(newEntity);
@@ -86,12 +94,12 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testCreateReviewNull() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> reviewService.createReview(null));
+    void testCreateReviewNull() {
+        expectThrows(IllegalOperationException.class, () -> reviewService.createReview(null));
     }
 
     @Test
-    void testSearchReview() throws Exception {
+    void testSearchReview() throws EntityNotFoundException {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity resultEntity = reviewService.searchReview(entity.getId());
         assertNotNull(resultEntity);
@@ -102,14 +110,14 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testSearchReviewNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testSearchReviewNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             reviewService.searchReview(0L);
         });
     }
 
     @Test
-    void testSearchReviews() throws Exception {
+    void testSearchReviews() {
         List<ReviewEntity> list = reviewService.searchReviews();
         assertEquals(reviewList.size(), list.size());
         for (ReviewEntity entity : list) {
@@ -124,7 +132,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testUpdateReview() throws Exception {
+    void testUpdateReview() throws EntityNotFoundException, IllegalOperationException {
         ReviewEntity entity = reviewList.get(0);
         ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
         pojoEntity.setId(entity.getId());
@@ -138,8 +146,8 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testUpdateReviewNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testUpdateReviewNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             ReviewEntity pojoEntity = factory.manufacturePojo(ReviewEntity.class);
             pojoEntity.setId(0L);
             reviewService.updateReview(0L, pojoEntity);
@@ -147,7 +155,7 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReview() throws Exception {
+    void testDeleteReview() throws EntityNotFoundException, IllegalOperationException {
         ReviewEntity entity = reviewList.get(1);
         reviewService.deleteReview(entity.getId());
         ReviewEntity deleted = entityManager.find(ReviewEntity.class, entity.getId());
@@ -155,15 +163,15 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReviewNotFound() throws Exception {
-        assertThrows(EntityNotFoundException.class, () -> {
+    void testDeleteReviewNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> {
             reviewService.deleteReview(0L);
         });
     }
 
     @Test
-    void testDeleteReviewWithAdopter() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteReviewWithAdopter() {
+        expectThrows(IllegalOperationException.class, () -> {
             ReviewEntity entity = reviewList.get(0);
             entity.setAdopter(adopterList.get(0));
             entityManager.merge(entity);
@@ -172,8 +180,8 @@ class ReviewServiceTest {
     }
 
     @Test
-    void testDeleteReviewWithShelter() throws Exception {
-        assertThrows(IllegalOperationException.class, () -> {
+    void testDeleteReviewWithShelter() {
+        expectThrows(IllegalOperationException.class, () -> {
             ReviewEntity entity = reviewList.get(0);
             entity.setShelter(shelterList.get(0));
             entityManager.merge(entity);

@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class SpecialityService {
+
+    private static final String SPECIALITY_NOT_FOUND = "Especialidad no encontrada";
 
     @Autowired
     private VetSpecialityRepository specialityRepository;
@@ -39,8 +42,8 @@ public class SpecialityService {
     @Transactional(readOnly = true)
     public VetSpecialityEntity searchSpeciality(Long id) throws EntityNotFoundException {
         log.info("Searching speciality with id: {}", id);
-        return specialityRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+        Objects.requireNonNull(id, "Speciality id cannot be null");
+        return specialityRepository.findById(id).orElseThrow(this::notFound);
     }
 
     @Transactional(readOnly = true)
@@ -53,10 +56,12 @@ public class SpecialityService {
     }
 
     @Transactional
+    @SuppressWarnings("null")
     public VetSpecialityEntity updateSpeciality(Long id, VetSpecialityEntity speciality)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating speciality with id: {}", id);
-        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+        Objects.requireNonNull(id, "Speciality id cannot be null");
+        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(this::notFound);
 
         if (speciality.getName() != null && !speciality.getName().equalsIgnoreCase(existing.getName())) {
             if (speciality.getName().trim().isEmpty()) {
@@ -80,7 +85,8 @@ public class SpecialityService {
     @Transactional
     public void deleteSpeciality(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting speciality with id: {}", id);
-        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Especialidad no encontrada"));
+        Objects.requireNonNull(id, "Speciality id cannot be null");
+        VetSpecialityEntity existing = specialityRepository.findById(id).orElseThrow(this::notFound);
 
         if (existing.getVeterinarians() != null && !existing.getVeterinarians().isEmpty()) {
             throw new IllegalOperationException(
@@ -88,5 +94,9 @@ public class SpecialityService {
         }
 
         specialityRepository.deleteById(id);
+    }
+
+    private EntityNotFoundException notFound() {
+        return new EntityNotFoundException(SPECIALITY_NOT_FOUND);
     }
 }

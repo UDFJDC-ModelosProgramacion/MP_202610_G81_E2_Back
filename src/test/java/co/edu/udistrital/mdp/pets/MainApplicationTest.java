@@ -15,7 +15,7 @@ class MainApplicationTest {
     @Test
     void mainMethod() {
         org.junit.jupiter.api.Assertions.assertDoesNotThrow(() -> {
-            MainApplication.main(new String[]{});
+            MainApplication.main(new String[]{"--server.port=0"});
         });
     }
 }

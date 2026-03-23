@@ -40,7 +40,13 @@ class PetServiceTest {
     private final List<ShelterEntity> shelterList = new ArrayList<>();
     private final List<PetEntity> petList = new ArrayList<>();
 
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
+
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -71,7 +77,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePet() throws Exception {
+    void testCreatePet() throws IllegalOperationException, EntityNotFoundException {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName("New Pet");
         newPet.setBreed("New Breed");
@@ -87,29 +93,29 @@ class PetServiceTest {
     }
 
     @Test
-    void testCreatePetExists() throws Exception {
+    void testCreatePetExists() {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName(petList.get(0).getName());
         newPet.setBreed(petList.get(0).getBreed());
         newPet.setBornDate(petList.get(0).getBornDate());
 
-        assertNotNull(assertThrows(IllegalOperationException.class, 
-            () -> petService.createPet(shelterList.get(0).getId(), newPet)));
+        expectThrows(IllegalOperationException.class,
+            () -> petService.createPet(shelterList.get(0).getId(), newPet));
     }
 
     @Test
-    void testCreatePetShelterNotFound() throws Exception {
+    void testCreatePetShelterNotFound() {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         newPet.setName("New Pet");
         newPet.setBreed("New Breed");
         newPet.setBornDate(LocalDate.now().minusDays(10));
 
-        assertNotNull(assertThrows(EntityNotFoundException.class, 
-            () -> petService.createPet(0L, newPet)));
+        expectThrows(EntityNotFoundException.class,
+            () -> petService.createPet(0L, newPet));
     }
 
     @Test
-    void testGetPet() throws Exception {
+    void testGetPet() throws EntityNotFoundException {
         PetEntity pet = petList.get(0);
         PetEntity result = petService.getPet(pet.getId());
         
@@ -119,12 +125,12 @@ class PetServiceTest {
     }
 
     @Test
-    void testGetPetNotFound() throws Exception {
-        assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.getPet(0L)));
+    void testGetPetNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> petService.getPet(0L));
     }
 
     @Test
-    void testSearchPets() throws Exception {
+    void testSearchPets() {
         PetEntity pet = petList.get(0);
         List<PetEntity> results = petService.searchPets(pet.getBreed(), pet.getSize(), pet.getTemperament());
         
@@ -140,7 +146,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testUpdatePet() throws Exception {
+    void testUpdatePet() throws EntityNotFoundException {
         PetEntity pet = petList.get(0);
         PetEntity newData = factory.manufacturePojo(PetEntity.class);
         newData.setName("Updated name");
@@ -155,13 +161,13 @@ class PetServiceTest {
     }
 
     @Test
-    void testUpdatePetNotFound() throws Exception {
+    void testUpdatePetNotFound() {
         PetEntity newData = factory.manufacturePojo(PetEntity.class);
-        assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.updatePet(0L, newData)));
+        expectThrows(EntityNotFoundException.class, () -> petService.updatePet(0L, newData));
     }
 
     @Test
-    void testDeletePetAdopted() throws Exception {
+    void testDeletePetAdopted() throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petList.get(0);
         pet.setStatus("ADOPTED");
         entityManager.persist(pet);
@@ -172,7 +178,7 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetDeceased() throws Exception {
+    void testDeletePetDeceased() throws EntityNotFoundException, IllegalOperationException {
         PetEntity pet = petList.get(0);
         pet.setStatus("DECEASED");
         entityManager.persist(pet);
@@ -183,55 +189,55 @@ class PetServiceTest {
     }
 
     @Test
-    void testDeletePetInShelter() throws Exception {
+    void testDeletePetInShelter() {
         PetEntity pet = petList.get(0); // Status is IN_SHELTER by default in insertData()
         
-        assertNotNull(assertThrows(IllegalOperationException.class, () -> petService.deletePet(pet.getId())));
+        expectThrows(IllegalOperationException.class, () -> petService.deletePet(pet.getId()));
     }
 
     @Test
-    void testCreatePetValidations() throws Exception {
+    void testCreatePetValidations() {
         PetEntity newPet = factory.manufacturePojo(PetEntity.class);
         Long shelterId = shelterList.get(0).getId();
 
         newPet.setName(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setName("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setName("Valid Name");
 
         newPet.setTemperament(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setTemperament("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setTemperament("Calm");
 
         newPet.setBreed(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setBreed("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setBreed("Mix");
 
         newPet.setSize(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setSize("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setSize("Medium");
 
         newPet.setSex(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setSex("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setSex("Male");
 
         newPet.setSpecificNeeds(null);
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
         newPet.setSpecificNeeds("  ");
-        assertThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
+        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
     }
 
     @Test
-    void testDeletePetNotFound() throws Exception {
-        assertNotNull(assertThrows(EntityNotFoundException.class, () -> petService.deletePet(0L)));
+    void testDeletePetNotFound() {
+        expectThrows(EntityNotFoundException.class, () -> petService.deletePet(0L));
     }
 }

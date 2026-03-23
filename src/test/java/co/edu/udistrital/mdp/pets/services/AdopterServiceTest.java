@@ -64,8 +64,10 @@ class AdopterServiceTest {
         }
     }
 
+
+
     @Test
-    void testCreateAdopter() throws Exception {
+    void testCreateAdopter() throws IllegalOperationException {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("newadopter@mail.com");
         newAdopter.setPassword("Secure123");
@@ -85,12 +87,12 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopterNull() throws Exception {
+    void testCreateAdopterNull() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(null)));
     }
 
     @Test
-    void testCreateAdopterWithInvalidEmail() throws Exception {
+    void testCreateAdopterWithInvalidEmail() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
             newAdopter.setEmail("");
@@ -101,7 +103,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopterWithInvalidPassword() throws Exception {
+    void testCreateAdopterWithInvalidPassword() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
             newAdopter.setEmail("valid@mail.com");
@@ -112,7 +114,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopterWithoutPhone() throws Exception {
+    void testCreateAdopterWithoutPhone() {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail("invalidadopter@mail.com");
         newAdopter.setPassword("Secure123");
@@ -122,14 +124,14 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testCreateAdopterDuplicatedEmail() throws Exception {
+    void testCreateAdopterDuplicatedEmail() {
         AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
         newAdopter.setEmail(adopterList.get(0).getEmail());
         assertNotNull(assertThrows(IllegalOperationException.class, () -> adopterService.createAdopter(newAdopter)));
     }
 
     @Test
-    void testCreateAdopterWithoutNameAddressCity() throws Exception {
+    void testCreateAdopterWithoutNameAddressCity() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             AdopterEntity newAdopter = factory.manufacturePojo(AdopterEntity.class);
             newAdopter.setName("");
@@ -148,7 +150,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testSearchAdopter() throws Exception {
+    void testSearchAdopter() throws EntityNotFoundException {
         AdopterEntity entity = adopterList.get(0);
         AdopterEntity resultEntity = adopterService.searchAdopter(entity.getId());
         assertNotNull(resultEntity);
@@ -161,13 +163,15 @@ class AdopterServiceTest {
         assertEquals(entity.getHousingType(), resultEntity.getHousingType());
     }
 
+
+
     @Test
-    void testSearchInvalidAdopter() throws Exception {
+    void testSearchInvalidAdopter() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> adopterService.searchAdopter(0L)));
     }
 
     @Test
-    void testSearchAdopters() throws Exception {
+    void testSearchAdopters() {
         List<AdopterEntity> adopters = adopterService.searchAdopters();
         assertEquals(adopterList.size(), adopters.size());
         for (AdopterEntity entity : adopters) {
@@ -182,7 +186,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testSearchAdoptersWithFilters() throws Exception {
+    void testSearchAdoptersWithFilters() {
         List<AdopterEntity> resultsName = adopterService.searchAdopters(adopterList.get(0).getName(), null, null);
         assertTrue(resultsName.size() > 0);
 
@@ -194,7 +198,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testUpdateAdopter() throws Exception {
+    void testUpdateAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail("updatedadopter@mail.com");
         pojoEntity.setPassword("Updated123");
@@ -211,8 +215,10 @@ class AdopterServiceTest {
         assertEquals(pojoEntity.getHousingType(), stored.getHousingType());
     }
 
+
+
     @Test
-    void testUpdateAdopterNotFound() throws Exception {
+    void testUpdateAdopterNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
             pojoEntity.setEmail("updated@mail.com");
@@ -223,7 +229,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testUpdateAdopterDuplicatedEmail() throws Exception {
+    void testUpdateAdopterDuplicatedEmail() {
         AdopterEntity pojoEntity = factory.manufacturePojo(AdopterEntity.class);
         pojoEntity.setEmail(adopterList.get(1).getEmail());
         pojoEntity.setPassword("Updated123");
@@ -234,7 +240,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testDeleteAdopterWithAssociations() throws Exception {
+    void testDeleteAdopterWithAssociations() {
         AdopterEntity adopter = adopterList.get(0);
         co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity request = factory.manufacturePojo(co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity.class);
         request.setAdopter(adopter);
@@ -245,7 +251,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testDeleteAdopter() throws Exception {
+    void testDeleteAdopter() throws EntityNotFoundException, IllegalOperationException {
         AdopterEntity adopter = factory.manufacturePojo(AdopterEntity.class);
         adopter.setEmail("deleteadopter@mail.com");
         adopter.setPassword("Secure123");
@@ -261,7 +267,7 @@ class AdopterServiceTest {
     }
 
     @Test
-    void testDeleteInvalidAdopter() throws Exception {
+    void testDeleteInvalidAdopter() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> adopterService.deleteAdopter(0L)));
     }
 }

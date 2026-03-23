@@ -40,7 +40,13 @@ class VaccineEntryServiceTest {
     private final List<VaccineEntryEntity> vaccineList = new ArrayList<>();
     private MedicalHistoryEntity history;
 
+    private <T extends Throwable> void expectThrows(Class<T> expectedType,
+            org.junit.jupiter.api.function.Executable executable) {
+        assertNotNull(assertThrows(expectedType, executable));
+    }
+
     @BeforeEach
+    @SuppressWarnings({"java:S1144", "unused"})
     void setUp() {
         clearData();
         insertData();
@@ -91,7 +97,7 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testCreateVaccineEntry() throws Exception {
+    void testCreateVaccineEntry() throws EntityNotFoundException {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
         newVaccine.setAdminDate(LocalDate.now());
@@ -104,21 +110,21 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testCreateVaccineEntryHistoryNotFound() throws Exception {
+    void testCreateVaccineEntryHistoryNotFound() {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
-        assertThrows(EntityNotFoundException.class, () -> 
+        expectThrows(EntityNotFoundException.class, () -> 
             vaccineEntryService.createVaccineEntry(0L, newVaccine));
     }
 
     @Test
-    void testGetVaccineEntries() throws Exception {
+    void testGetVaccineEntries() {
         List<VaccineEntryEntity> results = vaccineEntryService.getVaccineEntries(history.getId());
         assertTrue(results.size() >= vaccineList.size());
     }
 
     @Test
-    void testUpdateVaccineEntry() throws Exception {
+    void testUpdateVaccineEntry() throws EntityNotFoundException {
         VaccineEntryEntity expected = vaccineList.get(0);
         VaccineEntryEntity updatedInfo = new VaccineEntryEntity();
         updatedInfo.setVaccineName("Distemper");
@@ -131,15 +137,15 @@ class VaccineEntryServiceTest {
     }
 
     @Test
-    void testUpdateVaccineEntryNotFound() throws Exception {
+    void testUpdateVaccineEntryNotFound() {
         VaccineEntryEntity newVaccine = new VaccineEntryEntity();
         newVaccine.setVaccineName("Rabies");
-        assertThrows(EntityNotFoundException.class, () -> 
+        expectThrows(EntityNotFoundException.class, () -> 
             vaccineEntryService.updateVaccineEntry(0L, newVaccine));
     }
 
     @Test
-    void testFindVaccinesDue() throws Exception {
+    void testFindVaccinesDue() {
         // We set 3 vaccines to have due dates in the past during setup
         List<VaccineEntryEntity> results = vaccineEntryService.findVaccinesDue();
         assertTrue(results.size() >= 3);

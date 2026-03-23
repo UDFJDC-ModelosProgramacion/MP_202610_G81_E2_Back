@@ -2,6 +2,7 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,8 @@ public class MedicalEventService {
                               Long historyId,
                               Long veterinarianId,
                               MedicalEventEntity event) throws EntityNotFoundException {
+                    Objects.requireNonNull(historyId, "Medical history id cannot be null");
+                    Objects.requireNonNull(veterinarianId, "Veterinarian id cannot be null");
 
                     MedicalHistoryEntity history = historyRepository.findById(historyId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -56,6 +59,7 @@ public class MedicalEventService {
 
           @Transactional(readOnly = true)
           public MedicalEventEntity searchMedicalEvent(Long eventId) throws EntityNotFoundException {
+                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
 
                     return eventRepository.findById(eventId)
                                         .orElseThrow(() -> new EntityNotFoundException(
@@ -70,6 +74,7 @@ public class MedicalEventService {
 
           @Transactional
           public MedicalEventEntity updateMedicalEvent(Long eventId, MedicalEventEntity updatedEvent) throws EntityNotFoundException {
+                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
 
                     MedicalEventEntity event = eventRepository.findById(eventId).orElseThrow(() -> new EntityNotFoundException("Medical event not found"));
 
@@ -82,6 +87,7 @@ public class MedicalEventService {
 
           @Transactional
           public void deleteMedicalEvent(Long eventId) {
+                    Objects.requireNonNull(eventId, "Medical event id cannot be null");
 
                     eventRepository.deleteById(eventId);
           }

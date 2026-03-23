@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class ReviewService {
     @Transactional
     public ReviewEntity searchReview(Long id) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la reseña con id = {}", id);
+        Objects.requireNonNull(id, "Review id cannot be null");
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
@@ -57,6 +59,7 @@ public class ReviewService {
     public ReviewEntity updateReview(Long id, ReviewEntity review)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la reseña con id = {}", id);
+        Objects.requireNonNull(id, "Review id cannot be null");
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())
@@ -74,6 +77,7 @@ public class ReviewService {
     @Transactional
     public void deleteReview(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de borrar la reseña con id = {}", id);
+        Objects.requireNonNull(id, "Review id cannot be null");
 
         Optional<ReviewEntity> reviewEntity = reviewRepository.findById(id);
         if (reviewEntity.isEmpty())

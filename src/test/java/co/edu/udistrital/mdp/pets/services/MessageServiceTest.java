@@ -73,7 +73,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessage() throws Exception {
+    void testCreateMessage() throws EntityNotFoundException, IllegalOperationException {
         MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
         newMessage.setContent("Hello world");
         newMessage.setSender(userList.get(0));
@@ -91,12 +91,12 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessageNull() throws Exception {
+    void testCreateMessageNull() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> messageService.createMessage(null)));
     }
 
     @Test
-    void testCreateMessageWithNullSender() throws Exception {
+    void testCreateMessageWithNullSender() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
@@ -107,7 +107,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessageWithNullReceiver() throws Exception {
+    void testCreateMessageWithNullReceiver() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
@@ -118,7 +118,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessageSenderIsReceiver() throws Exception {
+    void testCreateMessageSenderIsReceiver() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
@@ -129,7 +129,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessageWithInvalidSender() throws Exception {
+    void testCreateMessageWithInvalidSender() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
             newMessage.setContent("Hello");
@@ -142,7 +142,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testCreateMessageWithoutContent() throws Exception {
+    void testCreateMessageWithoutContent() {
         MessageEntity newMessage = factory.manufacturePojo(MessageEntity.class);
         newMessage.setContent("");
         newMessage.setSender(userList.get(0));
@@ -152,7 +152,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testSearchMessage() throws Exception {
+    void testSearchMessage() throws EntityNotFoundException {
         MessageEntity entity = messageList.get(0);
         MessageEntity resultEntity = messageService.searchMessage(entity.getId());
         assertNotNull(resultEntity);
@@ -162,12 +162,12 @@ class MessageServiceTest {
     }
 
     @Test
-    void testSearchInvalidMessage() throws Exception {
+    void testSearchInvalidMessage() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> messageService.searchMessage(0L)));
     }
 
     @Test
-    void testSearchMessages() throws Exception {
+    void testSearchMessages() {
         List<MessageEntity> messages = messageService.searchMessages();
         assertEquals(messageList.size(), messages.size());
         for (MessageEntity entity : messages) {
@@ -182,7 +182,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testUpdateMessage() throws Exception {
+    void testUpdateMessage() throws EntityNotFoundException, IllegalOperationException {
         MessageEntity newData = factory.manufacturePojo(MessageEntity.class);
         newData.setContent("Updated message");
         newData.setIsRead(Boolean.TRUE);
@@ -195,7 +195,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testUpdateMessageNotFound() throws Exception {
+    void testUpdateMessageNotFound() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> {
             MessageEntity newData = factory.manufacturePojo(MessageEntity.class);
             newData.setContent("Updated message");
@@ -204,7 +204,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testDeleteReadMessage() throws Exception {
+    void testDeleteReadMessage() {
         MessageEntity readMessage = factory.manufacturePojo(MessageEntity.class);
         readMessage.setContent("Read message");
         readMessage.setSender(userList.get(0));
@@ -217,7 +217,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testDeleteMessage() throws Exception {
+    void testDeleteMessage() throws EntityNotFoundException, IllegalOperationException {
         MessageEntity deletable = factory.manufacturePojo(MessageEntity.class);
         deletable.setContent("Delete message");
         deletable.setSender(userList.get(0));
@@ -233,7 +233,7 @@ class MessageServiceTest {
     }
 
     @Test
-    void testDeleteInvalidMessage() throws Exception {
+    void testDeleteInvalidMessage() {
         assertNotNull(assertThrows(EntityNotFoundException.class, () -> messageService.deleteMessage(0L)));
     }
 }
