@@ -10,5 +10,5 @@ body:
     \    \"date\": \"2026-03-20\"\r
 
     }"
-examples: ./.resources/Add Medical Event Copy.resources/examples
+examples: .resources/Add Vaccines.resources/examples
 order: 3000
