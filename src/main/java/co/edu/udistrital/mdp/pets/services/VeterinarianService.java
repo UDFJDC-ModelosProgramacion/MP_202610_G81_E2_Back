@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +11,7 @@ import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
+import co.edu.udistrital.mdp.pets.repositories.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,9 +22,13 @@ public class VeterinarianService {
     private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
     private static final String VETERINARIAN_ID_NULL_MSG = "Veterinarian id cannot be null";
 
-    @Autowired
-    private VeterinarianRepository veterinarianRepository;
+    private final VeterinarianRepository veterinarianRepository;
+    private final UserRepository userRepository;
 
+    public VeterinarianService(VeterinarianRepository veterinarianRepository, UserRepository userRepository) {
+        this.veterinarianRepository = veterinarianRepository;
+        this.userRepository = userRepository;
+    }
     @Transactional
     public VeterinarianEntity createVeterinarian(VeterinarianEntity veterinarian)
             throws IllegalOperationException {
