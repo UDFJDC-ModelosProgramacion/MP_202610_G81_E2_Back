@@ -1,0 +1,364 @@
+{
+  "info": {
+    "name": "MP_202610_G81_E2_Back - feature/Anderson",
+    "_postman_id": "3c9f3d8a-7e7a-4c47-a8b6-1f0c4e8c9a01",
+    "description": "Colección base de endpoints para user, adopter, message y notification.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    },
+    {
+      "key": "userId",
+      "value": "1"
+    },
+    {
+      "key": "adopterId",
+      "value": "1"
+    },
+    {
+      "key": "messageId",
+      "value": "1"
+    },
+    {
+      "key": "notificationId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Create User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anderson Bonilla\",\n  \"email\": \"anderson.bonilla@correo.com\",\n  \"password\": \"SecurePass123\",\n  \"phoneNumber\": \"3001234567\",\n  \"profileImageUrl\": \"https://example.com/profiles/anderson.jpg\",\n  \"registerDate\": \"2026-03-13T10:30:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["users"]
+            }
+          }
+        },
+        {
+          "name": "Update User",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anderson Bonilla Updated\",\n  \"email\": \"anderson.updated@correo.com\",\n  \"password\": \"SecurePass123\",\n  \"phoneNumber\": \"3009998888\",\n  \"profileImageUrl\": \"https://example.com/profiles/anderson-updated.jpg\",\n  \"registerDate\": \"2026-03-13T10:30:00\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete User",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["users", "{{userId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adopter",
+      "item": [
+        {
+          "name": "Get Adopter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["adopters", "{{adopterId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get All Adopters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": ["{{baseUrl}}"],
+              "path": ["adopters"]
+            }
+          }
+        },
+        {
+          "name": "Create Adopter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anderson Bonilla\",\n  \"email\": \"anderson.bonilla@correo.com\",\n  \"password\": \"SecurePass123\",\n  \"phoneNumber\": \"3001234567\",\n  \"profileImageUrl\": \"https://example.com/profiles/anderson.jpg\",\n  \"registerDate\": \"2026-03-13T10:30:00\",\n  \"address\": \"Calle 45 #12-34\",\n  \"city\": \"Bogotá\",\n  \"housingType\": \"APARTMENT\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": ["{{baseUrl}}"],
+              "path": ["adopters"]
+            }
+          }
+        },
+        {
+          "name": "Update Adopter",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Anderson Bonilla Updated\",\n  \"email\": \"anderson.updated@correo.com\",\n  \"password\": \"SecurePass123\",\n  \"phoneNumber\": \"3009998888\",\n  \"profileImageUrl\": \"https://example.com/profiles/anderson-updated.jpg\",\n  \"registerDate\": \"2026-03-13T10:30:00\",\n  \"address\": \"Carrera 20 #50-10\",\n  \"city\": \"Bogotá\",\n  \"housingType\": \"HOUSE\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["adopters", "{{adopterId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Adopter",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["adopters", "{{adopterId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Message",
+      "item": [
+        {
+          "name": "Get Message By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages/{{messageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "{{messageId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get All Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages"]
+            }
+          }
+        },
+        {
+          "name": "Create Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hola, estoy interesado en adoptar a Luna.\",\n  \"sentAt\": \"2026-03-13T11:00:00\",\n  \"isRead\": false,\n  \"active\": true,\n  \"sender\": {\n    \"id\": 1\n  },\n  \"receiver\": {\n    \"id\": 2\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages"]
+            }
+          }
+        },
+        {
+          "name": "Update Message",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"Hola, sigo interesado en adoptar a Luna.\",\n  \"sentAt\": \"2026-03-13T11:00:00\",\n  \"isRead\": true,\n  \"active\": true,\n  \"sender\": {\n    \"id\": 1\n  },\n  \"receiver\": {\n    \"id\": 2\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages/{{messageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "{{messageId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Message",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages/{{messageId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "{{messageId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Notification",
+      "item": [
+        {
+          "name": "Get Notification By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "{{notificationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"]
+            }
+          }
+        },
+        {
+          "name": "Create Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Solicitud actualizada\",\n  \"content\": \"Tu solicitud de adopción cambió a APPROVED.\",\n  \"createdAt\": \"2026-03-13T12:00:00\",\n  \"isRead\": false,\n  \"user\": {\n    \"id\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications"]
+            }
+          }
+        },
+        {
+          "name": "Update Notification",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Solicitud actualizada\",\n  \"content\": \"Tu solicitud de adopción cambió a APPROVED.\",\n  \"createdAt\": \"2026-03-13T12:00:00\",\n  \"isRead\": true,\n  \"user\": {\n    \"id\": 1\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "{{notificationId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Notification",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["notifications", "{{notificationId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
