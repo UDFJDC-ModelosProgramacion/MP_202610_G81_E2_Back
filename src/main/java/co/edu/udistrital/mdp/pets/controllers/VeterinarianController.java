@@ -1,67 +1,79 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+import java.util.List;
 
-import java.util.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import co.edu.udistrital.mdp.pets.dto.VeterinarianDTO;
+import co.edu.udistrital.mdp.pets.dto.VeterinarianDetailDTO;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.services.VeterinarianService;
 
 @RestController
 @RequestMapping("/veterinarians")
 public class VeterinarianController {
 
-    private List<Map<String, Object>> veterinarians = new ArrayList<>();
-
-    @PostMapping
-    public Map<String, Object> createVeterinarian(@RequestBody Map<String, Object> vet) {
-        vet.put("id", veterinarians.size() + 1);
-        veterinarians.add(vet);
-        return vet;
-    }
+    @Autowired
+    private VeterinarianService veterinarianService;
 
     @GetMapping
-    public List<Map<String, Object>> getVeterinarians() {
-        return veterinarians;
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<VeterinarianDTO> findAll(
+            @RequestParam(required = false) Long specialityId,
+            @RequestParam(required = false) Long shelterId) {
+        List<?> vets;
+        if (specialityId != null) {
+            vets = veterinarianService.searchVeterinariansBySpeciality(specialityId);
+        } else if (shelterId != null) {
+            vets = veterinarianService.searchVeterinariansByShelter(shelterId);
+        } else {
+            vets = veterinarianService.searchVeterinarians();
+        }
+        return vets.stream()
+                .map(e -> new VeterinarianDTO(
+                        (co.edu.udistrital.mdp.pets.entities.VeterinarianEntity) e))
+                .toList();
     }
 
-    @GetMapping("/{id}")
-    public Map<String, Object> getVeterinarianById(@PathVariable Long id) {
-        for (Map<String, Object> vet : veterinarians) {
-            Object vetId = vet.get("id");
-
-            if (vetId != null && Long.valueOf(vetId.toString()).equals(id)) {
-                return vet;
-            }
-        }
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Veterinarian not found");
+    @GetMapping(value = "/{vetId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public VeterinarianDetailDTO findOne(@PathVariable Long vetId) throws EntityNotFoundException {
+        return new VeterinarianDetailDTO(veterinarianService.searchVeterinarian(vetId));
     }
 
-    @PutMapping("/{id}")
-    public Map<String, Object> updateVeterinarian(
-            @PathVariable Long id,
-            @RequestBody Map<String, Object> updatedVet) {
-
-        for (Map<String, Object> vet : veterinarians) {
-            Long vetId = Long.valueOf(vet.get("id").toString());
-
-            if (vetId.equals(id)) {
-                vet.putAll(updatedVet);
-                vet.put("id", id);
-                return vet;
-            }
-        }
-
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Veterinarian not found");
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public VeterinarianDetailDTO create(@RequestBody VeterinarianDTO vetDTO)
+            throws IllegalOperationException, EntityNotFoundException {
+        return new VeterinarianDetailDTO(
+                veterinarianService.createVeterinarian(vetDTO.toEntity()));
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteVeterinarian(@PathVariable Long id) {
-        boolean removed = veterinarians.removeIf(vet ->
-                Long.valueOf(vet.get("id").toString()).equals(id)
-        );
+    @PutMapping(value = "/{vetId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public VeterinarianDetailDTO update(@PathVariable Long vetId,
+            @RequestBody VeterinarianDTO vetDTO)
+            throws EntityNotFoundException, IllegalOperationException {
+        return new VeterinarianDetailDTO(
+                veterinarianService.updateVeterinarian(vetId, vetDTO.toEntity()));
+    }
 
-        if (!removed) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Veterinarian not found");
-        }
+    @DeleteMapping(value = "/{vetId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long vetId)
+            throws EntityNotFoundException, IllegalOperationException {
+        veterinarianService.deleteVeterinarian(vetId);
     }
 }

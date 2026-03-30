@@ -1,76 +1,77 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
+import co.edu.udistrital.mdp.pets.dto.AdoptionDTO;
+import co.edu.udistrital.mdp.pets.dto.AdoptionDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.AdoptionService;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/adoptions")
 public class AdoptionController {
-    
+
     @Autowired
     private AdoptionService adoptionService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public AdoptionEntity createAdoption(@RequestBody AdoptionEntity adoption)
-            throws IllegalOperationException {
-        return adoptionService.createAdoption(adoption);
-    }
-
     @GetMapping
-    public List<AdoptionEntity> getAdoptions() {
-        return adoptionService.searchAdoptions();
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<AdoptionDTO> findAll() {
+        return adoptionService.searchAdoptions().stream().map(AdoptionDTO::new).toList();
     }
 
-    @GetMapping("/{id}")
-    public AdoptionEntity getAdoptionById(@PathVariable Long id)
-            throws EntityNotFoundException {
-        return adoptionService.searchAdoption(id);
+    @GetMapping(value = "/{adoptionId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionDetailDTO findOne(@PathVariable Long adoptionId) throws EntityNotFoundException {
+        return new AdoptionDetailDTO(adoptionService.searchAdoption(adoptionId));
     }
 
-    @PutMapping("/{id}")
-    public AdoptionEntity updateAdoption(@PathVariable Long id,
-                                        @RequestBody AdoptionEntity adoption)
+    @PostMapping
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public AdoptionDetailDTO create(@RequestBody AdoptionDTO adoptionDTO)
+            throws IllegalOperationException {
+        return new AdoptionDetailDTO(adoptionService.createAdoption(adoptionDTO.toEntity()));
+    }
+
+    @PutMapping(value = "/{adoptionId}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionDetailDTO update(@PathVariable Long adoptionId,
+            @RequestBody AdoptionDTO adoptionDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        return adoptionService.updateAdoption(id, adoption);
+        return new AdoptionDetailDTO(adoptionService.updateAdoption(adoptionId, adoptionDTO.toEntity()));
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAdoption(@PathVariable Long id)
+    @PutMapping(value = "/{adoptionId}/approve")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionDetailDTO approve(@PathVariable Long adoptionId)
             throws EntityNotFoundException, IllegalOperationException {
-        adoptionService.deleteAdoption(id);
+        return new AdoptionDetailDTO(adoptionService.approveAdoption(adoptionId));
     }
 
-    @PostMapping("/{id}/request")
-    public AdoptionEntity requestAdoption(@PathVariable Long id)
+    @PutMapping(value = "/{adoptionId}/return")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AdoptionDetailDTO returnPet(@PathVariable Long adoptionId)
             throws EntityNotFoundException, IllegalOperationException {
-        return adoptionService.requestAdoption(id);
+        return new AdoptionDetailDTO(adoptionService.returnPet(adoptionId));
     }
 
-    @PostMapping("/{id}/approve")
-    public AdoptionEntity approveAdoption(@PathVariable Long id)
+    @DeleteMapping(value = "/{adoptionId}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long adoptionId)
             throws EntityNotFoundException, IllegalOperationException {
-        return adoptionService.approveAdoption(id);
-    }
-
-    @PostMapping("/{id}/trial")
-    public AdoptionEntity trialCohabitation(@PathVariable Long id)
-            throws EntityNotFoundException, IllegalOperationException {
-        return adoptionService.startTrial(id, null);
-    }
-
-    @PostMapping("/{id}/return")
-    public AdoptionEntity returnPet(@PathVariable Long id)
-            throws EntityNotFoundException, IllegalOperationException {
-        return adoptionService.returnPet(id);
+        adoptionService.deleteAdoption(adoptionId);
     }
 }

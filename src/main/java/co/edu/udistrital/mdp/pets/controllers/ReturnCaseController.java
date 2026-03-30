@@ -14,50 +14,53 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.pets.dto.ReviewDTO;
-import co.edu.udistrital.mdp.pets.dto.ReviewDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.ReturnCaseDTO;
+import co.edu.udistrital.mdp.pets.dto.ReturnCaseDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
-import co.edu.udistrital.mdp.pets.services.ReviewService;
+import co.edu.udistrital.mdp.pets.services.ReturnCaseService;
 
 @RestController
-@RequestMapping("/reviews")
-public class ReviewController {
+@RequestMapping("/return-cases")
+public class ReturnCaseController {
 
     @Autowired
-    private ReviewService reviewService;
+    private ReturnCaseService returnCaseService;
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ReviewDTO> findAll() {
-        return reviewService.searchReviews().stream().map(ReviewDTO::new).toList();
+    public List<ReturnCaseDTO> findAll() {
+        return returnCaseService.searchReturnCases().stream()
+                .map(ReturnCaseDTO::new).toList();
     }
 
-    @GetMapping(value = "/{reviewId}")
+    @GetMapping(value = "/{returnCaseId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ReviewDetailDTO findOne(@PathVariable Long reviewId) throws EntityNotFoundException {
-        return new ReviewDetailDTO(reviewService.searchReview(reviewId));
+    public ReturnCaseDetailDTO findOne(@PathVariable Long returnCaseId)
+            throws EntityNotFoundException {
+        return new ReturnCaseDetailDTO(returnCaseService.searchReturnCase(returnCaseId));
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ReviewDetailDTO create(@RequestBody ReviewDTO reviewDTO)
+    public ReturnCaseDetailDTO create(@RequestBody ReturnCaseDTO returnCaseDTO)
             throws IllegalOperationException {
-        return new ReviewDetailDTO(reviewService.createReview(reviewDTO.toEntity()));
+        return new ReturnCaseDetailDTO(returnCaseService.createReturnCase(returnCaseDTO.toEntity()));
     }
 
-    @PutMapping(value = "/{reviewId}")
+    @PutMapping(value = "/{returnCaseId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ReviewDetailDTO update(@PathVariable Long reviewId,
-            @RequestBody ReviewDTO reviewDTO)
+    public ReturnCaseDetailDTO update(@PathVariable Long returnCaseId,
+            @RequestBody ReturnCaseDTO returnCaseDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        return new ReviewDetailDTO(reviewService.updateReview(reviewId, reviewDTO.toEntity()));
+        return new ReturnCaseDetailDTO(
+                returnCaseService.updateReturnCase(returnCaseId, returnCaseDTO.toEntity()));
     }
 
-    @DeleteMapping(value = "/{reviewId}")
+    @DeleteMapping(value = "/{returnCaseId}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long reviewId)
+    public void delete(@PathVariable Long returnCaseId)
             throws EntityNotFoundException, IllegalOperationException {
-        reviewService.deleteReview(reviewId);
+        returnCaseService.deleteReturnCase(returnCaseId);
     }
 }
