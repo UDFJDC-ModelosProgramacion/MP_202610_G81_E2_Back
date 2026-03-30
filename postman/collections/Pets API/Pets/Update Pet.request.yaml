@@ -1,0 +1,16 @@
+$kind: http-request
+url: http://localhost:8080/api/pets/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Firulais update\",\r
+
+    \    \"Temperament\": \"Pacify update\",\r
+
+    \    \"SpecifyNeeds\": \"Update\"\r
+
+    }"
+examples: ./.resources/Update Pet.resources/examples
+order: 8000

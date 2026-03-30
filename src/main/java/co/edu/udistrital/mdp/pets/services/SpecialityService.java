@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +20,11 @@ public class SpecialityService {
     private static final String SPECIALITY_NOT_FOUND = "Especialidad no encontrada";
     private static final String SPECIALITY_ID_NULL_MSG = "Speciality id cannot be null";
 
-    @Autowired
-    private VetSpecialityRepository specialityRepository;
+    private final VetSpecialityRepository specialityRepository;
+
+    public SpecialityService(VetSpecialityRepository specialityRepository) {
+        this.specialityRepository = specialityRepository;
+    }
 
     @Transactional
     public VetSpecialityEntity createSpeciality(VetSpecialityEntity speciality) throws IllegalOperationException {

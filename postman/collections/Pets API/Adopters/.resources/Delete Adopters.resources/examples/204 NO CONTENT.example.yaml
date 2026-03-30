@@ -1,0 +1,21 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/adopters/1
+  method: DELETE
+response:
+  statusCode: 204
+  statusText: No Content
+  headers:
+    - key: vary
+      value: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    - key: date
+      value: Mon, 23 Mar 2026 20:01:08 GMT
+    - key: keep-alive
+      value: timeout=60
+    - key: connection
+      value: keep-alive
+  body:
+    type: text
+    content: ""
+order: 1774296071686
+name: 204 NO CONTENT

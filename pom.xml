@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.11</version>
+		<version>3.5.12</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.edu.udistrital.mdp</groupId>
@@ -79,7 +79,7 @@
 						<profile>integration-tests</profile>
 					</profiles>
 					<arguments>
-						<argument>--server.port=8999</argument>
+						<argument>--server.port=8080</argument>
 					</arguments>
 					<excludes>
 						<exclude>

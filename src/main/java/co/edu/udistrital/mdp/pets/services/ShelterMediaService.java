@@ -3,7 +3,6 @@ package co.edu.udistrital.mdp.pets.services;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +20,11 @@ public class ShelterMediaService {
     private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
     private static final String MEDIA_ID_NULL_MSG = "Media id cannot be null";
 
-    @Autowired
-    private ShelterMediaRepository shelterMediaRepository;
+    private final ShelterMediaRepository shelterMediaRepository;
+
+    public ShelterMediaService(ShelterMediaRepository shelterMediaRepository) {
+        this.shelterMediaRepository = shelterMediaRepository;
+    }
 
     @Transactional
     public ShelterMediaEntity createShelterMedia(ShelterMediaEntity mediaItems, long fileSizeBytes)

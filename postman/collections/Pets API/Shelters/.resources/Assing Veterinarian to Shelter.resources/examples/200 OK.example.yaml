@@ -1,0 +1,21 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/shelters/1/veterinarians
+  method: POST
+  body:
+    type: json
+    content: "{\r\n  \"veterinarianId\": 1\r\n}"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 16:31:53 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '[{"veterinarianId":1,"id":330}]'
+order: 1774283516641

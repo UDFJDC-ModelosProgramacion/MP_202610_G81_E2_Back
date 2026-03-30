@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/pets/1/medical-history
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"description\": \"Checkup\",\r
+
+    \    \"date\": \"2026-03-20\"\r
+
+    }"
+examples: ./.resources/Add Medical Event.resources/examples
+order: 2000

@@ -1,0 +1,23 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/messages/sent?userId=2
+  method: GET
+  queryParams:
+    userId: "2"
+  body:
+    type: json
+    content: ""
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 05:39:46 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '[{"senderId":2,"receiverId":3,"content":"Hello","id":2,"sentAt":"2026-03-23T00:31:32.5070058","isRead":false,"active":true}]'
+order: 1774244389273

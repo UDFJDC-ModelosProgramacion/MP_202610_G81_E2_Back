@@ -1,0 +1,26 @@
+$kind: http-request
+url: http://localhost:8080/api/adopters/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"email\": \"adopter@email.com\",\r
+
+    \    \"password\": \"123456\",\r
+
+    \    \"phoneNumber\": \"3001234567\",\r
+
+    \    \"profileImageUrl\": \"https://example.com/profile.jpg\",\r
+
+    \    \"address\": \"Calle 123\",\r
+
+    \    \"city\": \"Bogota\",\r
+
+    \    \"housingType\": \"HOUSE\",\r
+
+    \    \"status\": \"INACTIVE\"\r
+
+    }"
+examples: .resources/Update Adopters.resources/examples
+order: 3583901483139684

@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:8080/api/shelters/1/veterinarians
+method: POST
+body:
+  type: json
+  content: "{\r\n  \"veterinarianId\": 1\r\n}"
+examples: .resources/Assing Veterinarian to Shelter.resources/examples
+order: 4035516331567873

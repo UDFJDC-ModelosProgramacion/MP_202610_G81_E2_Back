@@ -1,0 +1,36 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/reviews
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \    \"adopterId\": 1,\r
+
+      \    \"shelterId\": 2,\r
+
+      \    \"adoptionProcessId\": 5,\r
+
+      \    \"rating\": 5,\r
+
+      \    \"comment\": \"Muy buena experiencia\",\r
+
+      \    \"isSuccessStory\": true\r
+
+      }"
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 14:28:46 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '{"adopterId":1,"shelterId":2,"adoptionProcessId":5,"rating":5,"comment":"Muy
+      buena experiencia","isSuccessStory":true,"id":1}'
+order: 1774276130156

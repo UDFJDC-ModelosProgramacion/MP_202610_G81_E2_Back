@@ -1,0 +1,14 @@
+$kind: http-request
+name: Update Adoption
+url: http://localhost:8080/api/adoptions/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"contractSigned\": true,\r
+
+    \    \"officialDate\": \"2026-03-01\"\r
+
+    }"
+order: 9000

@@ -1,0 +1,32 @@
+$kind: http-request
+url: http://localhost:8080/api/adoptions
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"adopter\": {\r
+
+    \        \"id\": 1\r
+
+    \    },\r
+
+    \    \"pet\": {\r
+
+    \        \"id\": 1\r
+
+    \    },\r
+
+    \    \"shelter\": {\r
+
+    \        \"id\": 1\r
+
+    \    },\r
+
+    \    \"officialDate\": \"2026-03-23\",\r
+
+    \    \"contractSigned\": false\r
+
+    }"
+examples: .resources/Create Adoption.resources/examples
+order: 27

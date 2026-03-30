@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("*")
+@RequestMapping("/")
 public class DefaultController {
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

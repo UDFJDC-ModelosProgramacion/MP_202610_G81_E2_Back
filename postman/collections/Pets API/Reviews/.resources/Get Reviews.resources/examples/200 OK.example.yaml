@@ -1,0 +1,19 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/reviews
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 14:29:25 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '[{"adopterId":1,"shelterId":2,"adoptionProcessId":5,"rating":5,"comment":"Muy
+      buena experiencia","isSuccessStory":true,"id":1}]'
+order: 1774276168273

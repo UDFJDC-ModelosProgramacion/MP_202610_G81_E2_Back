@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:8080/api/veterinarians
+method: GET
+body:
+  type: json
+  content: "{}"
+examples: .resources/Get Veterinarians.resources/examples
+order: 4101873716898948

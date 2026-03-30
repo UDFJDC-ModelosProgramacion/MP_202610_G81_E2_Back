@@ -1,0 +1,5 @@
+$kind: http-request
+url: http://localhost:8080/api/adopters/1
+method: GET
+examples: .resources/Get Adopters By ID.resources/examples
+order: 2414
