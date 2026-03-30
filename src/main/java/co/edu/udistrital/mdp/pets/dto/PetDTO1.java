@@ -7,12 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO representing a generic Animal (base data for PetEntity).
- * Maps to PetEntity's core bio fields.
+ * DTO for a Pet (mascota), extending the Animal concept with shelter and adoption context.
  */
 @Data
 @NoArgsConstructor
-public class AnimalDTO {
+public class PetDTO1 {
     private Long id;
     private String name;
     private String breed;
@@ -23,8 +22,9 @@ public class AnimalDTO {
     private String specificNeeds;
     private Boolean isRescued;
     private String status;
+    private Long shelterId;
 
-    public AnimalDTO(PetEntity entity) {
+    public PetDTO1(PetEntity entity) {
         if (entity != null) {
             this.id = entity.getId();
             this.name = entity.getName();
@@ -36,6 +36,24 @@ public class AnimalDTO {
             this.specificNeeds = entity.getSpecificNeeds();
             this.isRescued = entity.getIsRescued();
             this.status = entity.getStatus();
+            if (entity.getShelter() != null) {
+                this.shelterId = entity.getShelter().getId();
+            }
         }
+    }
+
+    public PetEntity toEntity() {
+        PetEntity entity = new PetEntity();
+        entity.setId(this.id);
+        entity.setName(this.name);
+        entity.setBreed(this.breed);
+        entity.setBornDate(this.bornDate);
+        entity.setSex(this.sex);
+        entity.setSize(this.size);
+        entity.setTemperament(this.temperament);
+        entity.setSpecificNeeds(this.specificNeeds);
+        entity.setIsRescued(this.isRescued);
+        entity.setStatus(this.status);
+        return entity;
     }
 }

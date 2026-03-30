@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class PetDetailDTO extends PetDTO {
+public class PetDetailDTO extends PetDTO1 {
     private MedicalHistoryDTO medicalHistory;
     private List<Long> adoptionRequestIds = new ArrayList<>();
 

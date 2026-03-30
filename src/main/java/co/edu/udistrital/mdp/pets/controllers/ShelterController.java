@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.pets.dto.ShelterDTO;
+import co.edu.udistrital.mdp.pets.dto.ShelterDTO1;
 import co.edu.udistrital.mdp.pets.dto.ShelterDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -30,12 +30,12 @@ public class ShelterController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterDTO> findAll(@RequestParam(required = false) String name) {
+    public List<ShelterDTO1> findAll(@RequestParam(required = false) String name) {
         List<?> shelters = (name != null)
                 ? shelterService.searchSheltersByName(name)
                 : shelterService.searchShelters();
         return shelters.stream()
-                .map(e -> new ShelterDTO((co.edu.udistrital.mdp.pets.entities.ShelterEntity) e))
+                .map(e -> new ShelterDTO1((co.edu.udistrital.mdp.pets.entities.ShelterEntity) e))
                 .toList();
     }
 
@@ -47,7 +47,7 @@ public class ShelterController {
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public ShelterDetailDTO create(@RequestBody ShelterDTO shelterDTO)
+    public ShelterDetailDTO create(@RequestBody ShelterDTO1 shelterDTO)
             throws IllegalOperationException {
         return new ShelterDetailDTO(shelterService.createShelter(shelterDTO.toEntity()));
     }
@@ -55,7 +55,7 @@ public class ShelterController {
     @PutMapping(value = "/{shelterId}")
     @ResponseStatus(code = HttpStatus.OK)
     public ShelterDetailDTO update(@PathVariable Long shelterId,
-            @RequestBody ShelterDTO shelterDTO)
+            @RequestBody ShelterDTO1 shelterDTO)
             throws EntityNotFoundException, IllegalOperationException {
         return new ShelterDetailDTO(shelterService.updateShelter(shelterId, shelterDTO.toEntity()));
     }

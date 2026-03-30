@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-public class ShelterDetailDTO extends ShelterDTO {
+public class ShelterDetailDTO extends ShelterDTO1 {
     private List<ShelterMediaDTO> mediaItems = new ArrayList<>();
     private List<ReviewDTO> reviews = new ArrayList<>();
     private List<Long> veterinarianIds = new ArrayList<>();
