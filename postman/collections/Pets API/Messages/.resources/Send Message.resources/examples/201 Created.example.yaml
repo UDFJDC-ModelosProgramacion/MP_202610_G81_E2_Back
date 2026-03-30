@@ -1,0 +1,36 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/messages
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \    \"senderId\": 1,\r
+
+      \    \"receiverId\": 2,\r
+
+      \    \"content\": \"Hello\"\r
+
+      }"
+response:
+  statusCode: 201
+  statusText: Created
+  headers:
+    - key: vary
+      value: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    - key: content-type
+      value: application/json
+    - key: transfer-encoding
+      value: chunked
+    - key: date
+      value: Mon, 23 Mar 2026 05:19:15 GMT
+    - key: keep-alive
+      value: timeout=60
+    - key: connection
+      value: keep-alive
+  body:
+    type: json
+    content: '{"senderId":1,"receiverId":2,"content":"Hello","id":1,"sentAt":"2026-03-23T00:19:15.2980656","isRead":false,"active":true}'
+order: 1774243159385
+name: 201 Created

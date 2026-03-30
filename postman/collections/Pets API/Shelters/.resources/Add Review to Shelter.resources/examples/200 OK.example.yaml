@@ -1,0 +1,34 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/shelters/1/reviews
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \  \"adopterId\": 1,\r
+
+      \  \"adoptionProcessId\": 2,\r
+
+      \  \"rating\": 5,\r
+
+      \  \"comment\": \"Great shelter\",\r
+
+      \  \"isSuccessStory\": true\r
+
+      }"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 16:29:55 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '[{"adopterId":1,"adoptionProcessId":2,"rating":5,"comment":"Great
+      shelter","isSuccessStory":true,"id":495,"shelterId":1}]'
+order: 1774283398830

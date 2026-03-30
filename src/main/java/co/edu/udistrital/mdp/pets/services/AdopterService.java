@@ -103,18 +103,6 @@ public class AdopterService {
         if (adopterEntity == null) {
             throw new IllegalOperationException("Adopter is not valid");
         }
-        if (adopterEntity.getName() == null || adopterEntity.getName().isBlank()) {
-            throw new IllegalOperationException("Adopter name is not valid");
-        }
-        if (adopterEntity.getEmail() == null || adopterEntity.getEmail().isBlank()) {
-            throw new IllegalOperationException("Adopter email is not valid");
-        }
-        if (adopterEntity.getPassword() == null || adopterEntity.getPassword().isBlank()) {
-            throw new IllegalOperationException("Adopter password is not valid");
-        }
-        if (adopterEntity.getPhoneNumber() == null || adopterEntity.getPhoneNumber().isBlank()) {
-            throw new IllegalOperationException("Adopter phone is not valid");
-        }
         if (adopterEntity.getAddress() == null || adopterEntity.getAddress().isBlank()) {
             throw new IllegalOperationException("Adopter address is not valid");
         }

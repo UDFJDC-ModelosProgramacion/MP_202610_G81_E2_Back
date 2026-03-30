@@ -1,0 +1,14 @@
+$kind: http-request
+url: http://localhost:8080/api/reviews/1
+method: DELETE
+body:
+  type: json
+  content: "{\r
+
+    \    \"rating\": 4,\r
+
+    \    \"comment\": \"cambio de opinión\"\r
+
+    }"
+examples: .resources/Delete Review.resources/examples
+order: 3196368678919699

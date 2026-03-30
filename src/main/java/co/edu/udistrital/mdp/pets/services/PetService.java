@@ -29,11 +29,6 @@ public class PetService {
                     this.shelterRepository = shelterRepository;
           }
 
-          /**
-           * Regla:
-           * 1. La mascota llega a un shelter
-           * 2. No puede existir duplicada
-           */
           @Transactional
           public PetEntity createPet(Long shelterId, PetEntity pet) throws IllegalOperationException, EntityNotFoundException {
                     log.info("Creating pet");

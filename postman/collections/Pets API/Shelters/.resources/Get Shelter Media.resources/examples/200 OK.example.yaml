@@ -1,0 +1,18 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/shelters/1/media
+  method: GET
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 16:23:23 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '[{"url":"https://image.com/photo.jpg","type":"IMAGE","id":716},{"url":"https://image.com/photo1.jpg","type":"IMAGE","id":788}]'
+order: 1774283016898

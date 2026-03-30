@@ -18,9 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class UserService {
     private static final String NOT_FOUND_MSG = "The user with the given id was not found";
-
     private static final String NULL_USER_ID = "userId must not be null";
-
     private static final String USER_NOT_FOUND = NOT_FOUND_MSG;
     private static final String USER_ID_NULL = NULL_USER_ID;
 

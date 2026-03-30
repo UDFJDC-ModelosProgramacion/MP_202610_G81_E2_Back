@@ -1,0 +1,29 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/adoptions
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \"pet\": { \"id\": 1 },\r
+
+      \"adopter\": { \"id\": 1 },\r
+
+      \"shelter\": { \"id\": 1 }\r
+
+      }"
+response:
+  statusCode: 500
+  statusText: Internal Server Error
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 17:38:54 GMT
+    connection: close
+  body:
+    type: json
+    content: '{"timestamp":"2026-03-23T17:38:54.576+00:00","status":500,"error":"Internal
+      Server Error","path":"/api/adoptions"}'
+order: 1774287687500

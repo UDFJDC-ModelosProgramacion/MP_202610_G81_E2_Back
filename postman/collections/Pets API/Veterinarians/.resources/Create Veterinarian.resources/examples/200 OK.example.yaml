@@ -1,0 +1,42 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/veterinarians
+  method: POST
+  body:
+    type: json
+    content: "{\r
+
+      \    \"licenseNumber\": \"VET-001\",\r
+
+      \    \"availabilitySchedule\": \"Weekends\",\r
+
+      \    \"user\":{\r
+
+      \        \"id\": 1\r
+
+      \    },\r
+
+      \    \"specialities\": {\r
+
+      \        \"name\": \"Surgery\",\r
+
+      \        \"description\": \"Surgical producers\"\r
+
+      \    }\r
+
+      }"
+response:
+  statusCode: 200
+  statusText: OK
+  headers:
+    vary: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    content-type: application/json
+    transfer-encoding: chunked
+    date: Mon, 23 Mar 2026 15:43:26 GMT
+    keep-alive: timeout=60
+    connection: keep-alive
+  body:
+    type: json
+    content: '{"licenseNumber":"VET-001","availabilitySchedule":"Weekends","user":{"id":1},"specialities":{"name":"Surgery","description":"Surgical
+      producers"},"id":1}'
+order: 1774280616462

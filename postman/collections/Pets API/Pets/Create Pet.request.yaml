@@ -1,0 +1,35 @@
+$kind: http-request
+name: Create Pet
+url: http://localhost:8080/api/pets
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Max\",\r
+
+    \    \"breed\": \"Pastor Alemán\",\r
+
+    \    \"bornDate\": \"2023-01-15\",\r
+
+    \    \"sex\": \"M\",\r
+
+    \    \"size\": \"LARGE\",\r
+
+    \    \"temperament\": \"Friendly\",\r
+
+    \    \"specificNeeds\": \"None\",\r
+
+    \    \"isRescued\": true,\r
+
+    \    \"status\": \"AVAILABLE\",\r
+
+    \    \"shelter\": {\r
+
+    \        \"id\": 1\r
+
+    \    }\r
+
+    }"
+examples: ./.resources/Create Pet.resources/examples
+order: 1000

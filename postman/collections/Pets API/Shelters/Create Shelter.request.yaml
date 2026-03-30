@@ -1,0 +1,29 @@
+$kind: http-request
+name: Create Shelter
+url: http://localhost:8080/api/shelters
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \  \"shelterName\": \"Happy Paws\",\r
+
+    \  \"nit\": \"900123459\",\r
+
+    \  \"phoneNumber\": \"3001234567\",\r
+
+    \  \"address\": \"Calle 123 #45-67\",\r
+
+    \  \"status\": \"ACTIVE\",\r
+
+    \  \"city\": \"Bogotá\",\r
+
+    \  \"locationDetails\": \"Near central park\",\r
+
+    \  \"description\": \"Animal rescue shelter\",\r
+
+    \  \"websiteUrl\": \"https://happypaws.org\"\r
+
+    }"
+examples: .resources/Create Shelter.resources/examples
+order: 2000

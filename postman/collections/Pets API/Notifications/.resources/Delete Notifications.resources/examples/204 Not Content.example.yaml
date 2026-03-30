@@ -1,0 +1,32 @@
+$kind: http-example
+request:
+  url: http://localhost:8080/api/notifications/1
+  method: DELETE
+  body:
+    type: json
+    content: "{\r
+
+      \    \"userId\": 1,\r
+
+      \    \"title\": \"Adoption Approved\",\r
+
+      \    \"content\": \"Your adoption request was accepted\"\r
+
+      }"
+response:
+  statusCode: 204
+  statusText: No Content
+  headers:
+    - key: vary
+      value: Origin, Access-Control-Request-Method, Access-Control-Request-Headers
+    - key: date
+      value: Mon, 23 Mar 2026 04:51:12 GMT
+    - key: keep-alive
+      value: timeout=60
+    - key: connection
+      value: keep-alive
+  body:
+    type: text
+    content: ""
+order: 1774241529768
+name: 204 Not Content

@@ -1,0 +1,22 @@
+$kind: http-request
+url: http://localhost:8080/api/veterinarians/1
+method: PUT
+body:
+  type: json
+  content: "{\r
+
+    \    \"licenseNumber\": \"VET-002\",\r
+
+    \    \"availabilitySchedule\": \"Monday\",\r
+
+    \    \"specialities\": {\r
+
+    \        \"name\": \"Dermstology\",\r
+
+    \        \"description\": \"Skin trataments\"\r
+
+    \    }\r
+
+    }"
+examples: .resources/Update Veterinarian.resources/examples
+order: 4455006684129913

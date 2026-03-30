@@ -1,0 +1,8 @@
+$kind: http-request
+url: http://localhost:8080/api/messages
+method: GET
+body:
+  type: json
+  content: ""
+examples: .resources/Get Messages.resources/examples
+order: 3000
