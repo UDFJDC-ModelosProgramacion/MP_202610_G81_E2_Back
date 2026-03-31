@@ -42,11 +42,4 @@ public class MedicalHistoryEntity extends BaseEntity {
     @PodamExclude
     private List<MedicationEntity> medications = new ArrayList<>();
 
-    @OneToMany(mappedBy = "medicalHistory")
-    @PodamExclude
-    private List<InfectionEntity> infections = new ArrayList<>();
-
-    @OneToMany(mappedBy = "medicalHistory")
-    @PodamExclude
-    private List<ProcedureEntity> procedures = new ArrayList<>();
 }

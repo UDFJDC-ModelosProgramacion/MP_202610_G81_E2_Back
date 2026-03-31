@@ -5,8 +5,9 @@ import org.mapstruct.Mapping;
 
 import co.edu.udistrital.mdp.pets.entities.MedicalHistoryEntity;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { MedicalEventMapper.class, VaccineEntryMapper.class })
 public interface MedicalHistoryMapper {
-          @Mapping(source = "pet.id", target = "petId")
-          MedicalHistoryDTO entityToDTO(MedicalHistoryEntity entity);
+
+          @Mapping(target = "petId", ignore = true)
+          MedicalHistoryCreationDTO entityToDTO(MedicalHistoryEntity entity);
 }

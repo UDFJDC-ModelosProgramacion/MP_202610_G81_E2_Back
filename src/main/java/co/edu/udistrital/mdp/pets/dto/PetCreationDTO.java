@@ -5,11 +5,9 @@ import java.time.LocalDate;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-
 @Data
 @RequiredArgsConstructor
 public class PetCreationDTO {
-          private Long id;
           private String name;
           private String breed;
           private LocalDate bornDate;

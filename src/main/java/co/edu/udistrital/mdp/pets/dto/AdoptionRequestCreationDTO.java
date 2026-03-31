@@ -7,12 +7,11 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class PetDTO {
+public class AdoptionRequestCreationDTO {
           private Long id;
-          private String name;
-          private String breed;
-          private LocalDate bornDate;
+          private LocalDate requestDate;
           private String status;
-
-          private ShelterDTO shelter;
+          private String comments;
+          private Long adopterId;
+          private Long petId;
 }

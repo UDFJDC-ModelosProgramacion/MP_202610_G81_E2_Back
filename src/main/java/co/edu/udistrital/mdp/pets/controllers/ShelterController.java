@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.pets.dto.ShelterDTO1;
-import co.edu.udistrital.mdp.pets.dto.ShelterDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.ShelterService;

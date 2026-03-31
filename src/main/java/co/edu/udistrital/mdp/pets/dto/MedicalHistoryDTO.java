@@ -15,17 +15,4 @@ public class MedicalHistoryDTO {
     private Long petId;
     private Long veterinarianId;
 
-    public MedicalHistoryDTO(MedicalHistoryEntity entity) {
-        if (entity != null) {
-            this.id = entity.getId();
-            this.createdDate = entity.getCreatedDate();
-            this.lastUpdated = entity.getLastUpdated();
-            if (entity.getPet() != null) {
-                this.petId = entity.getPet().getId();
-            }
-            if (entity.getVeterinarian() != null) {
-                this.veterinarianId = entity.getVeterinarian().getId();
-            }
-        }
-    }
 }

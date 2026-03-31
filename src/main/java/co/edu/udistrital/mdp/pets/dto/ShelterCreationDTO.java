@@ -5,7 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Data
 @RequiredArgsConstructor
-public class ShelterDTO {
+public class ShelterCreationDTO {
+          private Long id;
           private String shelterName;
           private String nit;
           private String phoneNumber;

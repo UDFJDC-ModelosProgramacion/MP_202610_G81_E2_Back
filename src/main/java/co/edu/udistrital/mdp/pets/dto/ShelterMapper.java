@@ -1,10 +1,14 @@
 package co.edu.udistrital.mdp.pets.dto;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "Spring", uses = {
-          VetMapper.class
-})
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
+
+@Mapper(componentModel = "spring")
 public interface ShelterMapper {
-          
+
+    ShelterDTO entityToDTO(ShelterEntity entity);
+
+    ShelterEntity dtoToEntity(ShelterCreationDTO dto);
 }

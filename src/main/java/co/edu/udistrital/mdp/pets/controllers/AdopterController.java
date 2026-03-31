@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.AdopterDTO;
-import co.edu.udistrital.mdp.pets.dto.AdopterDetailDTO;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
