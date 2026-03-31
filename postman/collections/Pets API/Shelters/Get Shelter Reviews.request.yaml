@@ -1,5 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/shelters/1/reviews
-method: GET
-examples: .resources/Get Shelter Reviews.resources/examples
-order: 3597444993113199

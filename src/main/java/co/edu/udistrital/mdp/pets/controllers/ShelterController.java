@@ -5,11 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import co.edu.udistrital.mdp.pets.dto.ShelterDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.ShelterDTO;
 import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.ReviewEntity;
+import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.repositories.ShelterRepository;
+import co.edu.udistrital.mdp.pets.services.ShelterService;
 import co.edu.udistrital.mdp.pets.services.ReviewService;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.mappers.EntityDtoMapper;
 
 import java.util.*;
 
@@ -23,6 +28,9 @@ public class ShelterController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private ShelterService shelterService;
+
     // Estructuras en memoria para lo que aún no tiene Entidad/Service persistente
     private Map<Long, List<Map<String, Object>>> shelterMedia = new HashMap<>();
     private Map<Long, List<Map<String, Object>>> shelterVeterinarians = new HashMap<>();
@@ -31,19 +39,37 @@ public class ShelterController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ShelterEntity createShelter(@RequestBody ShelterEntity shelter) {
-        return shelterRepository.save(shelter);
+    public ShelterDTO createShelter(@RequestBody ShelterDTO shelterDto) throws IllegalOperationException {
+        ShelterEntity saved = shelterService.createShelter(EntityDtoMapper.toEntity(shelterDto));
+        return EntityDtoMapper.toDto(saved);
     }
 
     @GetMapping
-    public List<ShelterEntity> getShelters() {
-        return shelterRepository.findAll();
+    public List<ShelterDTO> getShelters() {
+        return EntityDtoMapper.toShelterDtoList(shelterService.searchShelters());
     }
 
     @GetMapping("/{id}")
-    public ShelterEntity getShelterById(@PathVariable Long id) {
-        return shelterRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Shelter not found"));
+    public ShelterDTO getShelterById(@PathVariable Long id) throws EntityNotFoundException {
+        return EntityDtoMapper.toDto(shelterService.searchShelter(id));
+    }
+
+    @GetMapping("/{id}/detail")
+    public ShelterDetailDTO getShelterDetail(@PathVariable Long id) throws EntityNotFoundException {
+        return EntityDtoMapper.toDetailDto(shelterService.searchShelter(id));
+    }
+
+    @PutMapping("/{id}")
+    public ShelterDTO updateShelter(@PathVariable Long id, @RequestBody ShelterDTO shelterDto)
+            throws EntityNotFoundException, IllegalOperationException {
+        ShelterEntity updated = shelterService.updateShelter(id, EntityDtoMapper.toEntity(shelterDto));
+        return EntityDtoMapper.toDto(updated);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteShelter(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException {
+        shelterService.deleteShelter(id);
     }
 
     // --- Métodos de REVIEWS (Conectados a ReviewService) ---

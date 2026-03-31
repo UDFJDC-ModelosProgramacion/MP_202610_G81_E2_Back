@@ -1,7 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/reviews?adopterId=1
-method: GET
-queryParams:
-  adopterId: "1"
-examples: .resources/Get Reviews By Adopter.resources/examples
-order: 2000

@@ -1,8 +1,0 @@
-$kind: http-request
-name: Request Adoption
-url: http://localhost:8080/api/adoptions/1/request
-method: POST
-body:
-  type: json
-  content: "{}"
-order: 1000

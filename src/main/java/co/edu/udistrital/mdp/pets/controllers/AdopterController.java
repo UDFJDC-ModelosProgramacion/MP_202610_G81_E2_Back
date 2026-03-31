@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import co.edu.udistrital.mdp.pets.dto.AdopterDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.AdopterDTO;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.mappers.EntityDtoMapper;
 import co.edu.udistrital.mdp.pets.services.AdopterService;
 
 import java.util.List;
@@ -20,27 +23,35 @@ public class AdopterController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AdopterEntity createAdopter(@RequestBody AdopterEntity adopter)
+    public AdopterDTO createAdopter(@RequestBody AdopterDTO adopterDto)
             throws IllegalOperationException {
-        return adopterService.createAdopter(adopter);
+        AdopterEntity saved = adopterService.createAdopter(EntityDtoMapper.toEntity(adopterDto));
+        return EntityDtoMapper.toDto(saved);
     }
 
     @GetMapping
-    public List<AdopterEntity> getAdopters() {
-        return adopterService.searchAdopters();
+    public List<AdopterDTO> getAdopters() {
+        return EntityDtoMapper.toAdopterDtoList(adopterService.searchAdopters());
     }
 
     @GetMapping("/{id}")
-    public AdopterEntity getAdopterById(@PathVariable Long id)
+    public AdopterDTO getAdopterById(@PathVariable Long id)
             throws EntityNotFoundException {
-        return adopterService.searchAdopter(id);
+        return EntityDtoMapper.toDto(adopterService.searchAdopter(id));
+    }
+
+    @GetMapping("/{id}/detail")
+    public AdopterDetailDTO getAdopterDetail(@PathVariable Long id)
+            throws EntityNotFoundException {
+        return EntityDtoMapper.toDetailDto(adopterService.searchAdopter(id));
     }
 
     @PutMapping("/{id}")
-    public AdopterEntity updateAdopter(@PathVariable Long id,
-                                    @RequestBody AdopterEntity adopter)
+    public AdopterDTO updateAdopter(@PathVariable Long id,
+                                    @RequestBody AdopterDTO adopterDto)
             throws EntityNotFoundException, IllegalOperationException {
-        return adopterService.updateAdopter(id, adopter);
+        AdopterEntity updated = adopterService.updateAdopter(id, EntityDtoMapper.toEntity(adopterDto));
+        return EntityDtoMapper.toDto(updated);
     }
 
     @DeleteMapping("/{id}")

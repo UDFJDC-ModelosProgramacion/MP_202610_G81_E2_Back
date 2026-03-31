@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/shelters/1/detail"
+method: GET
+order: 4000

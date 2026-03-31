@@ -1,33 +1,24 @@
 $kind: http-request
 name: Create Veterinarian
-url: http://localhost:8080/api/veterinarians
+url: "{{baseUrl}}/veterinarians"
 method: POST
+headers:
+  Content-Type: application/json
 body:
   type: json
   content: "{\r
 
-    \    \"name\": \"Dr. Carlos López\",\r
+    \    \"name\": \"Dr. Camilo Torres\",\r
 
-    \    \"email\": \"veterinario@email.com\",\r
+    \    \"email\": \"camilo.vet@example.com\",\r
 
-    \    \"password\": \"123456\",\r
-
-    \    \"phoneNumber\": \"3009876543\",\r
-
-    \    \"profileImageUrl\": \"https://example.com/vet.jpg\",\r
-
-    \    \"registerDate\": \"2026-03-23T10:00:00\",\r
+    \    \"phoneNumber\": \"3201234567\",\r
 
     \    \"licenseNumber\": \"VET-2024-001\",\r
 
-    \    \"availabilitySchedule\": \"Lunes a Viernes 8am-6pm\",\r
+    \    \"availabilitySchedule\": \"Lunes a Viernes: 8:00 AM - 5:00 PM\",\r
 
-    \    \"shelter\": {\r
-
-    \        \"id\": 1\r
-
-    \    }\r
+    \    \"shelterId\": 1\r
 
     }"
-examples: .resources/Create Veterinarian.resources/examples
-order: 2000
+order: 1000

@@ -1,29 +1,21 @@
 $kind: http-request
 name: Create Shelter
-url: http://localhost:8080/api/shelters
+url: "{{baseUrl}}/shelters"
 method: POST
+headers:
+  Content-Type: application/json
 body:
   type: json
-  content: "{\r
-
-    \  \"shelterName\": \"Happy Paws\",\r
-
-    \  \"nit\": \"900123459\",\r
-
-    \  \"phoneNumber\": \"3001234567\",\r
-
-    \  \"address\": \"Calle 123 #45-67\",\r
-
-    \  \"status\": \"ACTIVE\",\r
-
-    \  \"city\": \"Bogotá\",\r
-
-    \  \"locationDetails\": \"Near central park\",\r
-
-    \  \"description\": \"Animal rescue shelter\",\r
-
-    \  \"websiteUrl\": \"https://happypaws.org\"\r
-
-    }"
-examples: .resources/Create Shelter.resources/examples
-order: 2000
+  content: |-
+    {
+      "shelterName": "Huellitas Bogota",
+      "nit": "901234567-8",
+      "phoneNumber": "3001234567",
+      "address": "Calle 123 #45-67",
+      "status": "Activo",
+      "city": "Bogota",
+      "locationDetails": "Cerca al parque",
+      "description": "Refugio de perros y gatos",
+      "websiteUrl": "https://huellitas.example"
+    }
+order: 1000

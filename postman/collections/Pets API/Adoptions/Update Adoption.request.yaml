@@ -1,14 +1,18 @@
 $kind: http-request
 name: Update Adoption
-url: http://localhost:8080/api/adoptions/1
+url: "{{baseUrl}}/adoptions/1"
 method: PUT
+headers:
+  Content-Type: application/json
 body:
   type: json
   content: "{\r
 
+    \    \"officialDate\": \"2024-03-21\",\r
+
     \    \"contractSigned\": true,\r
 
-    \    \"officialDate\": \"2026-03-01\"\r
+    \    \"status\": \"IN_PROGRESS\"\r
 
     }"
-order: 9000
+order: 3465644715541170

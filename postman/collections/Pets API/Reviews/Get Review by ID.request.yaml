@@ -1,5 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/reviews/1
-method: GET
-examples: .resources/Get Review by ID.resources/examples
-order: 3995

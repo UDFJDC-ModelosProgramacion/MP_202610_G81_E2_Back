@@ -1,30 +1,20 @@
 $kind: http-request
-url: http://localhost:8080/api/adopters
+name: Create Adopter
+url: "{{baseUrl}}/adopters"
 method: POST
+headers:
+  Content-Type: application/json
 body:
   type: json
-  content: "{\r
-
-    \    \"name\": \"Juan Pérez\",\r
-
-    \    \"email\": \"adopter@email.com\",\r
-
-    \    \"password\": \"123456\",\r
-
-    \    \"phoneNumber\": \"3001234567\",\r
-
-    \    \"profileImageUrl\": \"https://example.com/profile.jpg\",\r
-
-    \    \"registerDate\": \"2026-03-23T10:00:00\",\r
-
-    \    \"address\": \"Calle 123\",\r
-
-    \    \"city\": \"Bogota\",\r
-
-    \    \"housingType\": \"HOUSE\",\r
-
-    \    \"status\": \"ACTIVE\"\r
-
-    }"
-examples: .resources/Create Adopter.resources/examples
+  content: |-
+    {
+      "name": "Juan Perez",
+      "email": "juan.perez@mail.com",
+      "password": "123456",
+      "phoneNumber": "3100000000",
+      "address": "Cra 10 #20-30",
+      "city": "Bogota",
+      "housingType": "Apartamento",
+      "status": "ACTIVE"
+    }
 order: 1000

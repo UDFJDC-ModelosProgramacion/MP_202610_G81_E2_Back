@@ -1,0 +1,279 @@
+{
+  "info": {
+    "_postman_id": "7a8f89d6-4c02-4f50-8c3e-6b8cd6b8f001",
+    "name": "Pets API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Default Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shelters",
+      "item": [
+        {
+          "name": "Create Shelter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shelterName\": \"Huellitas Bogota\",\n  \"nit\": \"901234567-8\",\n  \"phoneNumber\": \"3001234567\",\n  \"address\": \"Calle 123 #45-67\",\n  \"status\": \"Activo\",\n  \"city\": \"Bogota\",\n  \"locationDetails\": \"Cerca al parque\",\n  \"description\": \"Refugio de perros y gatos\",\n  \"websiteUrl\": \"https://huellitas.example\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/shelters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Shelters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Shelter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Shelter Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters/1/detail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "1",
+                "detail"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adopters",
+      "item": [
+        {
+          "name": "Create Adopter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Perez\",\n  \"email\": \"juan.perez@mail.com\",\n  \"password\": \"123456\",\n  \"phoneNumber\": \"3100000000\",\n  \"address\": \"Cra 10 #20-30\",\n  \"city\": \"Bogota\",\n  \"housingType\": \"Apartamento\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adopters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adopter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adopter Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/1/detail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "1",
+                "detail"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pets",
+      "item": [
+        {
+          "name": "Create Pet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Firulais\",\n  \"breed\": \"Labrador\",\n  \"bornDate\": \"2021-01-10\",\n  \"sex\": \"MALE\",\n  \"size\": \"MEDIUM\",\n  \"temperament\": \"NOBLE\",\n  \"specificNeeds\": \"Ninguna\",\n  \"isRescued\": true,\n  \"shelterId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pet By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pet Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/1/detail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1",
+                "detail"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
+    }
+  ]
+}

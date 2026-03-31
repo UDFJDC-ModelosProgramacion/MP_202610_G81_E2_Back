@@ -1,8 +1,5 @@
 $kind: http-request
 name: Delete Adoption
-url: http://localhost:8080/api/adoptions/1
+url: "{{baseUrl}}/adoptions/1"
 method: DELETE
-body:
-  type: json
-  content: "{\r\n}"
-order: 8778
+order: 4498389058694398

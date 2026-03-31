@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.dto;
 
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,11 +16,14 @@ import lombok.NoArgsConstructor;
 public class PetDTO {
     private Long id;
     private String name;
+    @JsonAlias({"species"})
     private String breed;
     private LocalDate bornDate;
     private String sex;
     private String size;
+    @JsonAlias({"Temperament"})
     private String temperament;
+    @JsonAlias({"SpecifyNeeds"})
     private String specificNeeds;
     private Boolean isRescued;
     private String status;

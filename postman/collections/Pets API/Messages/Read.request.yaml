@@ -1,8 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/messages/1
-method: PATCH
-body:
-  type: json
-  content: ""
-examples: .resources/Read.resources/examples
-order: 4000

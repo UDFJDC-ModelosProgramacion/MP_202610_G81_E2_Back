@@ -1,1132 +1,190 @@
 {
   "info": {
-    "_postman_id": "98783645-3c6e-4f97-bc68-e74f63d99425",
+    "_postman_id": "7a8f89d6-4c02-4f50-8c3e-6b8cd6b8f001",
     "name": "Pets API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "52848642",
-    "_collection_link": "https://go.postman.co/collection/52848642-98783645-3c6e-4f97-bc68-e74f63d99425?source=collection_link"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Users",
+      "name": "Health",
       "item": [
         {
-          "name": "Create User",
+          "name": "Default Endpoint",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Shelters",
+      "item": [
+        {
+          "name": "Create Shelter",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"shelterName\": \"Huellitas Bogota\",\n  \"nit\": \"901234567-8\",\n  \"phoneNumber\": \"3001234567\",\n  \"address\": \"Calle 123 #45-67\",\n  \"status\": \"Activo\",\n  \"city\": \"Bogota\",\n  \"locationDetails\": \"Cerca al parque\",\n  \"description\": \"Refugio de perros y gatos\",\n  \"websiteUrl\": \"https://huellitas.example\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/api/users",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/shelters",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "users"
+                "shelters"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid data\"\r\n}"
-            }
-          ]
+          }
         },
         {
-          "name": "Get User",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "Get Shelters",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/users",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/shelters",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "users"
+                "shelters"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            }
-          ]
+          }
         },
         {
-          "name": "Get User By Id",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "Get Shelter By Id",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/users/1",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/shelters/1",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "users",
+                "shelters",
                 "1"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": null
-            },
-            {
-              "name": "404 Not Found",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users/1",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users",
-                    "1"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/problem+json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 00:06:57 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
+          }
         },
         {
-          "name": "Get User Pets",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "Get Shelter Detail",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/users/1/pets",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/shelters/1/detail",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "users",
+                "shelters",
                 "1",
-                "pets"
+                "detail"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Adopters",
+      "item": [
+        {
+          "name": "Create Adopter",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Juan Perez\",\n  \"email\": \"juan.perez@mail.com\",\n  \"password\": \"123456\",\n  \"phoneNumber\": \"3100000000\",\n  \"address\": \"Cra 10 #20-30\",\n  \"city\": \"Bogota\",\n  \"housingType\": \"Apartamento\",\n  \"status\": \"ACTIVE\"\n}"
             },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": null
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
             }
-          ]
+          }
         },
         {
-          "name": "Get User Notifications",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "Get Adopters",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/users/1/notifications",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/adopters",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "users",
+                "adopters"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adopter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adopter Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/1/detail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
                 "1",
-                "notifications"
+                "detail"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": null
-            }
-          ]
-        },
-        {
-          "name": "Delete User",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/users/1",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "users",
-                "1"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": null
-            },
-            {
-              "name": "404 Not Found",
-              "originalRequest": {
-                "method": "DELETE",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users/1",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users",
-                    "1"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/problem+json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 00:58:59 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"User not found\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
-        },
-        {
-          "name": "Update User",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Juan Update\",\r\n    \"email\": \"juan@email.com Update\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/users/1",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "users",
-                "1"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"id\": 1,\r\n    \"name\": \"Juan\",\r\n    \"email\": \"juan@email.com\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Sun, 22 Mar 2026 23:10:04 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Juan\",\n    \"email\": \"juan@email.com\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"error\": \"Invalid Data\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/users",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "users"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": null
-            },
-            {
-              "name": "404 Not Found",
-              "originalRequest": {
-                "method": "PUT",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Juan Update\",\r\n    \"email\": \"juan@email.com Update\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/users/1",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "users",
-                    "1"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/problem+json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 01:06:21 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"User not found\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
+          }
         }
       ]
     },
@@ -1137,1693 +195,231 @@
           "name": "Create Pet",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"name\": \"Firulais\",\n  \"breed\": \"Labrador\",\n  \"bornDate\": \"2021-01-10\",\n  \"sex\": \"MALE\",\n  \"size\": \"MEDIUM\",\n  \"temperament\": \"NOBLE\",\n  \"specificNeeds\": \"Ninguna\",\n  \"isRescued\": true,\n  \"shelterId\": 1\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/api/pets",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/pets",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
                 "pets"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": null,
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:51:55 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
+          }
+        },
+        {
+          "name": "Get Pets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets",
+              "host": [
+                "{{baseUrl}}"
               ],
-              "cookie": [],
-              "body": "{\n    \"name\": \"Firulais\",\n    \"Temperament\": \"Pacify\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"famele\",\n    \"SpecifyNeeds\": \"Any\",\n    \"id\": 1\n}"
-            },
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
+              "path": [
+                "pets"
+              ]
             }
-          ]
+          }
+        },
+        {
+          "name": "Get Pet By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Pet Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/1/detail",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1",
+                "detail"
+              ]
+            }
+          }
         },
         {
           "name": "Add Medical Event",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"description\": \"Checkup\",\r\n    \"date\": \"2026-03-20\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"eventType\": \"CHECKUP\",\n  \"description\": \"Control general\",\n  \"eventDate\": \"2026-03-30\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/api/pets/1/medical-history",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/pets/1/medical-history",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
                 "pets",
                 "1",
                 "medical-history"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"description\": \"Checkup\",\r\n    \"date\": \"2026-03-20\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets/1/medical-history",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets",
-                    "1",
-                    "medical-history"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
-            }
-          ]
+          }
         },
         {
-          "name": "Add Medical Event Copy",
+          "name": "Get Medical History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pets/1/medical-history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1",
+                "medical-history"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Vaccine",
           "request": {
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Rabies\",\r\n    \"date\": \"2026-03-20\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"vaccineName\": \"Rabia\",\n  \"adminDate\": \"2026-03-30\",\n  \"nextDueDate\": \"2027-03-30\"\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/api/pets/1/vaccines",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/pets/1/vaccines",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
                 "pets",
                 "1",
                 "vaccines"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"description\": \"Checkup\",\r\n    \"date\": \"2026-03-20\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets/1/medical-history",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets",
-                    "1",
-                    "medical-history"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
-            }
-          ]
+          }
         },
         {
-          "name": "Get Pets",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
+          "name": "Get Vaccines",
           "request": {
             "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/pets",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/pets/1/vaccines",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "pets"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
-        },
-        {
-          "name": "Get Pet By ID",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/pets/1",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "pets",
-                "1"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
-        },
-        {
-          "name": "Get Pet Medical History",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"description\": \"Vaccination\",\r\n    \"date\": \"1016-03-20\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/pets/1/medical-history",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
-                "pets",
-                "1",
-                "medical-history"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
-        },
-        {
-          "name": "Get Pet Vaccine",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"description\": \"Vaccination\",\r\n    \"date\": \"1016-03-20\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "http://localhost:8080/api/pets/1/vaccines",
-              "protocol": "http",
-              "host": [
-                "localhost"
-              ],
-              "port": "8080",
-              "path": [
-                "api",
                 "pets",
                 "1",
                 "vaccines"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
-        },
+          }
+        }
+      ]
+    },
+    {
+      "name": "Veterinarians",
+      "item": [
         {
-          "name": "Update Pet",
+          "name": "Create Veterinarian",
           "request": {
-            "method": "PUT",
-            "header": [],
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Firulais update\",\r\n    \"Temperament\": \"Pacify update\",\r\n    \"SpecifyNeeds\": \"Update\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
+              "raw": "{\n  \"name\": \"Dra. Ana\",\n  \"email\": \"ana.vet@mail.com\",\n  \"password\": \"123456\",\n  \"phoneNumber\": \"3111111111\",\n  \"licenseNumber\": \"VET-12345\",\n  \"availabilitySchedule\": \"L-V 8am-5pm\",\n  \"shelterId\": 1\n}"
             },
             "url": {
-              "raw": "http://localhost:8080/api/pets/1",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/veterinarians",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "pets",
-                "1"
+                "veterinarians"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
-            }
-          ]
+          }
         },
         {
-          "name": "Delete Pet",
+          "name": "Get Veterinarians",
           "request": {
-            "method": "DELETE",
+            "method": "GET",
             "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
             "url": {
-              "raw": "http://localhost:8080/api/pets/1",
-              "protocol": "http",
+              "raw": "{{baseUrl}}/veterinarians",
               "host": [
-                "localhost"
+                "{{baseUrl}}"
               ],
-              "port": "8080",
               "path": [
-                "api",
-                "pets",
-                "1"
+                "veterinarians"
               ]
             }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\r\n    \"error\": \"Invalid Data\"\r\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
+          }
+        },
+        {
+          "name": "Get Veterinarian Detail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/veterinarians/1/detail",
+              "host": [
+                "{{baseUrl}}"
               ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
-            },
-            {
-              "name": "404 NOT FOUND",
-              "originalRequest": {
-                "method": "GET",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\r\n    \"name\": \"Firulais\",\r\n    \"Temperament\": \"Pacify\",\r\n    \"species\": \"Dog\",\r\n    \"size\": \"small\",\r\n    \"sex\": \"famele\",\r\n    \"SpecifyNeeds\": \"Any\"\r\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "http://localhost:8080/api/pets",
-                  "protocol": "http",
-                  "host": [
-                    "localhost"
-                  ],
-                  "port": "8080",
-                  "path": [
-                    "api",
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Not Found",
-              "code": 404,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 02:54:29 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+              "path": [
+                "veterinarians",
+                "1",
+                "detail"
+              ]
             }
-          ]
+          }
         }
       ]
     },
@@ -2833,40 +429,224 @@
         {
           "name": "Create Adoption",
           "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adopterId\": 1,\n  \"petId\": 1,\n  \"shelterId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/adoptions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Adoptions",
+          "request": {
             "method": "GET",
-            "header": []
-          },
-          "response": []
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Approve Adoption",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/1/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "1",
+                "approve"
+              ]
+            }
+          }
         }
       ]
     },
     {
-      "name": "Shelters",
-      "item": []
-    },
-    {
-      "name": "Veterinarians",
-      "item": []
-    },
-    {
       "name": "Reviews",
-      "item": []
+      "item": [
+        {
+          "name": "Create Review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"adopterId\": 1,\n  \"shelterId\": 1,\n  \"adoptionProcessId\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excelente experiencia\",\n  \"isSuccessStory\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "name": "Notifications",
-      "item": []
+      "item": [
+        {
+          "name": "Create Notification",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 1,\n  \"title\": \"Nueva solicitud\",\n  \"content\": \"Tienes una nueva solicitud de adopcion\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications?userId=1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        }
+      ]
     },
     {
       "name": "Messages",
-      "item": []
-    },
+      "item": [
+        {
+          "name": "Send Message",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"senderId\": 1,\n  \"receiverId\": 2,\n  \"content\": \"Hola, sigue disponible la mascota?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Conversation",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages/conversation?user1=1&user2=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "messages",
+                "conversation"
+              ],
+              "query": [
+                {
+                  "key": "user1",
+                  "value": "1"
+                },
+                {
+                  "key": "user2",
+                  "value": "2"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
     {
-      "name": "New Request",
-      "request": {
-        "method": "GET",
-        "header": []
-      },
-      "response": []
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api"
     }
   ]
 }
