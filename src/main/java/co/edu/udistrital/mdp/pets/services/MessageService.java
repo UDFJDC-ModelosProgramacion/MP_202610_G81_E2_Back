@@ -55,7 +55,7 @@ public class MessageService {
         log.info("Inicia proceso de consultar el mensaje con id = {}", messageId);
         Long safeMessageId = Objects.requireNonNull(messageId, MSG_ID_NULL);
         Optional<MessageEntity> messageEntity = messageRepository.findById(safeMessageId);
-        if (messageEntity.isEmpty()) {
+        if (messageEntity.isEmpty() || !Boolean.TRUE.equals(messageEntity.get().getActive())) {
             throw new EntityNotFoundException("The message with the given id was not found");
         }
         log.info("Termina proceso de consultar el mensaje con id = {}", messageId);

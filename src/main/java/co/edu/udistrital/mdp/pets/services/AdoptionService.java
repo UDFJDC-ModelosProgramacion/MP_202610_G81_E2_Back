@@ -41,30 +41,24 @@ public class AdoptionService {
             throw new IllegalOperationException("Adoption can not be null.");
         }
 
-        // Validar que exista el adoptante
-        if (adoption.getAdopter() == null || adoption.getAdopter().getId() == null) {
-            throw new IllegalOperationException("Adopter cannot be null.");
+        // Verificar que el adoptante existe en BD, si se proporciona
+        if (adoption.getAdopter() != null && adoption.getAdopter().getId() != null) {
+            Optional<AdopterEntity> adopter = adopterRepository.findById(adoption.getAdopter().getId());
+            if (adopter.isEmpty()) {
+                throw new IllegalOperationException("Adopter does not exist.");
+            }
+            adoption.setAdopter(adopter.get());
         }
 
-        // Validar que exista la mascota
-        if (adoption.getPet() == null || adoption.getPet().getId() == null) {
-            throw new IllegalOperationException("Pet cannot be null.");
+        // Verificar que la mascota existe en BD, si se proporciona
+        if (adoption.getPet() != null && adoption.getPet().getId() != null) {
+            Optional<PetEntity> pet = petRepository.findById(adoption.getPet().getId());
+            if (pet.isEmpty()) {
+                throw new IllegalOperationException("Pet does not exist.");
+            }
+            adoption.setPet(pet.get());
         }
 
-        // Verificar que el adoptante existe en BD
-        Optional<AdopterEntity> adopter = adopterRepository.findById(adoption.getAdopter().getId());
-        if (adopter.isEmpty()) {
-            throw new IllegalOperationException("Adopter does not exist.");
-        }
-
-        // Verificar que la mascota existe en BD
-        Optional<PetEntity> pet = petRepository.findById(adoption.getPet().getId());
-        if (pet.isEmpty()) {
-            throw new IllegalOperationException("Pet does not exist.");
-        }
-
-        adoption.setAdopter(adopter.get());
-        adoption.setPet(pet.get());
         adoption.setStatus(AdoptionStatus.REQUESTED);
         adoption.setContractSigned(false);
 
@@ -176,6 +170,10 @@ public class AdoptionService {
             throw new EntityNotFoundException(AD_NOT_FOUND);
 
         AdoptionEntity adoption = adoptionEntity.get();
+
+        if (adoption.getPet() != null) {
+            throw new IllegalOperationException("Cannot delete adoption with associated pet.");
+        }
 
         if (adoption.getTrialCohabitation() != null) {
             throw new IllegalOperationException("Cannot delete adoption with associated trial cohabitation.");
