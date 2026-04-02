@@ -1,5 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/shelters/1/media
-method: GET
-examples: .resources/Get Shelter Media.resources/examples
-order: 515445554681025

@@ -40,6 +40,8 @@ class NotificationControllerTest {
         user.setName("Notification User");
         user.setEmail("notification@test.com");
         user.setPassword("password123");
+        user.setAddress("123 Main St");
+        user.setCity("Bogota");
         userId = adopterController.create(user).getId();
 
         notificationDTO = new NotificationDTO();
@@ -66,7 +68,7 @@ class NotificationControllerTest {
     void testFindAll() throws IllegalOperationException, EntityNotFoundException {
         notificationController.create(notificationDTO);
 
-        List<NotificationDTO> notifications = notificationController.findAll();
+        List<NotificationDTO> notifications = notificationController.findAll(null);
         assertNotNull(notifications);
         assertFalse(notifications.isEmpty());
     }
@@ -95,6 +97,8 @@ class NotificationControllerTest {
     @Test
     void testDelete() throws IllegalOperationException, EntityNotFoundException {
         NotificationDetailDTO createdNotification = notificationController.create(notificationDTO);
+
+        notificationController.markAsReadWithPatch(createdNotification.getId());
 
         notificationController.delete(createdNotification.getId());
 

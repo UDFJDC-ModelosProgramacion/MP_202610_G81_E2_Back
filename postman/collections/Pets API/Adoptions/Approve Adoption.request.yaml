@@ -1,8 +1,5 @@
 $kind: http-request
 name: Approve Adoption
-url: http://localhost:8080/api/adoptions/1/approve
+url: "{{baseUrl}}/adoptions/1/approve"
 method: POST
-body:
-  type: json
-  content: "{}"
-order: 3705
+order: 4325700059554256

@@ -1,0 +1,5 @@
+$kind: http-request
+name: Start Trial Period
+url: "{{baseUrl}}/adoptions/1/trial"
+method: POST
+order: 4493254419912258

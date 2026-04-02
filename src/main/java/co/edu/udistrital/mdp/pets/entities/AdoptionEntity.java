@@ -28,13 +28,15 @@ public class AdoptionEntity extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "adopter_id")
     // Evita que el adoptante intente cargar sus propias adopciones en bucle
-    @JsonIgnoreProperties("adoptions") 
+    @JsonIgnoreProperties("adoptions")
+    @PodamExclude
     private AdopterEntity adopter;
 
     @ManyToOne
     @JoinColumn(name = "pet_id")
     // Evita que la mascota intente cargar sus procesos de adopción en bucle
     @JsonIgnoreProperties("adoptions")
+    @PodamExclude
     private PetEntity pet;
 
     @ManyToOne

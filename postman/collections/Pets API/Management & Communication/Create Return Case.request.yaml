@@ -1,0 +1,18 @@
+$kind: http-request
+name: Create Return Case
+url: "{{baseUrl}}/return-cases"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"returnDate\": \"2024-04-01\",\r
+
+    \    \"reason\": \"Alergias inesperadas\",\r
+
+    \    \"details\": \"Un miembro de la familia resultó alérgico.\", \r
+
+    \    \"adoptionProcessId\": 1\r
+
+    }"
+order: 3722486199357719

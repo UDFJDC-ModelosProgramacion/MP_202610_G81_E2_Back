@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get User Notification
+url: "{{baseUrl}}/notifications?userId=1"
+method: GET
+order: 3350095204380124

@@ -71,6 +71,12 @@ public class NotificationService {
     }
 
     @Transactional
+    public List<NotificationEntity> searchNotificationsByUser(Long userId) {
+        Long safeUserId = Objects.requireNonNull(userId, "userId must not be null");
+        return notificationRepository.findByUserId(safeUserId);
+    }
+
+    @Transactional
     public NotificationEntity updateNotification(Long notificationId, NotificationEntity notificationEntity)
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Inicia proceso de actualizar la notificación con id = {}", notificationId);
@@ -87,6 +93,16 @@ public class NotificationService {
         storedNotification.setContent(notificationEntity.getContent());
         storedNotification.setIsRead(notificationEntity.getIsRead() != null ? notificationEntity.getIsRead() : storedNotification.getIsRead());
         log.info("Termina proceso de actualizar la notificación con id = {}", notificationId);
+        return notificationRepository.save(storedNotification);
+    }
+
+    @Transactional
+    public NotificationEntity markNotificationAsRead(Long notificationId)
+            throws EntityNotFoundException {
+        Long safeNotificationId = Objects.requireNonNull(notificationId, NOTIF_ID_NULL);
+        NotificationEntity storedNotification = notificationRepository.findById(safeNotificationId)
+                .orElseThrow(() -> new EntityNotFoundException(NOTIF_NOT_FOUND));
+        storedNotification.setIsRead(Boolean.TRUE);
         return notificationRepository.save(storedNotification);
     }
 

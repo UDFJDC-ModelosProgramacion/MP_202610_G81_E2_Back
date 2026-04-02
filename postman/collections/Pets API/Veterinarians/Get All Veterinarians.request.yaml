@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get All Veterinarians
+url: "{{baseUrl}}/veterinarians"
+method: GET
+order: 3000

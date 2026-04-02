@@ -6,6 +6,7 @@ import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
@@ -22,6 +23,7 @@ public class MedicalHistoryEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "pet_id")
+    @JsonIgnore
     @PodamExclude
     private PetEntity pet;
 

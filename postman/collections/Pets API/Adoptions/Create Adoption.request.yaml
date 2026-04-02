@@ -1,32 +1,24 @@
 $kind: http-request
-url: http://localhost:8080/api/adoptions
+name: Create Adoption
+url: "{{baseUrl}}/adoptions"
 method: POST
+headers:
+  Content-Type: application/json
 body:
   type: json
   content: "{\r
 
-    \    \"adopter\": {\r
+    \ \"officialDate\": \"2024-03-20\",\r
 
-    \        \"id\": 1\r
+    \ \"contractSigned\": false,\r
 
-    \    },\r
+    \ \"status\": \"PENDING\",\r
 
-    \    \"pet\": {\r
+    \ \"adopterId\": 1,\r
 
-    \        \"id\": 1\r
+    \ \"petId\": 1,\r
 
-    \    },\r
-
-    \    \"shelter\": {\r
-
-    \        \"id\": 1\r
-
-    \    },\r
-
-    \    \"officialDate\": \"2026-03-23\",\r
-
-    \    \"contractSigned\": false\r
+    \ \"shelterId\": 1   \r
 
     }"
-examples: .resources/Create Adoption.resources/examples
-order: 27
+order: 1000

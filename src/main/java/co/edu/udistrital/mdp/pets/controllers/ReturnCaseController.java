@@ -21,7 +21,7 @@ import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.ReturnCaseService;
 
 @RestController
-@RequestMapping("/return-cases")
+@RequestMapping({"/return-cases", "/returns"})
 public class ReturnCaseController {
 
     @Autowired

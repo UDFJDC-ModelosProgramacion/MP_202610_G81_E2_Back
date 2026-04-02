@@ -1,8 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/notifications/1
-method: PATCH
-body:
-  type: json
-  content: "{\r\n    \"read\": true\r\n}"
-examples: .resources/Read.resources/examples
-order: 4000

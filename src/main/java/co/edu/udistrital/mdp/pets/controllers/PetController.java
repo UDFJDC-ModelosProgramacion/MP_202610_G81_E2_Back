@@ -3,7 +3,10 @@ package co.edu.udistrital.mdp.pets.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import co.edu.udistrital.mdp.pets.dto.PetDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.PetDTO;
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.services.PetService;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -23,33 +26,41 @@ public class PetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PetEntity createPet(@RequestBody PetEntity pet) 
+    public PetDTO createPet(@RequestBody PetDTO petDto)
             throws IllegalOperationException, EntityNotFoundException {
-        
-        // Tu Service pide shelterId. Lo obtenemos del objeto shelter dentro del JSON
-        Long shelterId = pet.getShelter().getId(); 
-        return petService.createPet(shelterId, pet);
+        if (petDto.getShelterId() == null) {
+            throw new IllegalOperationException("shelterId is required");
+        }
+        PetEntity pet = petDto.toEntity();
+        ShelterEntity shelter = new ShelterEntity();
+        shelter.setId(petDto.getShelterId());
+        pet.setShelter(shelter);
+
+        return new PetDTO(petService.createPet(petDto.getShelterId(), pet));
     }
 
     @GetMapping
-    public List<PetEntity> getPets(
+    public List<PetDTO> getPets(
             @RequestParam(required = false) String breed,
             @RequestParam(required = false) String size,
             @RequestParam(required = false) String temperament) {
-        // Usamos el método searchPets con sus filtros
-        return petService.searchPets(breed, size, temperament);
+        return petService.searchPets(breed, size, temperament).stream().map(PetDTO::new).toList();
     }
 
     @GetMapping("/{id}")
-    public PetEntity getPetById(@PathVariable Long id) throws EntityNotFoundException {
-        // Cambiado a getPet(id) para coincidir con tu Service
-        return petService.getPet(id);
+    public PetDTO getPetById(@PathVariable Long id) throws EntityNotFoundException {
+        return new PetDTO(petService.getPet(id));
+    }
+
+    @GetMapping("/{id}/detail")
+    public PetDetailDTO getPetDetail(@PathVariable Long id) throws EntityNotFoundException {
+        return new PetDetailDTO(petService.getPet(id));
     }
 
     @PutMapping("/{id}")
-    public PetEntity updatePet(@PathVariable Long id, @RequestBody PetEntity pet) 
+    public PetDTO updatePet(@PathVariable Long id, @RequestBody PetDTO petDto)
             throws EntityNotFoundException {
-        return petService.updatePet(id, pet);
+        return new PetDTO(petService.updatePet(id, petDto.toEntity()));
     }
 
     @DeleteMapping("/{id}")

@@ -1,16 +1,19 @@
 $kind: http-request
-url: http://localhost:8080/api/notifications
+name: Create Notification
+url: "{{baseUrl}}/notifications"
 method: POST
 body:
   type: json
-  content: "{\r
+  content: "{ \r
+
+    \    \"title\": \"Adopción Aprobada\",\r
+
+    \    \"content\": \"¡Felicidades! Tu solicitud para adoptar a Firulais ha
+    sido aprobada.\",\r
 
     \    \"userId\": 1,\r
 
-    \    \"title\": \"Adoption Approved\",\r
-
-    \    \"content\": \"Your adoption request was accepted\"\r
+    \    \"isRead\": false\r
 
     }"
-examples: .resources/Create Notification.resources/examples
-order: 1000
+order: 1774997022799

@@ -1,8 +1,5 @@
 $kind: http-request
 name: Return Pet
-url: http://localhost:8080/api/adoptions/1/return
+url: "{{baseUrl}}/adoptions/1/return"
 method: POST
-body:
-  type: json
-  content: "{}"
-order: 3946
+order: 4494583714234875

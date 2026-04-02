@@ -1,5 +1,0 @@
-$kind: http-request
-url: http://localhost:8080/api/shelters/1/veterinarians
-method: GET
-examples: .resources/Get Shelter Veterinarians.resources/examples
-order: 4246551810768472
