@@ -8,16 +8,13 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.udistrital.mdp.pets.dto.AdoptionRequestDTO;
-import co.edu.udistrital.mdp.pets.dto.AdoptionRequestDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
+import co.edu.udistrital.mdp.pets.dto.AdoptionRequestCreationDTO;
+import co.edu.udistrital.mdp.pets.dto.AdoptionRequestMapper;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.AdoptionRequestService;
@@ -27,55 +24,40 @@ import co.edu.udistrital.mdp.pets.services.AdoptionRequestService;
 public class AdoptionRequestController {
 
     @Autowired
-    private AdoptionRequestService adoptionRequestService;
+    private AdoptionRequestService service;
+
+    @Autowired
+    private AdoptionRequestMapper mapper;
 
     @GetMapping
-    @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionRequestDTO> findAll() {
-        return adoptionRequestService.searchAdoptionRequests()
-                .stream().map(AdoptionRequestDTO::new).toList();
+    public List<AdoptionRequestCreationDTO> findAll() {
+        return service.searchAdoptionRequests()
+                .stream()
+                .map(mapper::entityToDTO)
+                .toList();
     }
 
-    @GetMapping(value = "/{requestId}")
+    @GetMapping("/{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AdoptionRequestDetailDTO findOne(@PathVariable Long requestId)
+    public AdoptionRequestCreationDTO findOne(@PathVariable Long id)
             throws EntityNotFoundException {
-        return new AdoptionRequestDetailDTO(adoptionRequestService.searchAdoptionRequest(requestId));
+
+        return mapper.entityToDTO(service.searchAdoptionRequest(id));
     }
 
     @PostMapping
-    @ResponseStatus(code = HttpStatus.CREATED)
-    public AdoptionRequestDetailDTO create(@RequestBody AdoptionRequestDTO requestDTO)
+    public AdoptionRequestCreationDTO create(
+            @RequestBody AdoptionRequestCreationDTO dto)
             throws IllegalOperationException {
-        AdoptionRequestEntity entity = requestDTO.toEntity();
-        if (requestDTO.getAdopterId() != null) {
-            co.edu.udistrital.mdp.pets.entities.AdopterEntity adopter =
-                    new co.edu.udistrital.mdp.pets.entities.AdopterEntity();
-            adopter.setId(requestDTO.getAdopterId());
-            entity.setAdopter(adopter);
-        }
-        if (requestDTO.getPetId() != null) {
-            co.edu.udistrital.mdp.pets.entities.PetEntity pet =
-                    new co.edu.udistrital.mdp.pets.entities.PetEntity();
-            pet.setId(requestDTO.getPetId());
-            entity.setPet(pet);
-        }
-        return new AdoptionRequestDetailDTO(adoptionRequestService.createAdoptionRequest(entity));
+
+        service.createAdoptionRequest(mapper.dtoToEntity(dto));
+        return dto;
     }
 
-    @PutMapping(value = "/{requestId}")
-    @ResponseStatus(code = HttpStatus.OK)
-    public AdoptionRequestDetailDTO update(@PathVariable Long requestId,
-            @RequestBody AdoptionRequestDTO requestDTO)
-            throws EntityNotFoundException {
-        return new AdoptionRequestDetailDTO(
-                adoptionRequestService.updateAdoptionRequest(requestId, requestDTO.toEntity()));
-    }
-
-    @DeleteMapping(value = "/{requestId}")
+    @DeleteMapping(value="/{AdoptionRequestId")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long requestId)
-            throws EntityNotFoundException, IllegalOperationException {
-        adoptionRequestService.deleteAdoptionRequest(requestId);
+    public void delete(@PathVariable Long id) throws EntityNotFoundException, IllegalOperationException{
+        service.deleteAdoptionRequest(id);
     }
+
 }

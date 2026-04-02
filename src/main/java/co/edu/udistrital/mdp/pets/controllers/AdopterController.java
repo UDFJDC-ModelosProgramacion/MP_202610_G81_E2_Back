@@ -11,11 +11,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.edu.udistrital.mdp.pets.dto.AdopterCreationDTO;
 import co.edu.udistrital.mdp.pets.dto.AdopterDTO;
+import co.edu.udistrital.mdp.pets.dto.AdopterMapper;
 import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -27,36 +28,39 @@ public class AdopterController {
 
     @Autowired
     private AdopterService adopterService;
+    @Autowired
+    private AdopterMapper mapper;
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdopterDTO> findAll(@RequestParam(required = false) String name,
-            @RequestParam(required = false) String email,
-            @RequestParam(required = false) String status) {
-        List<AdopterEntity> adopters = (name != null || email != null || status != null)
-                ? adopterService.searchAdopters(name, email, status)
-                : adopterService.searchAdopters();
-        return adopters.stream().map(AdopterDTO::new).toList();
+    public List<AdopterCreationDTO> findAll() {
+        return adopterService.searchAdopters()
+                .stream()
+                .map((mapper::entityToDTO))
+                .toList();
     }
 
     @GetMapping(value = "/{adopterId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AdopterDetailDTO findOne(@PathVariable Long adopterId) throws EntityNotFoundException {
-        return new AdopterDetailDTO(adopterService.searchAdopter(adopterId));
+    public AdopterDTO findOne(@PathVariable Long adopterId) throws EntityNotFoundException {
+        return mapper.CdtoTodto(mapper.entityToDTO(adopterService.searchAdopter(adopterId)));
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
-    public AdopterDetailDTO create(@RequestBody AdopterDTO adopterDTO)
+    public AdopterCreationDTO create(@RequestBody AdopterCreationDTO adopterDTO)
             throws IllegalOperationException {
-        return new AdopterDetailDTO(adopterService.createAdopter(adopterDTO.toEntity()));
+                AdopterEntity adopter = mapper.dtoToEntity(adopterDTO);
+                adopterService.createAdopter(adopter);
+                return adopterDTO;
+    
     }
 
     @PutMapping(value = "/{adopterId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public AdopterDetailDTO update(@PathVariable Long adopterId, @RequestBody AdopterDTO adopterDTO)
+    public AdopterCreationDTO update(@PathVariable Long adopterId, @RequestBody AdopterCreationDTO adopterDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        return new AdopterDetailDTO(adopterService.updateAdopter(adopterId, adopterDTO.toEntity()));
+            return mapper.entityToDTO(adopterService.updateAdopter(adopterId, mapper.dtoToEntity(adopterDTO)));
     }
 
     @DeleteMapping(value = "/{adopterId}")

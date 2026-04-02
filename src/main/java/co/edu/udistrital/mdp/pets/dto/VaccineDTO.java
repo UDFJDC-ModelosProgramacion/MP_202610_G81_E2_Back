@@ -15,24 +15,4 @@ public class VaccineDTO {
     private LocalDate nextDueDate;
     private Long medicalHistoryId;
 
-    public VaccineDTO(VaccineEntryEntity entity) {
-        if (entity != null) {
-            this.id = entity.getId();
-            this.vaccineName = entity.getVaccineName();
-            this.adminDate = entity.getAdminDate();
-            this.nextDueDate = entity.getNextDueDate();
-            if (entity.getMedicalHistory() != null) {
-                this.medicalHistoryId = entity.getMedicalHistory().getId();
-            }
-        }
-    }
-
-    public VaccineEntryEntity toEntity() {
-        VaccineEntryEntity entity = new VaccineEntryEntity();
-        entity.setId(this.id);
-        entity.setVaccineName(this.vaccineName);
-        entity.setAdminDate(this.adminDate);
-        entity.setNextDueDate(this.nextDueDate);
-        return entity;
-    }
 }

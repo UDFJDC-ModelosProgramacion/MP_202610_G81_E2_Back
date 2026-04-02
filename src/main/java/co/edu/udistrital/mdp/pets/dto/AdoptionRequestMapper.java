@@ -8,7 +8,9 @@ import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
 @Mapper(componentModel = "spring", uses = {PetMapper.class, AdopterMapper.class})
 public interface AdoptionRequestMapper {
 
-    AdoptionRequestDTO entityToDTO(AdoptionRequestEntity entity);
+    AdoptionRequestCreationDTO entityToDTO(AdoptionRequestEntity entity);
 
     AdoptionRequestEntity dtoToEntity(AdoptionRequestCreationDTO dto);
+
+    AdoptionRequestCreationDTO CdtoTodto(AdoptionRequestDTO entityToDTO);
 }

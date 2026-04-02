@@ -8,9 +8,11 @@ import co.edu.udistrital.mdp.pets.entities.PetEntity;
 @Mapper(componentModel = "spring", uses = { ShelterMapper.class })
 public interface PetMapper {
 
-          PetDTO entityToDTO(PetEntity entity);
+          PetCreationDTO entityToDTO(PetEntity entity);
 
           @Mapping(source = "shelterId", target = "shelter.id")
           @Mapping(target = "medicalHistory", ignore = true)
           PetEntity dtoToEntity(PetCreationDTO dto);
+
+          
 }
