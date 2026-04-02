@@ -1,25 +1,52 @@
 package co.edu.udistrital.mdp.pets.dto;
 
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
+
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
+import co.edu.udistrital.mdp.pets.entities.NotificationEntity;
+import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for NotificationEntity.
- * Uses user ID instead of full UserDTO to prevent cycles.
- */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class NotificationDTO {
     private Long id;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private Boolean isRead;
-    
-    // Use ID instead of full object to break cycles
-    private Long userId;
-    private String userName;
+    private UserDTO user;
+
+    public NotificationDTO(NotificationEntity entity) {
+        if (entity != null) {
+            this.id = entity.getId();
+            this.title = entity.getTitle();
+            this.content = entity.getContent();
+            this.createdAt = entity.getCreatedAt();
+            this.isRead = entity.getIsRead();
+            if (entity.getUser() != null) {
+                this.user = new UserDTO(entity.getUser());
+            }
+        }
+    }
+
+    public NotificationEntity toEntity() {
+        NotificationEntity entity = new NotificationEntity();
+        entity.setId(this.id);
+        entity.setTitle(this.title);
+        entity.setContent(this.content);
+        entity.setCreatedAt(this.createdAt);
+        entity.setIsRead(this.isRead);
+        if (this.user != null && this.user.getId() != null) {
+            entity.setUser(buildUserReference(this.user.getId()));
+        }
+        return entity;
+    }
+
+    private UserEntity buildUserReference(Long userId) {
+        AdopterEntity entity = new AdopterEntity();
+        entity.setId(userId);
+        return entity;
+    }
 }

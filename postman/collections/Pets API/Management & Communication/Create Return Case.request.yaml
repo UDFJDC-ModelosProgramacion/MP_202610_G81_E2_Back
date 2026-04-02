@@ -1,6 +1,6 @@
 $kind: http-request
 name: Create Return Case
-url: "{{baseUrl}}/returns"
+url: "{{baseUrl}}/return-cases"
 method: POST
 body:
   type: json

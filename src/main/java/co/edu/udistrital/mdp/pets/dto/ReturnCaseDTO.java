@@ -1,23 +1,36 @@
 package co.edu.udistrital.mdp.pets.dto;
 
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
+
+import co.edu.udistrital.mdp.pets.entities.ReturnCaseEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for ReturnCaseEntity.
- * Uses only ID for adoptionProcess to break the bidirectional cycle.
- */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ReturnCaseDTO {
     private Long id;
     private LocalDate returnDate;
     private String reason;
     private String details;
-    
-    // Use ID instead of full object to break cycles
     private Long adoptionProcessId;
+
+    public ReturnCaseDTO(ReturnCaseEntity entity) {
+        if (entity != null) {
+            this.id = entity.getId();
+            this.returnDate = entity.getReturnDate();
+            this.reason = entity.getReason();
+            this.details = entity.getDetails();
+            if (entity.getAdoptionProcess() != null) this.adoptionProcessId = entity.getAdoptionProcess().getId();
+        }
+    }
+
+    public ReturnCaseEntity toEntity() {
+        ReturnCaseEntity entity = new ReturnCaseEntity();
+        entity.setId(this.id);
+        entity.setReturnDate(this.returnDate);
+        entity.setReason(this.reason);
+        entity.setDetails(this.details);
+        return entity;
+    }
 }

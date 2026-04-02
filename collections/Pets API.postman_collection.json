@@ -1,652 +1,1920 @@
 {
-  "info": {
-    "_postman_id": "7a8f89d6-4c02-4f50-8c3e-6b8cd6b8f001",
-    "name": "Pets API",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [
-    {
-      "name": "Health",
-      "item": [
-        {
-          "name": "Default Endpoint",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                ""
-              ]
-            }
-          }
-        }
-      ]
+    "info": {
+        "_postman_id": "98783645-3c6e-4f97-bc68-e74f63d99425",
+        "name": "Pets API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+        "_exporter_id": "52848642",
+        "_collection_link": "https://go.postman.co/collection/52848642-98783645-3c6e-4f97-bc68-e74f63d99425?source=collection_link"
     },
-    {
-      "name": "Shelters",
-      "item": [
+    "item": [
         {
-          "name": "Create Shelter",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"shelterName\": \"Huellitas Bogota\",\n  \"nit\": \"901234567-8\",\n  \"phoneNumber\": \"3001234567\",\n  \"address\": \"Calle 123 #45-67\",\n  \"status\": \"Activo\",\n  \"city\": \"Bogota\",\n  \"locationDetails\": \"Cerca al parque\",\n  \"description\": \"Refugio de perros y gatos\",\n  \"websiteUrl\": \"https://huellitas.example\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/shelters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Shelters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/shelters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Shelter By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/shelters/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Shelter Detail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/shelters/1/detail",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters",
-                "1",
-                "detail"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Adopters",
-      "item": [
-        {
-          "name": "Create Adopter",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Juan Perez\",\n  \"email\": \"juan.perez@mail.com\",\n  \"password\": \"123456\",\n  \"phoneNumber\": \"3100000000\",\n  \"address\": \"Cra 10 #20-30\",\n  \"city\": \"Bogota\",\n  \"housingType\": \"Apartamento\",\n  \"status\": \"ACTIVE\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/adopters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Adopters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adopters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Adopter By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adopters/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Adopter Detail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adopters/1/detail",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters",
-                "1",
-                "detail"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Pets",
-      "item": [
-        {
-          "name": "Create Pet",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Firulais\",\n  \"breed\": \"Labrador\",\n  \"bornDate\": \"2021-01-10\",\n  \"sex\": \"MALE\",\n  \"size\": \"MEDIUM\",\n  \"temperament\": \"NOBLE\",\n  \"specificNeeds\": \"Ninguna\",\n  \"isRescued\": true,\n  \"shelterId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/pets",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Pets",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/pets",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Pet By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/pets/1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Pet Detail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/detail",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "detail"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Add Medical Event",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"eventType\": \"CHECKUP\",\n  \"description\": \"Control general\",\n  \"eventDate\": \"2026-03-30\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/medical-history",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "medical-history"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Medical History",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/medical-history",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "medical-history"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Add Vaccine",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"vaccineName\": \"Rabia\",\n  \"adminDate\": \"2026-03-30\",\n  \"nextDueDate\": \"2027-03-30\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/vaccines",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "vaccines"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Vaccines",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/vaccines",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "vaccines"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Veterinarians",
-      "item": [
-        {
-          "name": "Create Veterinarian",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"name\": \"Dra. Ana\",\n  \"email\": \"ana.vet@mail.com\",\n  \"password\": \"123456\",\n  \"phoneNumber\": \"3111111111\",\n  \"licenseNumber\": \"VET-12345\",\n  \"availabilitySchedule\": \"L-V 8am-5pm\",\n  \"shelterId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/veterinarians",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "veterinarians"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Veterinarians",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/veterinarians",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "veterinarians"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Veterinarian Detail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/veterinarians/1/detail",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "veterinarians",
-                "1",
-                "detail"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Adoptions",
-      "item": [
-        {
-          "name": "Create Adoption",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"adopterId\": 1,\n  \"petId\": 1,\n  \"shelterId\": 1\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/adoptions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adoptions"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Adoptions",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adoptions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adoptions"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Approve Adoption",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adoptions/1/approve",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adoptions",
-                "1",
-                "approve"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Reviews",
-      "item": [
-        {
-          "name": "Create Review",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"adopterId\": 1,\n  \"shelterId\": 1,\n  \"adoptionProcessId\": 1,\n  \"rating\": 5,\n  \"comment\": \"Excelente experiencia\",\n  \"isSuccessStory\": true\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Reviews",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Notifications",
-      "item": [
-        {
-          "name": "Create Notification",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"userId\": 1,\n  \"title\": \"Nueva solicitud\",\n  \"content\": \"Tienes una nueva solicitud de adopcion\"\n}"
-            },
-            "url": {
-              "raw": "{{baseUrl}}/notifications",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications"
-              ]
-            }
-          }
-        },
-        {
-          "name": "Get Notifications",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/notifications?userId=1",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications"
-              ],
-              "query": [
+            "name": "Test API Status",
+            "event": [
                 {
-                  "key": "userId",
-                  "value": "1"
+                    "listen": "test",
+                    "script": {
+                        "exec": [
+                            "pm.test(\"Status code is 200\", function () {",
+                            "   pm.response.to.have.status(200);",
+                            "});"
+                        ],
+                        "type": "text/javascript"
+                    }
                 }
-              ]
-            }
-          }
-        }
-      ]
-    },
-    {
-      "name": "Messages",
-      "item": [
-        {
-          "name": "Send Message",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
             ],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"senderId\": 1,\n  \"receiverId\": 2,\n  \"content\": \"Hola, sigue disponible la mascota?\"\n}"
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "{{baseUrl}}",
+                    "host": [
+                        "{{baseUrl}}"
+                    ]
+                }
             },
-            "url": {
-              "raw": "{{baseUrl}}/messages",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "messages"
-              ]
-            }
-          }
+            "response": []
         },
         {
-          "name": "Get Conversation",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/messages/conversation?user1=1&user2=2",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "messages",
-                "conversation"
-              ],
-              "query": [
+            "name": "Users",
+            "item": [
                 {
-                  "key": "user1",
-                  "value": "1"
+                    "name": "Get User By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/users/{{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "{{userId}}"
+                            ]
+                        }
+                    }
                 },
                 {
-                  "key": "user2",
-                  "value": "2"
+                    "name": "Get All Users",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/users",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create User",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Anderson Bonilla\",\n    \"email\": \"anderson.bonilla@correo.com\",\n    \"password\": \"SecurePass123\",\n    \"phoneNumber\": \"3001234567\",\n    \"profileImageUrl\": \"https://example.com/profiles/anderson.jpg\",\n    \"registerDate\": \"2026-03-13T10:30:00\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/users",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update User",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Anderson Bonilla Updated\",\n    \"email\": \"anderson.updated@correo.com\",\n    \"password\": \"SecurePass123\",\n    \"phoneNumber\": \"3009998888\",\n    \"profileImageUrl\": \"https://example.com/profiles/anderson-updated.jpg\",\n    \"registerDate\": \"2026-03-13T10:30:00\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/users/{{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "{{userId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete User",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/users/{{userId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "users",
+                                "{{userId}}"
+                            ]
+                        }
+                    }
                 }
-              ]
-            }
-          }
+            ]
+        },
+        {
+            "name": "Pets",
+            "item": [
+                {
+                    "name": "Create Pet",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pets",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": null,
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:51:55 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [],
+                            "body": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"id\": 1,\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}"
+                        },
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Add Medical Event",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1/medical-history",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1",
+                                "medical-history"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets/1/medical-history",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets",
+                                        "1",
+                                        "medical-history"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 03:07:52 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Add Vaccine",
+                    "request": {
+                        "method": "POST",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Rabies\",\n    \"date\": \"2026-03-20\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1/vaccines",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1",
+                                "vaccines"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets/1/medical-history",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets",
+                                        "1",
+                                        "medical-history"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 03:07:52 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Pets",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pets",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Pet By ID",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Pet Medical History",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1/medical-history",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1",
+                                "medical-history"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Get Pet Vaccine",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1/vaccines",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1",
+                                "vaccines"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Update Pet",
+                    "request": {
+                        "method": "PUT",
+                        "header": [],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Firulais update\",\n    \"temperament\": \"Pacify update\",\n    \"specificNeeds\": \"Update\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                },
+                {
+                    "name": "Delete Pet",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/pets/1",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "pets",
+                                "1"
+                            ]
+                        }
+                    },
+                    "response": [
+                        {
+                            "name": "400 Bad Request",
+                            "originalRequest": {
+                                "method": "POST",
+                                "header": [],
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "language": "json"
+                                        }
+                                    }
+                                },
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Bad Request",
+                            "code": 400,
+                            "_postman_previewlanguage": null,
+                            "header": null,
+                            "cookie": [],
+                            "body": "{\n    \"error\": \"Invalid Data\"\n}"
+                        },
+                        {
+                            "name": "200 OK",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "[\n    {\n        \"name\": \"Firulais\",\n        \"Temperament\": \"Pacify\",\n        \"species\": \"Dog\",\n        \"size\": \"small\",\n        \"sex\": \"famele\",\n        \"SpecifyNeeds\": \"Any\",\n        \"id\": 1\n    }\n]"
+                        },
+                        {
+                            "name": "404 NOT FOUND",
+                            "originalRequest": {
+                                "method": "GET",
+                                "header": [],
+                                "url": {
+                                    "raw": "{{baseUrl}}/pets",
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "path": [
+                                        "pets"
+                                    ]
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "_postman_previewlanguage": "",
+                            "header": [
+                                {
+                                    "key": "Vary",
+                                    "value": "Origin"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Method"
+                                },
+                                {
+                                    "key": "Vary",
+                                    "value": "Access-Control-Request-Headers"
+                                },
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "key": "Transfer-Encoding",
+                                    "value": "chunked"
+                                },
+                                {
+                                    "key": "Date",
+                                    "value": "Mon, 23 Mar 2026 02:54:29 GMT"
+                                },
+                                {
+                                    "key": "Keep-Alive",
+                                    "value": "timeout=60"
+                                },
+                                {
+                                    "key": "Connection",
+                                    "value": "keep-alive"
+                                }
+                            ],
+                            "cookie": [
+                                {
+                                    "expires": "Invalid Date",
+                                    "domain": "",
+                                    "path": ""
+                                }
+                            ],
+                            "body": "{\n    \"type\": \"about:blank\",\n    \"title\": \"Not Found\",\n    \"status\": 404,\n    \"detail\": \"No static resource users/1.\",\n    \"instance\": \"/api/users/1\"\n}"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Adoptions",
+            "item": [
+                {
+                    "name": "Create Adoption",
+                    "request": {
+                        "method": "POST",
+                        "header": []
+                    },
+                    "response": []
+                }
+            ]
+        },
+        {
+            "name": "Shelters",
+            "item": []
+        },
+        {
+            "name": "Veterinarians",
+            "item": []
+        },
+        {
+            "name": "Reviews",
+            "item": []
+        },
+        {
+            "name": "Notifications",
+            "item": [
+                {
+                    "name": "Get Notification By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                "{{notificationId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Notifications",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/notifications",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "notifications"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Notification",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Solicitud actualizada\",\n    \"content\": \"Tu solicitud de adopci\\u00f3n cambi\\u00f3 a APPROVED.\",\n    \"createdAt\": \"2026-03-13T12:00:00\",\n    \"isRead\": false,\n    \"user\": {\n        \"id\": 1\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/notifications",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "notifications"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Notification",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"title\": \"Solicitud actualizada\",\n    \"content\": \"Tu solicitud de adopci\\u00f3n cambi\\u00f3 a APPROVED.\",\n    \"createdAt\": \"2026-03-13T12:00:00\",\n    \"isRead\": true,\n    \"user\": {\n        \"id\": 1\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                "{{notificationId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Notification",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "notifications",
+                                "{{notificationId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Messages",
+            "item": [
+                {
+                    "name": "Get Message By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/messages/{{messageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "messages",
+                                "{{messageId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Messages",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/messages",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "messages"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Message",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Hola, estoy interesado en adoptar a Luna.\",\n    \"sentAt\": \"2026-03-13T11:00:00\",\n    \"isRead\": false,\n    \"active\": true,\n    \"sender\": {\n        \"id\": 1\n    },\n    \"receiver\": {\n        \"id\": 2\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/messages",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "messages"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Message",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"content\": \"Hola, sigo interesado en adoptar a Luna.\",\n    \"sentAt\": \"2026-03-13T11:00:00\",\n    \"isRead\": true,\n    \"active\": true,\n    \"sender\": {\n        \"id\": 1\n    },\n    \"receiver\": {\n        \"id\": 2\n    }\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/messages/{{messageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "messages",
+                                "{{messageId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Message",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/messages/{{messageId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "messages",
+                                "{{messageId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Adopters",
+            "item": [
+                {
+                    "name": "Get Adopter By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "adopters",
+                                "{{adopterId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Get All Adopters",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/adopters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "adopters"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Create Adopter",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Anderson Bonilla\",\n    \"email\": \"anderson.bonilla@correo.com\",\n    \"password\": \"SecurePass123\",\n    \"phoneNumber\": \"3001234567\",\n    \"profileImageUrl\": \"https://example.com/profiles/anderson.jpg\",\n    \"registerDate\": \"2026-03-13T10:30:00\",\n    \"address\": \"Calle 45 #12-34\",\n    \"city\": \"Bogot\\u00e1\",\n    \"housingType\": \"APARTMENT\",\n    \"status\": \"ACTIVE\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/adopters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "adopters"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Update Adopter",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"name\": \"Anderson Bonilla Updated\",\n    \"email\": \"anderson.updated@correo.com\",\n    \"password\": \"SecurePass123\",\n    \"phoneNumber\": \"3009998888\",\n    \"profileImageUrl\": \"https://example.com/profiles/anderson-updated.jpg\",\n    \"registerDate\": \"2026-03-13T10:30:00\",\n    \"address\": \"Carrera 20 #50-10\",\n    \"city\": \"Bogot\\u00e1\",\n    \"housingType\": \"HOUSE\",\n    \"status\": \"ACTIVE\"\n}"
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "adopters",
+                                "{{adopterId}}"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "name": "Delete Adopter",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "adopters",
+                                "{{adopterId}}"
+                            ]
+                        }
+                    }
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:8080/api"
-    }
-  ]
+    ]
 }

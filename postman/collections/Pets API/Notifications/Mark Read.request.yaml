@@ -1,5 +1,5 @@
 $kind: http-request
 name: Mark Read
-url: "{{baseUrl}}/notifications/1/read"
-method: PUT
+url: "{{baseUrl}}/notifications/1"
+method: PATCH
 order: 4416799217740454

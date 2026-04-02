@@ -1,28 +1,37 @@
 package co.edu.udistrital.mdp.pets.dto;
 
-import java.time.LocalDateTime;
-import java.util.List;
-import lombok.AllArgsConstructor;
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for AdopterEntity.
- * Extends UserDTO and adds adopter-specific fields.
- * Inherits cycle prevention from UserDTO.
- */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AdopterDTO extends UserDTO {
     private String address;
     private String city;
     private String housingType;
     private String status;
-    
-    // References as IDs/counts to prevent cycles
-    private Integer adoptionRequestsCount = 0;
-    private Integer reviewsCount = 0;
+
+    public AdopterDTO(AdopterEntity entity) {
+        super(entity);
+        if (entity != null) {
+            this.address = entity.getAddress();
+            this.city = entity.getCity();
+            this.housingType = entity.getHousingType();
+            this.status = entity.getStatus();
+        }
+    }
+
+    public AdopterEntity toEntity() {
+        AdopterEntity entity = new AdopterEntity();
+        entity.setId(this.getId());
+        this.copyToEntity(entity);
+        entity.setAddress(this.address);
+        entity.setCity(this.city);
+        entity.setHousingType(this.housingType);
+        entity.setStatus(this.status);
+        return entity;
+    }
 }

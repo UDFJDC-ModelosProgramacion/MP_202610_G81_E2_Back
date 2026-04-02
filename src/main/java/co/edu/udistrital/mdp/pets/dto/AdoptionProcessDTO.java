@@ -1,26 +1,35 @@
 package co.edu.udistrital.mdp.pets.dto;
 
 import java.time.LocalDate;
-import lombok.AllArgsConstructor;
+
+import co.edu.udistrital.mdp.pets.entities.AdoptionProcessEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for AdoptionProcessEntity.
- * Breaks bidirectional cycles by using IDs instead of full objects.
- */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class AdoptionProcessDTO {
     private Long id;
     private LocalDate creationDate;
     private String status;
-    
-    // Use IDs instead of full objects to break cycles
     private Long adoptionRequestId;
-    private Long returnCaseId; // Only ID, not full object
     private Long petId;
-    private String petName;
-    private Integer reviewsCount = 0;
+
+    public AdoptionProcessDTO(AdoptionProcessEntity entity) {
+        if (entity != null) {
+            this.id = entity.getId();
+            this.creationDate = entity.getCreationDate();
+            this.status = entity.getStatus();
+            if (entity.getAdoptionRequest() != null) this.adoptionRequestId = entity.getAdoptionRequest().getId();
+            if (entity.getPet() != null) this.petId = entity.getPet().getId();
+        }
+    }
+
+    public AdoptionProcessEntity toEntity() {
+        AdoptionProcessEntity entity = new co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity();
+        entity.setId(this.id);
+        entity.setCreationDate(this.creationDate);
+        entity.setStatus(this.status);
+        return entity;
+    }
 }

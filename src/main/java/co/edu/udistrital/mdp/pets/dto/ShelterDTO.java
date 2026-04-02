@@ -1,16 +1,11 @@
 package co.edu.udistrital.mdp.pets.dto;
 
-import lombok.AllArgsConstructor;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * DTO for ShelterEntity.
- * Prevents circular references by using counts/IDs instead of full object lists.
- */
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class ShelterDTO {
     private Long id;
     private String shelterName;
@@ -22,9 +17,34 @@ public class ShelterDTO {
     private String locationDetails;
     private String description;
     private String websiteUrl;
-    
-    // Use counts instead of full lists to prevent cycles
-    private Integer veterinariansCount = 0;
-    private Integer mediaItemsCount = 0;
-    private Integer reviewsCount = 0;
+
+    public ShelterDTO(ShelterEntity entity) {
+        if (entity != null) {
+            this.id = entity.getId();
+            this.shelterName = entity.getShelterName();
+            this.nit = entity.getNit();
+            this.phoneNumber = entity.getPhoneNumber();
+            this.address = entity.getAddress();
+            this.status = entity.getStatus();
+            this.city = entity.getCity();
+            this.locationDetails = entity.getLocationDetails();
+            this.description = entity.getDescription();
+            this.websiteUrl = entity.getWebsiteUrl();
+        }
+    }
+
+    public ShelterEntity toEntity() {
+        ShelterEntity entity = new ShelterEntity();
+        entity.setId(this.id);
+        entity.setShelterName(this.shelterName);
+        entity.setNit(this.nit);
+        entity.setPhoneNumber(this.phoneNumber);
+        entity.setAddress(this.address);
+        entity.setStatus(this.status);
+        entity.setCity(this.city);
+        entity.setLocationDetails(this.locationDetails);
+        entity.setDescription(this.description);
+        entity.setWebsiteUrl(this.websiteUrl);
+        return entity;
+    }
 }

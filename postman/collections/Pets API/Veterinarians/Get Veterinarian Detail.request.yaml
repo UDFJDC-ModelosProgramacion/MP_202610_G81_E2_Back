@@ -1,5 +1,5 @@
 $kind: http-request
-name: Ger Veterinarian Detail
+name: Get Veterinarian Detail
 url: "{{baseUrl}}/veterinarians/1/detail"
 method: GET
 order: 2111

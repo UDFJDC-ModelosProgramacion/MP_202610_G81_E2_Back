@@ -2,15 +2,14 @@ package co.edu.udistrital.mdp.pets.services;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import co.edu.udistrital.mdp.pets.repositories.UserRepository;
 import co.edu.udistrital.mdp.pets.repositories.VeterinarianRepository;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,18 +21,33 @@ public class VeterinarianService {
     private static final String NOT_FOUND_SUFFIX = " no fue encontrado";
     private static final String VETERINARIAN_ID_NULL_MSG = "Veterinarian id cannot be null";
 
-    @Autowired
-    private VeterinarianRepository veterinarianRepository;
+    private final VeterinarianRepository veterinarianRepository;
+    private final UserRepository userRepository;
+
+    public VeterinarianService(VeterinarianRepository veterinarianRepository, UserRepository userRepository) {
+        this.veterinarianRepository = veterinarianRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public VeterinarianEntity createVeterinarian(VeterinarianEntity veterinarian)
-            throws IllegalOperationException {
+            throws IllegalOperationException, EntityNotFoundException {
         log.info("Creating veterinarian");
-
-        validateVeterinarianData(veterinarian);
 
         if (veterinarian.getLicenseNumber() == null || veterinarian.getLicenseNumber().trim().isEmpty()) {
             throw new IllegalOperationException("El número de matrícula profesional es obligatorio");
+        }
+
+        if (veterinarian.getId() == null) {
+            throw new IllegalOperationException(
+                    "El veterinario debe estar vinculado a un UserEntity ya existente en el sistema");
+        }
+
+        Long veterinarianId = Objects.requireNonNull(veterinarian.getId(), VETERINARIAN_ID_NULL_MSG);
+
+        // Verifica si existe el usuario original
+        if (!userRepository.existsById(veterinarianId)) {
+            throw new EntityNotFoundException("El UserEntity base asociado no existe en el sistema");
         }
 
         return veterinarianRepository.save(veterinarian);
@@ -71,74 +85,37 @@ public class VeterinarianService {
             throws EntityNotFoundException, IllegalOperationException {
         log.info("Updating veterinarian with id: {}", id);
         Objects.requireNonNull(id, VETERINARIAN_ID_NULL_MSG);
-        
-        Optional<VeterinarianEntity> existing = veterinarianRepository.findById(id);
-        if (existing.isEmpty()) {
-            throw notFound(id);
+        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> notFound(id));
+
+        if (veterinarian.getId() != null && !existing.getId().equals(veterinarian.getId())) {
+            throw new IllegalOperationException("No se puede desvincular del UserEntity original");
         }
 
-        validateVeterinarianData(veterinarian);
+        existing.setEmail(veterinarian.getEmail());
+        existing.setPhoneNumber(veterinarian.getPhoneNumber());
+        existing.setProfileImageUrl(veterinarian.getProfileImageUrl());
+        existing.setAvailabilitySchedule(veterinarian.getAvailabilitySchedule());
+        existing.setName(veterinarian.getName());
+        existing.setSpecialities(veterinarian.getSpecialities());
 
-        VeterinarianEntity existingVet = existing.get();
-        existingVet.setName(veterinarian.getName());
-        existingVet.setEmail(veterinarian.getEmail());
-        existingVet.setPassword(veterinarian.getPassword());
-        existingVet.setPhoneNumber(veterinarian.getPhoneNumber());
-        existingVet.setProfileImageUrl(veterinarian.getProfileImageUrl());
-        existingVet.setRegisterDate(veterinarian.getRegisterDate());
-        existingVet.setLicenseNumber(veterinarian.getLicenseNumber());
-        existingVet.setAvailabilitySchedule(veterinarian.getAvailabilitySchedule());
-        
-        if (veterinarian.getShelter() != null) {
-            existingVet.setShelter(veterinarian.getShelter());
-        }
-        
-        if (veterinarian.getSpecialities() != null) {
-            existingVet.setSpecialities(veterinarian.getSpecialities());
-        }
-
-        return veterinarianRepository.save(existingVet);
+        return veterinarianRepository.save(existing);
     }
 
     @Transactional
     public void deleteVeterinarian(Long id) throws EntityNotFoundException, IllegalOperationException {
         log.info("Deleting veterinarian with id: {}", id);
         Objects.requireNonNull(id, VETERINARIAN_ID_NULL_MSG);
-        
-        Optional<VeterinarianEntity> existing = veterinarianRepository.findById(id);
-        if (existing.isEmpty()) {
-            throw notFound(id);
-        }
+        VeterinarianEntity existing = veterinarianRepository.findById(id).orElseThrow(() -> notFound(id));
 
-        VeterinarianEntity veterinarian = existing.get();
-
-        if (veterinarian.getMedicalHistories() != null && !veterinarian.getMedicalHistories().isEmpty()) {
+        if (existing.getMedicalHistories() != null && !existing.getMedicalHistories().isEmpty()) {
             throw new IllegalOperationException("No se puede eliminar porque es responsable de una historia clínica");
         }
 
-        if (veterinarian.getMedicalEvents() != null && !veterinarian.getMedicalEvents().isEmpty()) {
+        if (existing.getMedicalEvents() != null && !existing.getMedicalEvents().isEmpty()) {
             throw new IllegalOperationException("No se puede eliminar porque tiene eventos médicos pendientes");
         }
 
         veterinarianRepository.deleteById(id);
-    }
-
-    private void validateVeterinarianData(VeterinarianEntity veterinarian) throws IllegalOperationException {
-        if (veterinarian == null) {
-            throw new IllegalOperationException("Veterinarian is not valid");
-        }
-        if (veterinarian.getName() == null || veterinarian.getName().isBlank()) {
-            throw new IllegalOperationException("Veterinarian name is not valid");
-        }
-        if (veterinarian.getEmail() == null || veterinarian.getEmail().isBlank()) {
-            throw new IllegalOperationException("Veterinarian email is not valid");
-        }
-        if (veterinarian.getPassword() == null || veterinarian.getPassword().isBlank()) {
-            throw new IllegalOperationException("Veterinarian password is not valid");
-        }
-        if (veterinarian.getPhoneNumber() == null || veterinarian.getPhoneNumber().isBlank()) {
-            throw new IllegalOperationException("Veterinarian phone is not valid");
-        }
     }
 
     private EntityNotFoundException notFound(Long id) {
