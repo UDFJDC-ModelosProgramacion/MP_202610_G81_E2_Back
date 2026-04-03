@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create Pet
+url: "{{baseUrl}}/pets"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Firulais",
+      "breed": "Labrador",
+      "bornDate": "2021-01-10",
+      "sex": "MALE",
+      "size": "MEDIUM",
+      "temperament": "NOBLE",
+      "specificNeeds": "Ninguna",
+      "isRescued": true,
+      "shelterId": 1
+    }
+order: 1000

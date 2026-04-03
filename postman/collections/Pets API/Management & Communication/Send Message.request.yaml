@@ -1,0 +1,17 @@
+$kind: http-request
+name: Send Message
+url: "{{baseUrl}}/messages"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"content\": \"Hola, estoy interesado en el estado de mi
+    solicitud.\",\r
+
+    \    \"senderId\": 1,\r
+
+    \    \"receiverId\": 2\r
+
+    }"
+order: 1774993711834

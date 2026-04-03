@@ -1,0 +1,26 @@
+$kind: http-request
+name: Create Veterinarian
+url: "{{baseUrl}}/veterinarians"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Dr. Camilo Torres\",\r
+
+    \    \"email\": \"camilo.vet@example.com\",\r
+
+    \    \"password\": \"123456\",\r
+
+    \    \"phoneNumber\": \"3201234567\",\r
+
+    \    \"licenseNumber\": \"VET-2024-001\",\r
+
+    \    \"availabilitySchedule\": \"Lunes a Viernes: 8:00 AM - 5:00 PM\",\r
+
+    \    \"shelterId\": 1\r
+
+    }"
+order: 1000

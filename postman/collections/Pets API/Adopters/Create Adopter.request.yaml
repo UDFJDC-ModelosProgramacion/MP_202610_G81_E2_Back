@@ -1,0 +1,20 @@
+$kind: http-request
+name: Create Adopter
+url: "{{baseUrl}}/adopters"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "name": "Juan Perez",
+      "email": "juan.perez@mail.com",
+      "password": "123456",
+      "phoneNumber": "3100000000",
+      "address": "Cra 10 #20-30",
+      "city": "Bogota",
+      "housingType": "Apartamento",
+      "status": "ACTIVE"
+    }
+order: 1000

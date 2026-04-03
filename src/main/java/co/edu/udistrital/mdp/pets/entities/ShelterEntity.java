@@ -39,4 +39,10 @@ public class ShelterEntity extends BaseEntity {
     @PodamExclude
     @OneToMany(mappedBy = "shelter")
     private List<ReviewEntity> reviews = new ArrayList<>();
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @PodamExclude
+    @OneToMany(mappedBy = "shelter")
+    private List<AdoptionEntity> adoptions;
 }

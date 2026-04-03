@@ -1,0 +1,5 @@
+$kind: http-request
+name: Approve Adoption
+url: "{{baseUrl}}/adoptions/1/approve"
+method: POST
+order: 4325700059554256

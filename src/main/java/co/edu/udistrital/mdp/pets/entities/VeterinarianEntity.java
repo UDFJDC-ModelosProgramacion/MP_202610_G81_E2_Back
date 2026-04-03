@@ -45,4 +45,52 @@ public class VeterinarianEntity extends UserEntity {
     @PodamExclude
     @OneToMany(mappedBy = "veterinarian", fetch = FetchType.LAZY)
     private List<MedicalEventEntity> medicalEvents = new ArrayList<>();
+
+    public String getLicenseNumber() {
+        return licenseNumber;
+    }
+
+    public void setLicenseNumber(String licenseNumber) {
+        this.licenseNumber = licenseNumber;
+    }
+
+    public String getAvailabilitySchedule() {
+        return availabilitySchedule;
+    }
+
+    public void setAvailabilitySchedule(String availabilitySchedule) {
+        this.availabilitySchedule = availabilitySchedule;
+    }
+
+    public ShelterEntity getShelter() {
+        return shelter;
+    }
+
+    public void setShelter(ShelterEntity shelter) {
+        this.shelter = shelter;
+    }
+
+    public List<VetSpecialityEntity> getSpecialities() {
+        return specialities;
+    }
+
+    public void setSpecialities(List<VetSpecialityEntity> specialities) {
+        this.specialities = specialities;
+    }
+
+    public List<MedicalHistoryEntity> getMedicalHistories() {
+        return medicalHistories;
+    }
+
+    public void setMedicalHistories(List<MedicalHistoryEntity> medicalHistories) {
+        this.medicalHistories = medicalHistories;
+    }
+
+    public List<MedicalEventEntity> getMedicalEvents() {
+        return medicalEvents;
+    }
+
+    public void setMedicalEvents(List<MedicalEventEntity> medicalEvents) {
+        this.medicalEvents = medicalEvents;
+    }
 }

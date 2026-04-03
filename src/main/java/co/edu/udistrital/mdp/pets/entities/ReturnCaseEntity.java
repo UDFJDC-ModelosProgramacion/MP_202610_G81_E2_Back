@@ -1,6 +1,7 @@
     package co.edu.udistrital.mdp.pets.entities;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class ReturnCaseEntity extends BaseEntity {
 
     @OneToOne
     @JoinColumn(name = "adoption_process_id")
+    @JsonIgnore
     @PodamExclude
     private AdoptionProcessEntity adoptionProcess;
 }

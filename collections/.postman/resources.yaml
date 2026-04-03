@@ -1,0 +1,11 @@
+# Use this workspace to collaborate
+workspace:
+  id: 6c578b16-ae0c-4883-a50f-a1d0d7571f46
+
+localResources:
+  collections:
+    - ../DefaultTests.postman_collection.json
+    - ../Pets API.postman_collection.json
+  environments:
+    - ../EntornoColecciones.postman_environment.json
+    - ../EntornoIT.postman_environment.json

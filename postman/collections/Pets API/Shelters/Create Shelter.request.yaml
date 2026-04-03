@@ -1,0 +1,21 @@
+$kind: http-request
+name: Create Shelter
+url: "{{baseUrl}}/shelters"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "shelterName": "Huellitas Bogota",
+      "nit": "901234567-8",
+      "phoneNumber": "3001234567",
+      "address": "Calle 123 #45-67",
+      "status": "Activo",
+      "city": "Bogota",
+      "locationDetails": "Cerca al parque",
+      "description": "Refugio de perros y gatos",
+      "websiteUrl": "https://huellitas.example"
+    }
+order: 1000

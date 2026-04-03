@@ -1,0 +1,5 @@
+$kind: http-request
+name: Return Pet
+url: "{{baseUrl}}/adoptions/1/return"
+method: POST
+order: 4494583714234875

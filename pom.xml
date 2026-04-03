@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.11</version>
+		<version>3.5.12</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.edu.udistrital.mdp</groupId>
@@ -62,11 +62,6 @@
 			<artifactId>podam</artifactId>
 			<version>7.2.7.RELEASE</version>
 		</dependency>
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>2.3.5</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -79,7 +74,7 @@
 						<profile>integration-tests</profile>
 					</profiles>
 					<arguments>
-						<argument>--server.port=8999</argument>
+						<argument>--server.port=8080</argument>
 					</arguments>
 					<excludes>
 						<exclude>

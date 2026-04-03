@@ -1,0 +1,5 @@
+$kind: http-request
+name: Delete Adoption
+url: "{{baseUrl}}/adoptions/1"
+method: DELETE
+order: 4498389058694398

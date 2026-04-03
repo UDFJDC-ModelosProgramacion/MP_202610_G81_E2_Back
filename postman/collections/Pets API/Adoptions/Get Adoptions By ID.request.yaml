@@ -1,0 +1,5 @@
+$kind: http-request
+name: Get Adoptions By ID
+url: "{{baseUrl}}/adoptions/1"
+method: GET
+order: 2162

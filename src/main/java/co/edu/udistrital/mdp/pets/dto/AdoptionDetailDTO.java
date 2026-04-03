@@ -1,0 +1,24 @@
+package co.edu.udistrital.mdp.pets.dto;
+
+import co.edu.udistrital.mdp.pets.entities.AdoptionEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class AdoptionDetailDTO extends AdoptionDTO {
+    private AdopterDTO adopter;
+    private PetDTO pet;
+    private Long trialCohabitationId;
+
+    public AdoptionDetailDTO(AdoptionEntity entity) {
+        super(entity);
+        if (entity != null) {
+            if (entity.getAdopter() != null) this.adopter = new AdopterDTO(entity.getAdopter());
+            if (entity.getPet() != null) this.pet = new PetDTO(entity.getPet());
+            if (entity.getTrialCohabitation() != null) this.trialCohabitationId = entity.getTrialCohabitation().getId();
+        }
+    }
+}

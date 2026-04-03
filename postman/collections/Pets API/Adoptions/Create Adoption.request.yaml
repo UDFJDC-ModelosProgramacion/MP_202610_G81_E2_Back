@@ -1,0 +1,24 @@
+$kind: http-request
+name: Create Adoption
+url: "{{baseUrl}}/adoptions"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \ \"officialDate\": \"2024-03-20\",\r
+
+    \ \"contractSigned\": false,\r
+
+    \ \"status\": \"PENDING\",\r
+
+    \ \"adopterId\": 1,\r
+
+    \ \"petId\": 1,\r
+
+    \ \"shelterId\": 1   \r
+
+    }"
+order: 1000
