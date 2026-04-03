@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,14 +23,18 @@ public class AdoptionService {
     private static final String ADOPTION_ID_NULL_MSG = "Adoption id cannot be null";
     private static final String AD_NOT_FOUND = NOT_FOUND_MSG;
 
-    @Autowired
-    private AdoptionRepository adoptionRepository;
+    private final AdoptionRepository adoptionRepository;
+    private final AdopterRepository adopterRepository;
+    private final PetRepository petRepository;
 
-    @Autowired
-    private AdopterRepository adopterRepository;
-
-    @Autowired
-    private PetRepository petRepository;
+    public AdoptionService(
+            AdoptionRepository adoptionRepository,
+            AdopterRepository adopterRepository,
+            PetRepository petRepository) {
+        this.adoptionRepository = adoptionRepository;
+        this.adopterRepository = adopterRepository;
+        this.petRepository = petRepository;
+    }
 
     @Transactional
     public AdoptionEntity createAdoption(AdoptionEntity adoption) throws IllegalOperationException {
@@ -43,7 +46,8 @@ public class AdoptionService {
 
         // Verificar que el adoptante existe en BD, si se proporciona
         if (adoption.getAdopter() != null && adoption.getAdopter().getId() != null) {
-            Optional<AdopterEntity> adopter = adopterRepository.findById(adoption.getAdopter().getId());
+            Long adopterId = Objects.requireNonNull(adoption.getAdopter().getId(), "Adopter id cannot be null");
+            Optional<AdopterEntity> adopter = adopterRepository.findById(adopterId);
             if (adopter.isEmpty()) {
                 throw new IllegalOperationException("Adopter does not exist.");
             }
@@ -52,7 +56,8 @@ public class AdoptionService {
 
         // Verificar que la mascota existe en BD, si se proporciona
         if (adoption.getPet() != null && adoption.getPet().getId() != null) {
-            Optional<PetEntity> pet = petRepository.findById(adoption.getPet().getId());
+            Long petId = Objects.requireNonNull(adoption.getPet().getId(), "Pet id cannot be null");
+            Optional<PetEntity> pet = petRepository.findById(petId);
             if (pet.isEmpty()) {
                 throw new IllegalOperationException("Pet does not exist.");
             }
@@ -69,14 +74,10 @@ public class AdoptionService {
     @Transactional
     public AdoptionEntity searchAdoption(Long id) throws EntityNotFoundException {
         log.info("Inicia proceso de consultar la adopción con id = {}", id);
-        Objects.requireNonNull(id, ADOPTION_ID_NULL_MSG);
-
-        Optional<AdoptionEntity> adoptionEntity = adoptionRepository.findById(id);
-        if (adoptionEntity.isEmpty())
-            throw new EntityNotFoundException(AD_NOT_FOUND);
+        AdoptionEntity adoptionEntity = getAdoptionOrThrow(id);
 
         log.info("Termina proceso de consultar la adopción con id = {}", id);
-        return adoptionEntity.get();
+        return adoptionEntity;
     }
 
     @Transactional
@@ -105,7 +106,7 @@ public class AdoptionService {
 
     @Transactional
     public AdoptionEntity requestAdoption(Long id) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionEntity adoption = searchAdoption(id);
+        AdoptionEntity adoption = getAdoptionOrThrow(id);
 
         if (adoption.getStatus() != AdoptionStatus.REQUESTED) {
             throw new IllegalOperationException("Adoption already requested or in invalid state");
@@ -117,7 +118,7 @@ public class AdoptionService {
 
     @Transactional
     public AdoptionEntity approveAdoption(Long id) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionEntity adoption = searchAdoption(id);
+        AdoptionEntity adoption = getAdoptionOrThrow(id);
 
         if (adoption.getStatus() != AdoptionStatus.REQUESTED) {
             throw new IllegalOperationException("Only requested adoptions can be approved");
@@ -132,7 +133,7 @@ public class AdoptionService {
 
     @Transactional
     public AdoptionEntity returnPet(Long id) throws EntityNotFoundException, IllegalOperationException {
-        AdoptionEntity adoption = searchAdoption(id);
+        AdoptionEntity adoption = getAdoptionOrThrow(id);
 
         if (adoption.getStatus() != AdoptionStatus.APPROVED &&
             adoption.getStatus() != AdoptionStatus.IN_TRIAL) {
@@ -148,7 +149,7 @@ public class AdoptionService {
     public AdoptionEntity startTrial(Long id, TrialCohabitationEntity trial)
             throws EntityNotFoundException, IllegalOperationException {
 
-        AdoptionEntity adoption = searchAdoption(id);
+        AdoptionEntity adoption = getAdoptionOrThrow(id);
 
         if (adoption.getStatus() != AdoptionStatus.APPROVED) {
             throw new IllegalOperationException("Trial only allowed after approval");
@@ -181,5 +182,11 @@ public class AdoptionService {
 
         adoptionRepository.delete(adoption);
         log.info("Termina proceso de borrar la adopción con id = {}", id);
+    }
+
+    private AdoptionEntity getAdoptionOrThrow(Long id) throws EntityNotFoundException {
+        Long safeId = Objects.requireNonNull(id, ADOPTION_ID_NULL_MSG);
+        return adoptionRepository.findById(safeId)
+                .orElseThrow(() -> new EntityNotFoundException(AD_NOT_FOUND));
     }
 }

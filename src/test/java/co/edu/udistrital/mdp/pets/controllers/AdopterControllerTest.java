@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,8 +26,8 @@ class AdopterControllerTest {
 
     private AdopterDTO adopterDTO;
 
-    @BeforeEach
-    void setUp() {
+    @SuppressWarnings("java:S1144")
+    void initializeTestData() {
         adopterDTO = new AdopterDTO();
         adopterDTO.setName("Test Adopter");
         adopterDTO.setEmail("adopter@test.com");
@@ -42,6 +41,7 @@ class AdopterControllerTest {
 
     @Test
     void testCreateAdopter() throws IllegalOperationException {
+        initializeTestData();
         AdopterDetailDTO createdAdopter = adopterController.create(adopterDTO);
 
         assertNotNull(createdAdopter);
@@ -52,6 +52,7 @@ class AdopterControllerTest {
 
     @Test
     void testFindAll() throws IllegalOperationException {
+        initializeTestData();
         adopterController.create(adopterDTO);
 
         List<AdopterDTO> adopters = adopterController.findAll(null, null, null);
@@ -61,6 +62,7 @@ class AdopterControllerTest {
 
     @Test
     void testFindOne() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         AdopterDetailDTO createdAdopter = adopterController.create(adopterDTO);
 
         AdopterDetailDTO foundAdopter = adopterController.findOne(createdAdopter.getId());
@@ -71,6 +73,7 @@ class AdopterControllerTest {
 
     @Test
     void testUpdate() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         AdopterDetailDTO createdAdopter = adopterController.create(adopterDTO);
 
         adopterDTO.setCity("Updated City");
@@ -82,6 +85,7 @@ class AdopterControllerTest {
 
     @Test
     void testDelete() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         AdopterDetailDTO createdAdopter = adopterController.create(adopterDTO);
 
         adopterController.delete(createdAdopter.getId());

@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +23,11 @@ import co.edu.udistrital.mdp.pets.services.MessageService;
 @RequestMapping("/messages")
 public class MessageController {
 
-    @Autowired
-    private MessageService messageService;
+    private final MessageService messageService;
+
+    public MessageController(MessageService messageService) {
+        this.messageService = messageService;
+    }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

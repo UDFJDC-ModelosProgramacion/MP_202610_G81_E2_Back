@@ -1,6 +1,5 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import co.edu.udistrital.mdp.pets.dto.PetDetailDTO;
@@ -17,12 +16,15 @@ import java.util.*;
 @RequestMapping("/pets")
 public class PetController {
 
-    @Autowired
-    private PetService petService;
+    private final PetService petService;
 
     // Mantenemos tus asociaciones en memoria para no borrarlas
-    private Map<Long, List<Map<String, Object>>> medicalHistory = new HashMap<>();
-    private Map<Long, List<Map<String, Object>>> vaccines = new HashMap<>();
+    private final Map<Long, List<Map<String, Object>>> medicalHistory = new HashMap<>();
+    private final Map<Long, List<Map<String, Object>>> vaccines = new HashMap<>();
+
+    public PetController(PetService petService) {
+        this.petService = petService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,11 @@ import co.edu.udistrital.mdp.pets.services.ShelterMediaService;
 @RequestMapping("/shelter-media")
 public class ShelterMediaController {
 
-    @Autowired
-    private ShelterMediaService shelterMediaService;
+    private final ShelterMediaService shelterMediaService;
+
+    public ShelterMediaController(ShelterMediaService shelterMediaService) {
+        this.shelterMediaService = shelterMediaService;
+    }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

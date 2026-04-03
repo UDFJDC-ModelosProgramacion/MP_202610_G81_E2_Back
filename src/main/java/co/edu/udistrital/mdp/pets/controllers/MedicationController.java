@@ -1,9 +1,7 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,15 +23,18 @@ import co.edu.udistrital.mdp.pets.services.MedicationService;
 @RequestMapping("/medications")
 public class MedicationController {
 
-    @Autowired
-    private MedicationService medicationService;
+    private final MedicationService medicationService;
+
+    public MedicationController(MedicationService medicationService) {
+        this.medicationService = medicationService;
+    }
 
     @GetMapping
     public ResponseEntity<List<MedicationDTO>> getAllMedications() {
         List<MedicationEntity> entities = medicationService.searchMedications();
         List<MedicationDTO> dtos = entities.stream()
                 .map(MedicationDTO::new)
-                .collect(Collectors.toList());
+                .toList();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 

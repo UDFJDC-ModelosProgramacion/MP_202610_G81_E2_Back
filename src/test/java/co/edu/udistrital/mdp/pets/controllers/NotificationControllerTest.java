@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +33,8 @@ class NotificationControllerTest {
     private NotificationDTO notificationDTO;
     private Long userId;
 
-    @BeforeEach
-    void setUp() throws IllegalOperationException {
+    @SuppressWarnings("java:S1144")
+    void initializeTestData() throws IllegalOperationException {
         AdopterDTO user = new AdopterDTO();
         user.setName("Notification User");
         user.setEmail("notification@test.com");
@@ -57,6 +56,7 @@ class NotificationControllerTest {
 
     @Test
     void testCreateNotification() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         NotificationDetailDTO createdNotification = notificationController.create(notificationDTO);
 
         assertNotNull(createdNotification);
@@ -66,6 +66,7 @@ class NotificationControllerTest {
 
     @Test
     void testFindAll() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         notificationController.create(notificationDTO);
 
         List<NotificationDTO> notifications = notificationController.findAll(null);
@@ -75,6 +76,7 @@ class NotificationControllerTest {
 
     @Test
     void testFindOne() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         NotificationDetailDTO createdNotification = notificationController.create(notificationDTO);
 
         NotificationDetailDTO foundNotification = notificationController.findOne(createdNotification.getId());
@@ -85,6 +87,7 @@ class NotificationControllerTest {
 
     @Test
     void testUpdate() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         NotificationDetailDTO createdNotification = notificationController.create(notificationDTO);
 
         notificationDTO.setIsRead(true);
@@ -96,6 +99,7 @@ class NotificationControllerTest {
 
     @Test
     void testDelete() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         NotificationDetailDTO createdNotification = notificationController.create(notificationDTO);
 
         notificationController.markAsReadWithPatch(createdNotification.getId());

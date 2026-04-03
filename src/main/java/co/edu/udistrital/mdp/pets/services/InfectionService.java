@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +14,13 @@ import co.edu.udistrital.mdp.pets.repositories.InfectionRepository;
 
 @Service
 public class InfectionService {
+    private static final String ID_NULL_MSG = "Id cannot be null";
 
-    @Autowired
-    private InfectionRepository infectionRepository;
+    private final InfectionRepository infectionRepository;
+
+    public InfectionService(InfectionRepository infectionRepository) {
+        this.infectionRepository = infectionRepository;
+    }
 
     @Transactional
     public InfectionEntity createInfection(InfectionEntity infection) throws IllegalOperationException {
@@ -27,8 +30,8 @@ public class InfectionService {
 
     @Transactional
     public InfectionEntity searchInfection(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<InfectionEntity> entity = infectionRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
         return entity.get();
     }
@@ -39,9 +42,9 @@ public class InfectionService {
     }
 
     @Transactional
-    public InfectionEntity updateInfection(Long id, InfectionEntity infection) throws EntityNotFoundException, IllegalOperationException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<InfectionEntity> entity = infectionRepository.findById(id);
+    public InfectionEntity updateInfection(Long id, InfectionEntity infection) throws EntityNotFoundException {
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
 
         InfectionEntity existing = entity.get();
@@ -56,9 +59,9 @@ public class InfectionService {
 
     @Transactional
     public void deleteInfection(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<InfectionEntity> entity = infectionRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
-        infectionRepository.delete(entity.get());
+        infectionRepository.deleteById(safeId);
     }
 }

@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,11 @@ import co.edu.udistrital.mdp.pets.services.ShelterService;
 @RequestMapping("/shelters")
 public class ShelterController {
 
-    @Autowired
-    private ShelterService shelterService;
+    private final ShelterService shelterService;
+
+    public ShelterController(ShelterService shelterService) {
+        this.shelterService = shelterService;
+    }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

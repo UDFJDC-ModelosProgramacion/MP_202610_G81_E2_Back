@@ -1,9 +1,7 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,15 +23,18 @@ import co.edu.udistrital.mdp.pets.services.ProcedureService;
 @RequestMapping("/procedures")
 public class ProcedureController {
 
-    @Autowired
-    private ProcedureService procedureService;
+    private final ProcedureService procedureService;
+
+    public ProcedureController(ProcedureService procedureService) {
+        this.procedureService = procedureService;
+    }
 
     @GetMapping
     public ResponseEntity<List<ProcedureDTO>> getAllProcedures() {
         List<ProcedureEntity> entities = procedureService.searchProcedures();
         List<ProcedureDTO> dtos = entities.stream()
                 .map(ProcedureDTO::new)
-                .collect(Collectors.toList());
+                .toList();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 

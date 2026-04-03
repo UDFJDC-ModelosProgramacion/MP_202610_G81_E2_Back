@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +14,13 @@ import co.edu.udistrital.mdp.pets.repositories.MedicationRepository;
 
 @Service
 public class MedicationService {
+    private static final String ID_NULL_MSG = "Id cannot be null";
 
-    @Autowired
-    private MedicationRepository medicationRepository;
+    private final MedicationRepository medicationRepository;
+
+    public MedicationService(MedicationRepository medicationRepository) {
+        this.medicationRepository = medicationRepository;
+    }
 
     @Transactional
     public MedicationEntity createMedication(MedicationEntity medication) throws IllegalOperationException {
@@ -27,8 +30,8 @@ public class MedicationService {
 
     @Transactional
     public MedicationEntity searchMedication(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<MedicationEntity> entity = medicationRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
         return entity.get();
     }
@@ -39,9 +42,9 @@ public class MedicationService {
     }
 
     @Transactional
-    public MedicationEntity updateMedication(Long id, MedicationEntity medication) throws EntityNotFoundException, IllegalOperationException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<MedicationEntity> entity = medicationRepository.findById(id);
+    public MedicationEntity updateMedication(Long id, MedicationEntity medication) throws EntityNotFoundException {
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
 
         MedicationEntity existing = entity.get();
@@ -57,9 +60,9 @@ public class MedicationService {
 
     @Transactional
     public void deleteMedication(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<MedicationEntity> entity = medicationRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
-        medicationRepository.delete(entity.get());
+        medicationRepository.deleteById(safeId);
     }
 }

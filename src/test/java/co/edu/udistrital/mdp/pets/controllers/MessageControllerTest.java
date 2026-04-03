@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,8 +33,8 @@ class MessageControllerTest {
     private Long senderId;
     private Long receiverId;
 
-    @BeforeEach
-    void setUp() throws IllegalOperationException {
+    @SuppressWarnings("java:S1144")
+    void initializeTestData() throws IllegalOperationException {
         AdopterDTO sender = new AdopterDTO();
         sender.setName("Sender");
         sender.setEmail("sender@test.com");
@@ -63,6 +62,7 @@ class MessageControllerTest {
 
     @Test
     void testCreateMessage() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         MessageDetailDTO createdMessage = messageController.create(messageDTO);
 
         assertNotNull(createdMessage);
@@ -72,6 +72,7 @@ class MessageControllerTest {
 
     @Test
     void testFindAll() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         messageController.create(messageDTO);
 
         List<MessageDTO> messages = messageController.findAll();
@@ -81,6 +82,7 @@ class MessageControllerTest {
 
     @Test
     void testFindOne() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         MessageDetailDTO createdMessage = messageController.create(messageDTO);
 
         MessageDetailDTO foundMessage = messageController.findOne(createdMessage.getId());
@@ -91,6 +93,7 @@ class MessageControllerTest {
 
     @Test
     void testUpdate() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         MessageDetailDTO createdMessage = messageController.create(messageDTO);
 
         messageDTO.setIsRead(true);
@@ -102,6 +105,7 @@ class MessageControllerTest {
 
     @Test
     void testDelete() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         MessageDetailDTO createdMessage = messageController.create(messageDTO);
 
         messageController.delete(createdMessage.getId());

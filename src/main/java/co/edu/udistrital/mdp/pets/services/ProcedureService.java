@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +14,13 @@ import co.edu.udistrital.mdp.pets.repositories.ProcedureRepository;
 
 @Service
 public class ProcedureService {
+    private static final String ID_NULL_MSG = "Id cannot be null";
 
-    @Autowired
-    private ProcedureRepository procedureRepository;
+    private final ProcedureRepository procedureRepository;
+
+    public ProcedureService(ProcedureRepository procedureRepository) {
+        this.procedureRepository = procedureRepository;
+    }
 
     @Transactional
     public ProcedureEntity createProcedure(ProcedureEntity procedure) throws IllegalOperationException {
@@ -27,8 +30,8 @@ public class ProcedureService {
 
     @Transactional
     public ProcedureEntity searchProcedure(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<ProcedureEntity> entity = procedureRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
         return entity.get();
     }
@@ -39,9 +42,9 @@ public class ProcedureService {
     }
 
     @Transactional
-    public ProcedureEntity updateProcedure(Long id, ProcedureEntity procedure) throws EntityNotFoundException, IllegalOperationException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<ProcedureEntity> entity = procedureRepository.findById(id);
+    public ProcedureEntity updateProcedure(Long id, ProcedureEntity procedure) throws EntityNotFoundException {
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
 
         ProcedureEntity existing = entity.get();
@@ -55,9 +58,9 @@ public class ProcedureService {
 
     @Transactional
     public void deleteProcedure(Long id) throws EntityNotFoundException {
-        Objects.requireNonNull(id, "Id cannot be null");
-        Optional<ProcedureEntity> entity = procedureRepository.findById(id);
+        Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
+        Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
         if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
-        procedureRepository.delete(entity.get());
+        procedureRepository.deleteById(safeId);
     }
 }

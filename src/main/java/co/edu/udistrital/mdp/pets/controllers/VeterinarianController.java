@@ -2,7 +2,6 @@ package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +24,11 @@ import co.edu.udistrital.mdp.pets.services.VeterinarianService;
 @RequestMapping("/veterinarians")
 public class VeterinarianController {
 
-    @Autowired
-    private VeterinarianService veterinarianService;
+    private final VeterinarianService veterinarianService;
+
+    public VeterinarianController(VeterinarianService veterinarianService) {
+        this.veterinarianService = veterinarianService;
+    }
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)

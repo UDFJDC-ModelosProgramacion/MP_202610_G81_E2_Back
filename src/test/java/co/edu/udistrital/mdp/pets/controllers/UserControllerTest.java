@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,8 +25,8 @@ class UserControllerTest {
 
     private UserDTO userDTO;
 
-    @BeforeEach
-    void setUp() {
+    @SuppressWarnings("java:S1144")
+    void initializeTestData() {
         userDTO = new UserDTO();
         userDTO.setName("Test User");
         userDTO.setEmail("test@user.com");
@@ -37,6 +36,7 @@ class UserControllerTest {
 
     @Test
     void testCreateUser() throws IllegalOperationException {
+        initializeTestData();
         UserDetailDTO createdUser = userController.create(userDTO);
 
         assertNotNull(createdUser);
@@ -47,6 +47,7 @@ class UserControllerTest {
 
     @Test
     void testFindAll() throws IllegalOperationException {
+        initializeTestData();
         userController.create(userDTO);
 
         List<UserDTO> users = userController.findAll(null, null);
@@ -56,6 +57,7 @@ class UserControllerTest {
 
     @Test
     void testFindOne() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         UserDetailDTO createdUser = userController.create(userDTO);
 
         UserDetailDTO foundUser = userController.findOne(createdUser.getId());
@@ -66,6 +68,7 @@ class UserControllerTest {
 
     @Test
     void testUpdate() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         UserDetailDTO createdUser = userController.create(userDTO);
 
         userDTO.setName("Updated Name");
@@ -77,6 +80,7 @@ class UserControllerTest {
 
     @Test
     void testDelete() throws IllegalOperationException, EntityNotFoundException {
+        initializeTestData();
         UserDetailDTO createdUser = userController.create(userDTO);
 
         userController.delete(createdUser.getId());
