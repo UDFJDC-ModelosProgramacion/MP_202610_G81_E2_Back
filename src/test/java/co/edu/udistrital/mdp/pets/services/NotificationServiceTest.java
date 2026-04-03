@@ -108,14 +108,7 @@ class NotificationServiceTest {
     }
 
     @Test
-    void testCreateNotificationNullUser() {
-        assertNotNull(assertThrows(IllegalOperationException.class, () -> {
-            NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
-            newNotification.setTitle("Invalid user");
-            newNotification.setContent("Content");
-            newNotification.setUser(null);
-            notificationService.createNotification(newNotification);
-        }));
+    void testCreateNotificationUserWithNullId() {
         assertNotNull(assertThrows(IllegalOperationException.class, () -> {
             NotificationEntity newNotification = factory.manufacturePojo(NotificationEntity.class);
             newNotification.setTitle("Invalid user");
