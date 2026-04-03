@@ -114,12 +114,19 @@
         {
           "listen": "test",
           "script": {
+            "type": "text/javascript",
             "exec": [
               "pm.test(\"Status code is 200\", function () {",
-              "   pm.response.to.have.status(200);",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+              "    if (pm.response.code === 404 || pm.response.code === 412) {",
+              "        var data = pm.response.json();",
+              "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+              "    }",
               "});"
-            ],
-            "type": "text/javascript"
+            ]
           }
         }
       ],
@@ -138,65 +145,6 @@
     {
       "name": "Users",
       "item": [
-        {
-          "name": "Get User By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/users/{{userId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{userId}}"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get All Users",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create User",
           "request": {
@@ -235,6 +183,99 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"userId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get User By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The user with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -274,6 +315,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The user with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -304,6 +359,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The user with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -445,296 +514,13 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"petId\", data.id);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Add Medical Event",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/medical-history",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "medical-history"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/pets",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\n    \"error\": \"Invalid Data\"\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/pets/1/medical-history",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "pets",
-                    "1",
-                    "medical-history"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Add Vaccine",
-          "request": {
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\n    \"name\": \"Rabies\",\n    \"date\": \"2026-03-20\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "{{baseUrl}}/pets/1/vaccines",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "pets",
-                "1",
-                "vaccines"
-              ]
-            }
-          },
-          "response": [
-            {
-              "name": "400 Bad Request",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/pets",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "pets"
-                  ]
-                }
-              },
-              "status": "Bad Request",
-              "code": 400,
-              "_postman_previewlanguage": null,
-              "header": null,
-              "cookie": [],
-              "body": "{\n    \"error\": \"Invalid Data\"\n}"
-            },
-            {
-              "name": "200 OK",
-              "originalRequest": {
-                "method": "POST",
-                "header": [],
-                "body": {
-                  "mode": "raw",
-                  "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
-                  "options": {
-                    "raw": {
-                      "language": "json"
-                    }
-                  }
-                },
-                "url": {
-                  "raw": "{{baseUrl}}/pets/1/medical-history",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "pets",
-                    "1",
-                    "medical-history"
-                  ]
-                }
-              },
-              "status": "OK",
-              "code": 200,
-              "_postman_previewlanguage": "",
-              "header": [
-                {
-                  "key": "Vary",
-                  "value": "Origin"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Method"
-                },
-                {
-                  "key": "Vary",
-                  "value": "Access-Control-Request-Headers"
-                },
-                {
-                  "key": "Content-Type",
-                  "value": "application/json"
-                },
-                {
-                  "key": "Transfer-Encoding",
-                  "value": "chunked"
-                },
-                {
-                  "key": "Date",
-                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
-                },
-                {
-                  "key": "Keep-Alive",
-                  "value": "timeout=60"
-                },
-                {
-                  "key": "Connection",
-                  "value": "keep-alive"
-                }
-              ],
-              "cookie": [
-                {
-                  "expires": "Invalid Date",
-                  "domain": "",
-                  "path": ""
-                }
-              ],
-              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
-            }
-          ],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -919,6 +705,19 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -1104,6 +903,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The pet with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -1290,6 +1103,13 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -1476,6 +1296,317 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Medical Event",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pets/1/medical-history",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1",
+                "medical-history"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"error\": \"Invalid Data\"\n}"
+            },
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/pets/1/medical-history",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets",
+                    "1",
+                    "medical-history"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Method"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Headers"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add Vaccine",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"Rabies\",\n    \"date\": \"2026-03-20\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/pets/1/vaccines",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "pets",
+                "1",
+                "vaccines"
+              ]
+            }
+          },
+          "response": [
+            {
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"name\": \"Firulais\",\n    \"species\": \"Dog\",\n    \"size\": \"small\",\n    \"sex\": \"female\",\n    \"temperament\": \"Pacify\",\n    \"specificNeeds\": \"Any\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/pets",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets"
+                  ]
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "_postman_previewlanguage": null,
+              "header": null,
+              "cookie": [],
+              "body": "{\n    \"error\": \"Invalid Data\"\n}"
+            },
+            {
+              "name": "200 OK",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"description\": \"Checkup\",\n    \"date\": \"2026-03-20\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "{{baseUrl}}/pets/1/medical-history",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "pets",
+                    "1",
+                    "medical-history"
+                  ]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "",
+              "header": [
+                {
+                  "key": "Vary",
+                  "value": "Origin"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Method"
+                },
+                {
+                  "key": "Vary",
+                  "value": "Access-Control-Request-Headers"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                },
+                {
+                  "key": "Transfer-Encoding",
+                  "value": "chunked"
+                },
+                {
+                  "key": "Date",
+                  "value": "Mon, 23 Mar 2026 03:07:52 GMT"
+                },
+                {
+                  "key": "Keep-Alive",
+                  "value": "timeout=60"
+                },
+                {
+                  "key": "Connection",
+                  "value": "keep-alive"
+                }
+              ],
+              "cookie": [
+                {
+                  "expires": "Invalid Date",
+                  "domain": "",
+                  "path": ""
+                }
+              ],
+              "body": "[\n    {\n        \"description\": \"Checkup\",\n        \"date\": \"2026-03-20\"\n    }\n]"
+            }
+          ],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -1670,6 +1801,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The pet with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -1855,6 +2000,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The pet with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -1910,6 +2069,13 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"adoptionId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -1940,6 +2106,19 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -1971,6 +2150,98 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adoption with the given id was not found\");",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Approve Adoption",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoptionId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoptionId}}",
+                "approve"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Return Adopted Pet",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adoptions/{{adoptionId}}/return",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adoptions",
+                "{{adoptionId}}",
+                "return"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
                   "});"
                 ]
               }
@@ -2016,70 +2287,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Approve Adoption",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adoptions/{{adoptionId}}/approve",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adoptions",
-                "{{adoptionId}}",
-                "approve"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Return Adopted Pet",
-          "request": {
-            "method": "PUT",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adoptions/{{adoptionId}}/return",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adoptions",
-                "{{adoptionId}}",
-                "return"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adoption with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2111,6 +2332,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adoption with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2122,67 +2357,6 @@
     {
       "name": "Shelters",
       "item": [
-        {
-          "name": "Get All Shelters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/shelters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Shelter By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/shelters/{{shelterId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "shelters",
-                "{{shelterId}}"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Shelter",
           "request": {
@@ -2227,6 +2401,101 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"shelterId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Shelters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Shelter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/shelters/{{shelterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "shelters",
+                "{{shelterId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The shelter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2272,6 +2541,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The shelter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2303,6 +2586,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The shelter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2314,67 +2611,6 @@
     {
       "name": "Veterinarians",
       "item": [
-        {
-          "name": "Get All Veterinarians",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/veterinarians",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "veterinarians"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Veterinarian By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/veterinarians/{{vetId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "veterinarians",
-                "{{vetId}}"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Veterinarian",
           "request": {
@@ -2419,6 +2655,101 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"vetId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Veterinarians",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/veterinarians",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "veterinarians"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Veterinarian By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/veterinarians/{{vetId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "veterinarians",
+                "{{vetId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The veterinarian with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2464,6 +2795,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The veterinarian with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2495,6 +2840,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The veterinarian with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2506,67 +2865,6 @@
     {
       "name": "Reviews",
       "item": [
-        {
-          "name": "Get All Reviews",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get Review By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/reviews/{{reviewId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reviews",
-                "{{reviewId}}"
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Review",
           "request": {
@@ -2611,6 +2909,101 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"reviewId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Reviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Review By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reviews",
+                "{{reviewId}}"
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The review with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2656,6 +3049,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The review with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2687,6 +3094,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The review with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2698,65 +3119,6 @@
     {
       "name": "Notifications",
       "item": [
-        {
-          "name": "Get Notification By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications",
-                "{{notificationId}}"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get All Notifications",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/notifications",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "notifications"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Notification",
           "request": {
@@ -2795,6 +3157,99 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"notificationId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Notifications",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Notification By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/notifications/{{notificationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "notifications",
+                "{{notificationId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The notification with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2834,6 +3289,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The notification with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2864,6 +3333,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The notification with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -2875,65 +3358,6 @@
     {
       "name": "Messages",
       "item": [
-        {
-          "name": "Get Message By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/messages/{{messageId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "messages",
-                "{{messageId}}"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get All Messages",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/messages",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "messages"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Message",
           "request": {
@@ -2972,6 +3396,99 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"messageId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Messages",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "messages"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Message By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/messages/{{messageId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "messages",
+                "{{messageId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The message with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -3011,6 +3528,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The message with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -3041,6 +3572,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The message with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -3052,65 +3597,6 @@
     {
       "name": "Adopters",
       "item": [
-        {
-          "name": "Get Adopter By Id",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adopters/{{adopterId}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters",
-                "{{adopterId}}"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "Get All Adopters",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/adopters",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "adopters"
-              ]
-            }
-          },
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});"
-                ]
-              }
-            }
-          ]
-        },
         {
           "name": "Create Adopter",
           "request": {
@@ -3149,6 +3635,99 @@
                   "    var data = pm.response.json();",
                   "    pm.expect(data.id).to.not.be.undefined;",
                   "    pm.environment.set(\"adopterId\", data.id);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get All Adopters",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Number of items > 0\", function () {",
+                  "    var data = pm.response.json();",
+                  "    pm.expect(data).to.be.an(\"array\");",
+                  "    pm.expect(data.length).to.be.greaterThan(0);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Adopter By Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/adopters/{{adopterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "adopters",
+                "{{adopterId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adopter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -3188,6 +3767,20 @@
                 "exec": [
                   "pm.test(\"Status code is 200\", function () {",
                   "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adopter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
@@ -3218,6 +3811,20 @@
                 "exec": [
                   "pm.test(\"Status code is 204\", function () {",
                   "    pm.response.to.have.status(204);",
+                  "});",
+                  "",
+                  "pm.test(\"Error payload includes apierror.message for 404/412\", function () {",
+                  "    if (pm.response.code === 404 || pm.response.code === 412) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.be.a(\"string\").and.not.empty;",
+                  "    }",
+                  "});",
+                  "",
+                  "pm.test(\"Expected not-found message for id lookup\", function () {",
+                  "    if (pm.response.code === 404) {",
+                  "        var data = pm.response.json();",
+                  "        pm.expect(data.apierror.message).to.eql(\"The adopter with the given id was not found\");",
+                  "    }",
                   "});"
                 ]
               }
