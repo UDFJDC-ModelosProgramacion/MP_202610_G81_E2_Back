@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * DTO for a Pet (mascota), extending the Animal concept with shelter and adoption context.
+ * DTO for a Pet (mascota) with shelter and adoption context.
  */
 @Data
 @NoArgsConstructor
