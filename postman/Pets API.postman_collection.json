@@ -1830,15 +1830,366 @@
         },
         {
             "name": "Shelters",
-            "item": []
+            "item": [
+                {
+                    "name": "Get All Shelters",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/shelters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "shelters"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Shelter By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/shelters/{{shelterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "shelters",
+                                "{{shelterId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Shelter",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"shelterName\": \"Hogar Patitas\",\n  \"nit\": \"900123456-7\",\n  \"phoneNumber\": \"3001234567\",\n  \"address\": \"Calle 123 #45-67\",\n  \"status\": \"ACTIVE\",\n  \"city\": \"Bogota\",\n  \"locationDetails\": \"Zona Norte\",\n  \"description\": \"Refugio para perros y gatos\",\n  \"websiteUrl\": \"https://hogarpatitas.org\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/shelters",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "shelters"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Shelter",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"shelterName\": \"Hogar Patitas Centro\",\n  \"nit\": \"900123456-7\",\n  \"phoneNumber\": \"3001234567\",\n  \"address\": \"Calle 123 #45-67\",\n  \"status\": \"ACTIVE\",\n  \"city\": \"Bogota\",\n  \"locationDetails\": \"Zona Centro\",\n  \"description\": \"Refugio actualizado\",\n  \"websiteUrl\": \"https://hogarpatitas.org\"\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/shelters/{{shelterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "shelters",
+                                "{{shelterId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Shelter",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/shelters/{{shelterId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "shelters",
+                                "{{shelterId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
         },
         {
             "name": "Veterinarians",
-            "item": []
+            "item": [
+                {
+                    "name": "Get All Veterinarians",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/veterinarians",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "veterinarians"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Veterinarian By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/veterinarians/{{vetId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "veterinarians",
+                                "{{vetId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Veterinarian",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Dra. Laura Perez\",\n  \"email\": \"laura.perez@pets.org\",\n  \"password\": \"secret123\",\n  \"phoneNumber\": \"3009876543\",\n  \"licenseNumber\": \"VET-2026-001\",\n  \"availabilitySchedule\": \"Lunes a Viernes\",\n  \"shelterId\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/veterinarians",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "veterinarians"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Veterinarian",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"name\": \"Dra. Laura Perez\",\n  \"email\": \"laura.perez@pets.org\",\n  \"password\": \"secret123\",\n  \"phoneNumber\": \"3009876543\",\n  \"licenseNumber\": \"VET-2026-001\",\n  \"availabilitySchedule\": \"Lunes a Sabado\",\n  \"shelterId\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/veterinarians/{{vetId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "veterinarians",
+                                "{{vetId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Veterinarian",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/veterinarians/{{vetId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "veterinarians",
+                                "{{vetId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
         },
         {
             "name": "Reviews",
-            "item": []
+            "item": [
+                {
+                    "name": "Get All Reviews",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Get Review By Id",
+                    "request": {
+                        "method": "GET",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews",
+                                "{{reviewId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Create Review",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excelente proceso de adopcion\",\n  \"isSuccessStory\": true,\n  \"adopterId\": 1,\n  \"adoptionProcessId\": 1,\n  \"shelterId\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Update Review",
+                    "request": {
+                        "method": "PUT",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"rating\": 4,\n  \"comment\": \"Muy buen proceso\",\n  \"isSuccessStory\": true,\n  \"adopterId\": 1,\n  \"adoptionProcessId\": 1,\n  \"shelterId\": 1\n}",
+                            "options": {
+                                "raw": {
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews",
+                                "{{reviewId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                },
+                {
+                    "name": "Delete Review",
+                    "request": {
+                        "method": "DELETE",
+                        "header": [],
+                        "url": {
+                            "raw": "{{baseUrl}}/reviews/{{reviewId}}",
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "path": [
+                                "reviews",
+                                "{{reviewId}}"
+                            ]
+                        }
+                    },
+                    "response": []
+                }
+            ]
         },
         {
             "name": "Notifications",
