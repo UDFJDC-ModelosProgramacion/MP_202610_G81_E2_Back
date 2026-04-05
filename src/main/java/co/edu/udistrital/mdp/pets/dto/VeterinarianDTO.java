@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.dto;
 
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import co.edu.udistrital.mdp.pets.entities.VeterinarianEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -28,6 +29,11 @@ public class VeterinarianDTO extends UserDTO {
         this.copyToEntity(entity);
         entity.setLicenseNumber(this.licenseNumber);
         entity.setAvailabilitySchedule(this.availabilitySchedule);
+        if (this.shelterId != null) {
+            ShelterEntity shelter = new ShelterEntity();
+            shelter.setId(this.shelterId);
+            entity.setShelter(shelter);
+        }
         return entity;
     }
 }

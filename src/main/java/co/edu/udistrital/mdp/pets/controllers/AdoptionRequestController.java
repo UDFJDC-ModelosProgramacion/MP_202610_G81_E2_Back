@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.AdoptionRequestDTO;
 import co.edu.udistrital.mdp.pets.dto.AdoptionRequestDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.AdoptionRequestService;
@@ -48,20 +47,8 @@ public class AdoptionRequestController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public AdoptionRequestDetailDTO create(@RequestBody AdoptionRequestDTO requestDTO)
             throws IllegalOperationException {
-        AdoptionRequestEntity entity = requestDTO.toEntity();
-        if (requestDTO.getAdopterId() != null) {
-            co.edu.udistrital.mdp.pets.entities.AdopterEntity adopter =
-                    new co.edu.udistrital.mdp.pets.entities.AdopterEntity();
-            adopter.setId(requestDTO.getAdopterId());
-            entity.setAdopter(adopter);
-        }
-        if (requestDTO.getPetId() != null) {
-            co.edu.udistrital.mdp.pets.entities.PetEntity pet =
-                    new co.edu.udistrital.mdp.pets.entities.PetEntity();
-            pet.setId(requestDTO.getPetId());
-            entity.setPet(pet);
-        }
-        return new AdoptionRequestDetailDTO(adoptionRequestService.createAdoptionRequest(entity));
+        return new AdoptionRequestDetailDTO(
+            adoptionRequestService.createAdoptionRequest(requestDTO.toEntity()));
     }
 
     @PutMapping(value = "/{requestId}")
