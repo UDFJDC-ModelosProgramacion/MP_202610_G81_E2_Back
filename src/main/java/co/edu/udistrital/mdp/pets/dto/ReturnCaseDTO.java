@@ -3,6 +3,7 @@ package co.edu.udistrital.mdp.pets.dto;
 import java.time.LocalDate;
 
 import co.edu.udistrital.mdp.pets.entities.ReturnCaseEntity;
+import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -31,6 +32,11 @@ public class ReturnCaseDTO {
         entity.setReturnDate(this.returnDate);
         entity.setReason(this.reason);
         entity.setDetails(this.details);
+        if (this.adoptionProcessId != null) {
+            TrialCohabitationEntity adoptionProcess = new TrialCohabitationEntity();
+            adoptionProcess.setId(this.adoptionProcessId);
+            entity.setAdoptionProcess(adoptionProcess);
+        }
         return entity;
     }
 }

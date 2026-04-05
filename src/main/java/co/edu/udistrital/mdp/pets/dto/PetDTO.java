@@ -3,6 +3,7 @@ package co.edu.udistrital.mdp.pets.dto;
 import java.time.LocalDate;
 
 import co.edu.udistrital.mdp.pets.entities.PetEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -54,6 +55,11 @@ public class PetDTO {
         entity.setSpecificNeeds(this.specificNeeds);
         entity.setIsRescued(this.isRescued);
         entity.setStatus(this.status);
+        if (this.shelterId != null) {
+            ShelterEntity shelter = new ShelterEntity();
+            shelter.setId(this.shelterId);
+            entity.setShelter(shelter);
+        }
         return entity;
     }
 }

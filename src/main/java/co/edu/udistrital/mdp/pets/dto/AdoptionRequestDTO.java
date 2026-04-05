@@ -2,7 +2,9 @@ package co.edu.udistrital.mdp.pets.dto;
 
 import java.time.LocalDate;
 
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -37,6 +39,16 @@ public class AdoptionRequestDTO {
         entity.setRequestDate(this.requestDate);
         entity.setStatus(this.status);
         entity.setComments(this.comments);
+        if (this.adopterId != null) {
+            AdopterEntity adopter = new AdopterEntity();
+            adopter.setId(this.adopterId);
+            entity.setAdopter(adopter);
+        }
+        if (this.petId != null) {
+            PetEntity pet = new PetEntity();
+            pet.setId(this.petId);
+            entity.setPet(pet);
+        }
         return entity;
     }
 }
