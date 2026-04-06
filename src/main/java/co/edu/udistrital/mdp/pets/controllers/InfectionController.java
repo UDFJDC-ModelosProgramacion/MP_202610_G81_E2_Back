@@ -1,7 +1,6 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,10 +29,9 @@ public class InfectionController {
 
     @GetMapping
     public ResponseEntity<List<InfectionDTO>> getAllInfections() {
-        final List<InfectionEntity> entities = infectionService.searchInfections();
+        List<InfectionEntity> entities = infectionService.searchInfections();
         List<InfectionDTO> dtos = entities.stream()
-                .map(InfectionDTO::new)
-                .collect(Collectors.toList());
+                .map(InfectionDTO::new).toList();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
