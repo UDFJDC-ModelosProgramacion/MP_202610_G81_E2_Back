@@ -52,7 +52,7 @@ public class ProcedureController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id, @RequestBody ProcedureDTO procedureDTO) throws EntityNotFoundException, IllegalOperationException {
+    public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id, @RequestBody ProcedureDTO procedureDTO) throws EntityNotFoundException{
         ProcedureEntity entity = procedureDTO.toEntity();
         ProcedureEntity updatedEntity = procedureService.updateProcedure(id, entity);
         return new ResponseEntity<>(new ProcedureDTO(updatedEntity), HttpStatus.OK);

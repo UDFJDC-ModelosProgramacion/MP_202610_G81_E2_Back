@@ -15,6 +15,7 @@ import co.edu.udistrital.mdp.pets.repositories.ProcedureRepository;
 @Service
 public class ProcedureService {
     private static final String ID_NULL_MSG = "Id cannot be null";
+    private static final String PROCEDURE_NOT_FOUND = "Procedure not found";
 
     private final ProcedureRepository procedureRepository;
 
@@ -32,7 +33,7 @@ public class ProcedureService {
     public ProcedureEntity searchProcedure(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(PROCEDURE_NOT_FOUND);
         return entity.get();
     }
 
@@ -45,7 +46,7 @@ public class ProcedureService {
     public ProcedureEntity updateProcedure(Long id, ProcedureEntity procedure) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(PROCEDURE_NOT_FOUND);
 
         ProcedureEntity existing = entity.get();
         existing.setProcedureName(procedure.getProcedureName());
@@ -60,7 +61,7 @@ public class ProcedureService {
     public void deleteProcedure(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<ProcedureEntity> entity = procedureRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Procedure not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(PROCEDURE_NOT_FOUND);
         procedureRepository.deleteById(safeId);
     }
 }

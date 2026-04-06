@@ -30,7 +30,7 @@ public class InfectionController {
 
     @GetMapping
     public ResponseEntity<List<InfectionDTO>> getAllInfections() {
-        List<InfectionEntity> entities = infectionService.searchInfections();
+        final List<InfectionEntity> entities = infectionService.searchInfections();
         List<InfectionDTO> dtos = entities.stream()
                 .map(InfectionDTO::new)
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class InfectionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InfectionDTO> updateInfection(@PathVariable("id") Long id, @RequestBody InfectionDTO infectionDTO) throws EntityNotFoundException, IllegalOperationException {
+    public ResponseEntity<InfectionDTO> updateInfection(@PathVariable("id") Long id, @RequestBody InfectionDTO infectionDTO) throws EntityNotFoundException{
         InfectionEntity entity = infectionDTO.toEntity();
         InfectionEntity updatedEntity = infectionService.updateInfection(id, entity);
         return new ResponseEntity<>(new InfectionDTO(updatedEntity), HttpStatus.OK);

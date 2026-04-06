@@ -15,6 +15,7 @@ import co.edu.udistrital.mdp.pets.repositories.MedicationRepository;
 @Service
 public class MedicationService {
     private static final String ID_NULL_MSG = "Id cannot be null";
+    private static final String MEDICATION_NOT_FOUND = "Medication not found";
 
     private final MedicationRepository medicationRepository;
 
@@ -32,7 +33,7 @@ public class MedicationService {
     public MedicationEntity searchMedication(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(MEDICATION_NOT_FOUND);
         return entity.get();
     }
 
@@ -45,7 +46,7 @@ public class MedicationService {
     public MedicationEntity updateMedication(Long id, MedicationEntity medication) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(MEDICATION_NOT_FOUND);
 
         MedicationEntity existing = entity.get();
         existing.setMedicationName(medication.getMedicationName());
@@ -62,7 +63,7 @@ public class MedicationService {
     public void deleteMedication(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<MedicationEntity> entity = medicationRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Medication not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(MEDICATION_NOT_FOUND);
         medicationRepository.deleteById(safeId);
     }
 }

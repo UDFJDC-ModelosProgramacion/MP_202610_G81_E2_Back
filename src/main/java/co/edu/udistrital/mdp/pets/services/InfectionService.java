@@ -15,6 +15,7 @@ import co.edu.udistrital.mdp.pets.repositories.InfectionRepository;
 @Service
 public class InfectionService {
     private static final String ID_NULL_MSG = "Id cannot be null";
+    private static final String INFECTION_NOT_FOUND = "Infection not found";
 
     private final InfectionRepository infectionRepository;
 
@@ -32,7 +33,7 @@ public class InfectionService {
     public InfectionEntity searchInfection(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(INFECTION_NOT_FOUND);
         return entity.get();
     }
 
@@ -45,7 +46,7 @@ public class InfectionService {
     public InfectionEntity updateInfection(Long id, InfectionEntity infection) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(INFECTION_NOT_FOUND);
 
         InfectionEntity existing = entity.get();
         existing.setInfectionType(infection.getInfectionType());
@@ -61,7 +62,7 @@ public class InfectionService {
     public void deleteInfection(Long id) throws EntityNotFoundException {
         Long safeId = Objects.requireNonNull(id, ID_NULL_MSG);
         Optional<InfectionEntity> entity = infectionRepository.findById(safeId);
-        if (entity.isEmpty()) throw new EntityNotFoundException("Infection not found");
+        if (entity.isEmpty()) throw new EntityNotFoundException(INFECTION_NOT_FOUND);
         infectionRepository.deleteById(safeId);
     }
 }

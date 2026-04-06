@@ -52,7 +52,7 @@ public class MedicationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedicationDTO> updateMedication(@PathVariable("id") Long id, @RequestBody MedicationDTO medicationDTO) throws EntityNotFoundException, IllegalOperationException {
+    public ResponseEntity<MedicationDTO> updateMedication(@PathVariable("id") Long id, @RequestBody MedicationDTO medicationDTO) throws EntityNotFoundException {
         MedicationEntity entity = medicationDTO.toEntity();
         MedicationEntity updatedEntity = medicationService.updateMedication(id, entity);
         return new ResponseEntity<>(new MedicationDTO(updatedEntity), HttpStatus.OK);
