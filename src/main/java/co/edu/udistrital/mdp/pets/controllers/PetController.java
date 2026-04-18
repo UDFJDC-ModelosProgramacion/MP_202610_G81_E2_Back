@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import co.edu.udistrital.mdp.pets.dto.PetDetailDTO;
 import co.edu.udistrital.mdp.pets.dto.PetDTO;
+import co.edu.udistrital.mdp.pets.dto.PetRelationsDetailDTO;
 import co.edu.udistrital.mdp.pets.services.PetService;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -90,17 +91,5 @@ public class PetController {
     @GetMapping("/{id}/vaccines")
     public PetRelationsDetailDTO getVaccines(@PathVariable Long id) {
         return new PetRelationsDetailDTO(vaccines.getOrDefault(id, new ArrayList<>()));
-    }
-
-    public static class PetRelationsDetailDTO {
-        private final List<Map<String, Object>> items;
-
-        public PetRelationsDetailDTO(List<Map<String, Object>> items) {
-            this.items = items;
-        }
-
-        public List<Map<String, Object>> getItems() {
-            return items;
-        }
     }
 }

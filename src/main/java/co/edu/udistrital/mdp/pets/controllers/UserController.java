@@ -48,7 +48,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public UserDetailDTO create(@RequestBody UserDTO userDTO)
             throws IllegalOperationException {
-        var entity = userDTO.toEntity();
+        var entity = userDTO.toAdopterEntity();
         return new UserDetailDTO(userService.createUser(entity));
     }
 
@@ -56,7 +56,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserDetailDTO update(@PathVariable Long userId, @RequestBody UserDTO userDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        var entity = userDTO.toEntity();
+        var entity = userDTO.toAdopterEntity();
         return new UserDetailDTO(userService.updateUser(userId, entity));
     }
 

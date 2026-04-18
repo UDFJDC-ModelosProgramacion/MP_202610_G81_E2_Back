@@ -41,7 +41,7 @@ public class UserDTO {
         entity.setRegisterDate(this.registerDate);
     }
 
-    public UserEntity toEntity() {
+    public UserEntity toAdopterEntity() {
         UserEntity entity = new AdopterEntity();
         copyToEntity(entity);
         return entity;

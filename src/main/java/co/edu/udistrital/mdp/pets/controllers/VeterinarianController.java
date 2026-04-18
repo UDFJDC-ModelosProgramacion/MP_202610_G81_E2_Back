@@ -35,12 +35,11 @@ public class VeterinarianController {
     public List<VeterinarianDetailDTO> findAll(
             @RequestParam(required = false) Long specialityId,
             @RequestParam(required = false) Long shelterId) {
-        var vets = veterinarianService.searchVeterinarians();
-        if (specialityId != null) {
-            vets = veterinarianService.searchVeterinariansBySpeciality(specialityId);
-        } else if (shelterId != null) {
-            vets = veterinarianService.searchVeterinariansByShelter(shelterId);
-        }
+        var vets = specialityId != null
+                ? veterinarianService.searchVeterinariansBySpeciality(specialityId)
+                : shelterId != null
+                        ? veterinarianService.searchVeterinariansByShelter(shelterId)
+                        : veterinarianService.searchVeterinarians();
         return vets.stream()
                 .map(VeterinarianDetailDTO::new)
                 .toList();

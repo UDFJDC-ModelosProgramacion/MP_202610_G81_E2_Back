@@ -19,4 +19,13 @@ class DefaultControllerTest {
         assertEquals("OK", response.getStatus());
         assertEquals("REST API for Pets is running", response.getMessage());
     }
+
+    @Test
+    void testWelcomeWithConfiguredApplicationName() {
+        MockEnvironment environment = new MockEnvironment().withProperty("spring.application.name", "ApiMascotas");
+        DefaultController controller = new DefaultController(environment);
+        DefaultDetailDTO response = controller.welcome();
+
+        assertEquals("REST API for ApiMascotas is running", response.getMessage());
+    }
 }
