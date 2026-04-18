@@ -31,8 +31,8 @@ public class ReviewController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ReviewDTO> findAll() {
-        return reviewService.searchReviews().stream().map(ReviewDTO::new).toList();
+    public List<ReviewDetailDTO> findAll() {
+        return reviewService.searchReviews().stream().map(ReviewDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{reviewId}")

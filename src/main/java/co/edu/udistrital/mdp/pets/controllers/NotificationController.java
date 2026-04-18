@@ -33,17 +33,17 @@ public class NotificationController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<NotificationDTO> findAll(@RequestParam(required = false) Long userId) {
+    public List<NotificationDetailDTO> findAll(@RequestParam(required = false) Long userId) {
         if (userId != null) {
-            return notificationService.searchNotificationsByUser(userId).stream().map(NotificationDTO::new).toList();
+            return notificationService.searchNotificationsByUser(userId).stream().map(NotificationDetailDTO::new).toList();
         }
-        return notificationService.searchNotifications().stream().map(NotificationDTO::new).toList();
+        return notificationService.searchNotifications().stream().map(NotificationDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/user/{userId}")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<NotificationDTO> findByUser(@PathVariable Long userId) {
-        return notificationService.searchNotificationsByUser(userId).stream().map(NotificationDTO::new).toList();
+    public List<NotificationDetailDTO> findByUser(@PathVariable Long userId) {
+        return notificationService.searchNotificationsByUser(userId).stream().map(NotificationDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{notificationId}")

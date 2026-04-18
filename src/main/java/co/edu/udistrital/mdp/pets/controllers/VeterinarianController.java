@@ -32,20 +32,16 @@ public class VeterinarianController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<VeterinarianDTO> findAll(
+    public List<VeterinarianDetailDTO> findAll(
             @RequestParam(required = false) Long specialityId,
             @RequestParam(required = false) Long shelterId) {
-        List<?> vets;
-        if (specialityId != null) {
-            vets = veterinarianService.searchVeterinariansBySpeciality(specialityId);
-        } else if (shelterId != null) {
-            vets = veterinarianService.searchVeterinariansByShelter(shelterId);
-        } else {
-            vets = veterinarianService.searchVeterinarians();
-        }
+        var vets = specialityId != null
+                ? veterinarianService.searchVeterinariansBySpeciality(specialityId)
+                : shelterId != null
+                        ? veterinarianService.searchVeterinariansByShelter(shelterId)
+                        : veterinarianService.searchVeterinarians();
         return vets.stream()
-                .map(e -> new VeterinarianDTO(
-                        (co.edu.udistrital.mdp.pets.entities.VeterinarianEntity) e))
+                .map(VeterinarianDetailDTO::new)
                 .toList();
     }
 

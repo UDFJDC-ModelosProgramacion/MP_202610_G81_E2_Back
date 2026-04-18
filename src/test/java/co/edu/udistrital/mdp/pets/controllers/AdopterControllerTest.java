@@ -55,7 +55,7 @@ class AdopterControllerTest {
         initializeTestData();
         adopterController.create(adopterDTO);
 
-        List<AdopterDTO> adopters = adopterController.findAll(null, null, null);
+        List<AdopterDetailDTO> adopters = adopterController.findAll(null, null, null);
         assertNotNull(adopters);
         assertFalse(adopters.isEmpty());
     }

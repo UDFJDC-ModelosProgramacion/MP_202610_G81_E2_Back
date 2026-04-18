@@ -12,4 +12,8 @@ import lombok.NoArgsConstructor;
 public class AuthenticationDTO {
     private String email;
     private String password;
+    private Long userId;
+    private String name;
+    private String token;
+    private String role;
 }

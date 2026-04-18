@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.UserDTO;
 import co.edu.udistrital.mdp.pets.dto.UserDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
-import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.UserService;
@@ -32,12 +30,12 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<UserDTO> findAll(@RequestParam(required = false) String name,
+    public List<UserDetailDTO> findAll(@RequestParam(required = false) String name,
             @RequestParam(required = false) String email) {
-        List<UserEntity> users = (name != null || email != null)
+        var users = (name != null || email != null)
                 ? userService.searchUsers(name, email)
                 : userService.searchUsers();
-        return users.stream().map(UserDTO::new).toList();
+        return users.stream().map(UserDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{userId}")
@@ -50,9 +48,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public UserDetailDTO create(@RequestBody UserDTO userDTO)
             throws IllegalOperationException {
-        //UserEntity es abstracta; en este proyecto el tipo concreto disponible dentro de este alcance es AdopterEntity. Por si acaso
-        AdopterEntity entity = new AdopterEntity();
-        userDTO.copyToEntity(entity);
+        var entity = userDTO.toAdopterEntity();
         return new UserDetailDTO(userService.createUser(entity));
     }
 
@@ -60,8 +56,7 @@ public class UserController {
     @ResponseStatus(code = HttpStatus.OK)
     public UserDetailDTO update(@PathVariable Long userId, @RequestBody UserDTO userDTO)
             throws EntityNotFoundException, IllegalOperationException {
-        AdopterEntity entity = new AdopterEntity();
-        userDTO.copyToEntity(entity);
+        var entity = userDTO.toAdopterEntity();
         return new UserDetailDTO(userService.updateUser(userId, entity));
     }
 

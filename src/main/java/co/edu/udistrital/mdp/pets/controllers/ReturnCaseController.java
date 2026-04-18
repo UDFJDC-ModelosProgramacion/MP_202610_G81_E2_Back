@@ -29,9 +29,9 @@ public class ReturnCaseController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ReturnCaseDTO> findAll() {
+    public List<ReturnCaseDetailDTO> findAll() {
         return returnCaseService.searchReturnCases().stream()
-                .map(ReturnCaseDTO::new).toList();
+                .map(ReturnCaseDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{returnCaseId}")

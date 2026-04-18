@@ -50,7 +50,7 @@ class UserControllerTest {
         initializeTestData();
         userController.create(userDTO);
 
-        List<UserDTO> users = userController.findAll(null, null);
+        List<UserDetailDTO> users = userController.findAll(null, null);
         assertNotNull(users);
         assertFalse(users.isEmpty());
     }
