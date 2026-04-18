@@ -31,8 +31,8 @@ public class MessageController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<MessageDTO> findAll() {
-        return messageService.searchMessages().stream().map(MessageDTO::new).toList();
+    public List<MessageDetailDTO> findAll() {
+        return messageService.searchMessages().stream().map(MessageDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{messageId}")

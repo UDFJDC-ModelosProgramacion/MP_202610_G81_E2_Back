@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 public class AdoptionRequestDetailDTO extends AdoptionRequestDTO {
     private AdopterDTO adopter;
     private PetDTO pet;
-    private Long adoptionProcessId;
+    private AdoptionProcessDTO adoptionProcess;
 
     public AdoptionRequestDetailDTO(AdoptionRequestEntity entity) {
         super(entity);
@@ -23,7 +23,7 @@ public class AdoptionRequestDetailDTO extends AdoptionRequestDTO {
                 this.pet = new PetDTO(entity.getPet());
             }
             if (entity.getAdoptionProcess() != null) {
-                this.adoptionProcessId = entity.getAdoptionProcess().getId();
+                this.adoptionProcess = new AdoptionProcessDTO(entity.getAdoptionProcess());
             }
         }
     }

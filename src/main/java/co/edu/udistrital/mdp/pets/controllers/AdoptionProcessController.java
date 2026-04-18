@@ -31,9 +31,9 @@ public class AdoptionProcessController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionProcessDTO> findAll() {
+    public List<AdoptionProcessDetailDTO> findAll() {
         return adoptionProcessService.searchAdoptionProcesses().stream()
-                .map(AdoptionProcessDTO::new).toList();
+                .map(AdoptionProcessDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{processId}")

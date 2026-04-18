@@ -30,16 +30,16 @@ public class VaccineController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<VaccineDTO> findAll(@RequestParam Long medicalHistoryId) {
+    public List<VaccineDetailDTO> findAll(@RequestParam Long medicalHistoryId) {
         return vaccineEntryService.getVaccineEntries(medicalHistoryId)
-                .stream().map(VaccineDTO::new).toList();
+                .stream().map(VaccineDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/due")
     @ResponseStatus(code = HttpStatus.OK)
-    public List<VaccineDTO> findDue() {
+    public List<VaccineDetailDTO> findDue() {
         return vaccineEntryService.findVaccinesDue()
-                .stream().map(VaccineDTO::new).toList();
+                .stream().map(VaccineDetailDTO::new).toList();
     }
 
     @PostMapping

@@ -1,6 +1,7 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,11 @@ import co.edu.udistrital.mdp.pets.dto.AuthenticationDetailDTO;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
+    private final Environment environment;
+
+    public AuthenticationController(Environment environment) {
+        this.environment = environment;
+    }
 
     /**
      * Login endpoint.
@@ -29,7 +35,7 @@ public class AuthenticationController {
         // Stub: real implementation should validate credentials and generate a JWT.
         AuthenticationDetailDTO response = new AuthenticationDetailDTO();
         response.setEmail(authDTO.getEmail());
-        response.setToken("stub-token-replace-with-jwt");
+        response.setToken(environment.getProperty("security.jwt.stub-token", "stub-token-replace-with-jwt"));
         return response;
     }
 }

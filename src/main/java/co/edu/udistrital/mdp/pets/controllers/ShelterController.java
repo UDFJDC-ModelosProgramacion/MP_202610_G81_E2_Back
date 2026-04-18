@@ -32,12 +32,12 @@ public class ShelterController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterDTO> findAll(@RequestParam(required = false) String name) {
-        List<?> shelters = (name != null)
+    public List<ShelterDetailDTO> findAll(@RequestParam(required = false) String name) {
+        var shelters = (name != null)
                 ? shelterService.searchSheltersByName(name)
                 : shelterService.searchShelters();
         return shelters.stream()
-                .map(e -> new ShelterDTO((co.edu.udistrital.mdp.pets.entities.ShelterEntity) e))
+                .map(ShelterDetailDTO::new)
                 .toList();
     }
 

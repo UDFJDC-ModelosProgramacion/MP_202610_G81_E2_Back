@@ -11,8 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class AuthenticationDetailDTO extends AuthenticationDTO {
-    private Long userId;
-    private String name;
-    private String token;
-    private String role;
 }

@@ -31,8 +31,8 @@ public class AdoptionController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdoptionDTO> findAll() {
-        return adoptionService.searchAdoptions().stream().map(AdoptionDTO::new).toList();
+    public List<AdoptionDetailDTO> findAll() {
+        return adoptionService.searchAdoptions().stream().map(AdoptionDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{adoptionId}")

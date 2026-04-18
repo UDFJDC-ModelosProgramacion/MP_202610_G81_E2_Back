@@ -29,9 +29,9 @@ public class MedicalHistoryController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<MedicalHistoryDTO> findAll() {
+    public List<MedicalHistoryDetailDTO> findAll() {
         return medicalHistoryService.searchMedicalHistories()
-                .stream().map(MedicalHistoryDTO::new).toList();
+                .stream().map(MedicalHistoryDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/pet/{petId}")

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.ProcedureDTO;
-import co.edu.udistrital.mdp.pets.entities.ProcedureEntity;
+import co.edu.udistrital.mdp.pets.dto.ProcedureDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.ProcedureService;
@@ -30,31 +30,31 @@ public class ProcedureController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProcedureDTO>> getAllProcedures() {
-        List<ProcedureEntity> entities = procedureService.searchProcedures();
-        List<ProcedureDTO> dtos = entities.stream()
-                .map(ProcedureDTO::new)
+    public ResponseEntity<List<ProcedureDetailDTO>> getAllProcedures() {
+        var entities = procedureService.searchProcedures();
+        List<ProcedureDetailDTO> dtos = entities.stream()
+                .map(ProcedureDetailDTO::new)
                 .toList();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcedureDTO> getProcedureById(@PathVariable("id") Long id) throws EntityNotFoundException {
-        ProcedureEntity entity = procedureService.searchProcedure(id);
-        return new ResponseEntity<>(new ProcedureDTO(entity), HttpStatus.OK);
+    public ResponseEntity<ProcedureDetailDTO> getProcedureById(@PathVariable("id") Long id) throws EntityNotFoundException {
+        var entity = procedureService.searchProcedure(id);
+        return new ResponseEntity<>(new ProcedureDetailDTO(entity), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<ProcedureDTO> createProcedure(@RequestBody ProcedureDTO procedureDTO) throws IllegalOperationException {
-        ProcedureEntity entity = procedureDTO.toEntity();
-        ProcedureEntity createdEntity = procedureService.createProcedure(entity);
+        var entity = procedureDTO.toEntity();
+        var createdEntity = procedureService.createProcedure(entity);
         return new ResponseEntity<>(new ProcedureDTO(createdEntity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id, @RequestBody ProcedureDTO procedureDTO) throws EntityNotFoundException{
-        ProcedureEntity entity = procedureDTO.toEntity();
-        ProcedureEntity updatedEntity = procedureService.updateProcedure(id, entity);
+        var entity = procedureDTO.toEntity();
+        var updatedEntity = procedureService.updateProcedure(id, entity);
         return new ResponseEntity<>(new ProcedureDTO(updatedEntity), HttpStatus.OK);
     }
 
