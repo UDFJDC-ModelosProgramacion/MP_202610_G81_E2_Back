@@ -103,7 +103,7 @@ class VeterinarianServiceTest {
         assertNotNull(result);
 
         VeterinarianEntity entity = entityManager.find(VeterinarianEntity.class, result.getId());
-        assertNotNull(entity.getId());
+        assertNotNull(entity);
         assertEquals(newEntity.getLicenseNumber(), entity.getLicenseNumber());
     }
 
