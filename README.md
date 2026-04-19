@@ -13,7 +13,7 @@
 - Por lo anterior, la revisión de mockups/documentación visual queda **pendiente de insumos**.
 
 ### Formato de revisión cruzada (Persona 1 revisa a Persona 2)
-- `Primer Nombre Primer Apellido a Primer Nombre Primer Apellido`
+- Ejemplo de formato: `Primer Nombre Primer Apellido a Primer Nombre Primer Apellido`
 
 ### Validación funcional sobre veterinarios (backend)
 Sí hay cobertura del dominio de veterinarios en backend:
