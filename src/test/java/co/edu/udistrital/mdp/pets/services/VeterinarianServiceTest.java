@@ -94,7 +94,6 @@ class VeterinarianServiceTest {
     @Test
     void testCreateVeterinarian() throws IllegalOperationException, EntityNotFoundException {
         VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
-        newEntity.setId(null);
         newEntity.setLicenseNumber("LIC-NEW-" + System.nanoTime());
         newEntity.setSpecialities(new ArrayList<>());
         newEntity.setMedicalHistories(new ArrayList<>());

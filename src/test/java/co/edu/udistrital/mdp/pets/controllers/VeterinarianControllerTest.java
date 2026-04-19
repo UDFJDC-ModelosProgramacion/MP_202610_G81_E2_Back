@@ -24,7 +24,6 @@ class VeterinarianControllerTest {
     @Autowired
     private VeterinarianController veterinarianController;
 
-    @SuppressWarnings("java:S1144")
     VeterinarianDTO initializeVeterinarianData() {
         VeterinarianDTO veterinarianDTO = new VeterinarianDTO();
         veterinarianDTO.setName("Vet Base User");
