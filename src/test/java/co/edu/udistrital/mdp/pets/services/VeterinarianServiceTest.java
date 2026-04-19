@@ -94,17 +94,17 @@ class VeterinarianServiceTest {
     @Test
     void testCreateVeterinarian() throws IllegalOperationException, EntityNotFoundException {
         VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
+        newEntity.setId(null);
         newEntity.setLicenseNumber("LIC-NEW-" + System.nanoTime());
         newEntity.setSpecialities(new ArrayList<>());
         newEntity.setMedicalHistories(new ArrayList<>());
         newEntity.setMedicalEvents(new ArrayList<>());
-        entityManager.persist(newEntity);
 
         VeterinarianEntity result = veterinarianService.createVeterinarian(newEntity);
         assertNotNull(result);
 
         VeterinarianEntity entity = entityManager.find(VeterinarianEntity.class, result.getId());
-        assertEquals(newEntity.getId(), entity.getId());
+        assertNotNull(entity.getId());
         assertEquals(newEntity.getLicenseNumber(), entity.getLicenseNumber());
     }
 
@@ -133,16 +133,17 @@ class VeterinarianServiceTest {
     }
 
     @Test
-    void testCreateVeterinarianNoId() {
-        expectThrows(IllegalOperationException.class, () -> {
-            VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
-            newEntity.setId(null);
-            newEntity.setLicenseNumber("LIC-TEST");
-            newEntity.setSpecialities(new ArrayList<>());
-            newEntity.setMedicalHistories(new ArrayList<>());
-            newEntity.setMedicalEvents(new ArrayList<>());
-            veterinarianService.createVeterinarian(newEntity);
-        });
+    void testCreateVeterinarianNoId() throws IllegalOperationException, EntityNotFoundException {
+        VeterinarianEntity newEntity = factory.manufacturePojo(VeterinarianEntity.class);
+        newEntity.setId(null);
+        newEntity.setLicenseNumber("LIC-TEST");
+        newEntity.setSpecialities(new ArrayList<>());
+        newEntity.setMedicalHistories(new ArrayList<>());
+        newEntity.setMedicalEvents(new ArrayList<>());
+
+        VeterinarianEntity result = veterinarianService.createVeterinarian(newEntity);
+        assertNotNull(result);
+        assertNotNull(result.getId());
     }
 
     @Test

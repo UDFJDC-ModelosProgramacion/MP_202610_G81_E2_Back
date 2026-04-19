@@ -38,16 +38,11 @@ public class VeterinarianService {
             throw new IllegalOperationException("El número de matrícula profesional es obligatorio");
         }
 
-        if (veterinarian.getId() == null) {
-            throw new IllegalOperationException(
-                    "El veterinario debe estar vinculado a un UserEntity ya existente en el sistema");
-        }
-
-        Long veterinarianId = Objects.requireNonNull(veterinarian.getId(), VETERINARIAN_ID_NULL_MSG);
-
-        // Verifica si existe el usuario original
-        if (!userRepository.existsById(veterinarianId)) {
-            throw new EntityNotFoundException("El UserEntity base asociado no existe en el sistema");
+        if (veterinarian.getId() != null) {
+            Long veterinarianId = Objects.requireNonNull(veterinarian.getId(), VETERINARIAN_ID_NULL_MSG);
+            if (!userRepository.existsById(veterinarianId)) {
+                throw new EntityNotFoundException("El UserEntity base asociado no existe en el sistema");
+            }
         }
 
         return veterinarianRepository.save(veterinarian);
