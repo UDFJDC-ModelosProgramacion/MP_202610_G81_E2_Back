@@ -19,12 +19,14 @@ import uk.co.jemos.podam.common.PodamExclude;
 @Entity
 public class PetEntity extends BaseEntity {
     private String name;
+    private String species;
     private String breed;
     private LocalDate bornDate;
     private String sex;
     private String size;
     private String temperament;
     private String specificNeeds;
+    private String originLocation;
     private Boolean isRescued;
     private String status;
     private String photo;
@@ -46,6 +48,14 @@ public class PetEntity extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSpecies() {
+        return species;
+    }
+
+    public void setSpecies(String species) {
+        this.species = species;
     }
 
     public String getBreed() {
@@ -94,6 +104,14 @@ public class PetEntity extends BaseEntity {
 
     public void setSpecificNeeds(String specificNeeds) {
         this.specificNeeds = specificNeeds;
+    }
+
+    public String getOriginLocation() {
+        return originLocation;
+    }
+
+    public void setOriginLocation(String originLocation) {
+        this.originLocation = originLocation;
     }
 
     public Boolean getIsRescued() {

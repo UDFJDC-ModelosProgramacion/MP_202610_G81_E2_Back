@@ -71,12 +71,14 @@ public class PetService {
                     PetEntity pet = petRepository.findById(petId).orElseThrow(this::petNotFound);
 
                     pet.setName(updatedPet.getName());
+                    pet.setSpecies(updatedPet.getSpecies());
                     pet.setBreed(updatedPet.getBreed());
                     pet.setBornDate(updatedPet.getBornDate());
                     pet.setSex(updatedPet.getSex());
                     pet.setSize(updatedPet.getSize());
                     pet.setTemperament(updatedPet.getTemperament());
                     pet.setSpecificNeeds(updatedPet.getSpecificNeeds());
+                    pet.setOriginLocation(updatedPet.getOriginLocation());
                     pet.setIsRescued(updatedPet.getIsRescued());
 
                     return petRepository.save(pet);
