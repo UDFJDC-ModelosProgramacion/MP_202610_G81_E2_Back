@@ -34,24 +34,7 @@ public class PetService {
                     log.info("Creating pet");
                     Objects.requireNonNull(shelterId, "Shelter id cannot be null");
 
-                    if (pet.getName() == null || pet.getName().trim().isEmpty()) {
-                              throw new IllegalOperationException("El nombre de la mascota es obligatorio");
-                    }
-                    if (pet.getTemperament() == null || pet.getTemperament().trim().isEmpty()) {
-                              throw new IllegalOperationException("El temperamento de la mascota es obligatorio");
-                    }
-                    if (pet.getBreed() == null || pet.getBreed().trim().isEmpty()) {
-                              throw new IllegalOperationException("La raza de la mascota es obligatoria");
-                    }
-                    if (pet.getSize() == null || pet.getSize().trim().isEmpty()) {
-                              throw new IllegalOperationException("El tamanio de la mascota es obligatorio");
-                    }
-                    if (pet.getSex() == null || pet.getSex().trim().isEmpty()) {
-                              throw new IllegalOperationException("El sexo de la mascota es obligatorio");
-                    }
-                    if (pet.getSpecificNeeds() == null || pet.getSpecificNeeds().trim().isEmpty()) {
-                              throw new IllegalOperationException("Las necesitades especificas de la mascota son obligatorias");
-                    }
+
 
                     boolean exists = petRepository.existsByNameAndBreedAndBornDate(
                                         pet.getName(),

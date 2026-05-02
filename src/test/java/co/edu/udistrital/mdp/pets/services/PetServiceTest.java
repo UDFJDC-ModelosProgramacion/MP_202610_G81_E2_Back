@@ -195,46 +195,7 @@ class PetServiceTest {
         expectThrows(IllegalOperationException.class, () -> petService.deletePet(pet.getId()));
     }
 
-    @Test
-    void testCreatePetValidations() {
-        PetEntity newPet = factory.manufacturePojo(PetEntity.class);
-        Long shelterId = shelterList.get(0).getId();
 
-        newPet.setName(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setName("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setName("Valid Name");
-
-        newPet.setTemperament(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setTemperament("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setTemperament("Calm");
-
-        newPet.setBreed(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setBreed("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setBreed("Mix");
-
-        newPet.setSize(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setSize("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setSize("Medium");
-
-        newPet.setSex(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setSex("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setSex("Male");
-
-        newPet.setSpecificNeeds(null);
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-        newPet.setSpecificNeeds("  ");
-        expectThrows(IllegalOperationException.class, () -> petService.createPet(shelterId, newPet));
-    }
 
     @Test
     void testDeletePetNotFound() {

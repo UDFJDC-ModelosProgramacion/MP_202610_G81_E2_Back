@@ -27,6 +27,7 @@ public class PetEntity extends BaseEntity {
     private String specificNeeds;
     private Boolean isRescued;
     private String status;
+    private String photo;
 
     @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL)
     private MedicalHistoryEntity medicalHistory;
@@ -109,6 +110,14 @@ public class PetEntity extends BaseEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
     }
 
     public ShelterEntity getShelter() {
