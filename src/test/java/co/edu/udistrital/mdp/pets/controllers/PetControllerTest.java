@@ -1,9 +1,10 @@
 package co.edu.udistrital.mdp.pets.controllers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,12 +33,17 @@ class PetControllerTest {
     @Autowired
     private ShelterRepository shelterRepository;
 
-    @Test
-    void createPetWithValidData_ReturnsCreated() throws Exception {
+    private Long shelterId;
+
+    @BeforeEach
+    void setUp() {
         ShelterEntity shelter = new ShelterEntity();
         shelter.setShelterName("Test Shelter");
-        shelter = shelterRepository.save(shelter);
+        shelterId = shelterRepository.save(shelter).getId();
+    }
 
+    @Test
+    void createPetWithValidData_ReturnsCreated() throws Exception {
         PetDTO validPetDTO = new PetDTO();
         validPetDTO.setName("Firulais");
         validPetDTO.setSpecies("Dog");
@@ -46,7 +52,7 @@ class PetControllerTest {
         validPetDTO.setSize("Large");
         validPetDTO.setTemperament("Friendly");
         validPetDTO.setPhoto("http://example.com/photo.jpg");
-        validPetDTO.setShelterId(shelter.getId());
+        validPetDTO.setShelterId(shelterId);
 
         mockMvc.perform(post("/pets")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -58,27 +64,22 @@ class PetControllerTest {
 
     @Test
     void createPetMissingMandatoryFields_ReturnsBadRequest() throws Exception {
-        // Enviar un DTO completamente vacío
+        // Enviar un DTO completamente vacío → debe fallar validación JSR-303
         PetDTO invalidPetDTO = new PetDTO();
 
         mockMvc.perform(post("/pets")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(invalidPetDTO)))
                 .andExpect(status().isBadRequest());
-                // Validamos que se lance error 400 ya que faltan los campos obligatorios
     }
 
     @Test
     void createPetMissingSpecificField_ReturnsBadRequest() throws Exception {
-        ShelterEntity shelter = new ShelterEntity();
-        shelter.setShelterName("Test Shelter");
-        shelter = shelterRepository.save(shelter);
-
+        // Solo nombre y especie, faltan breed, sex, size, temperament, photo
         PetDTO invalidPetDTO = new PetDTO();
         invalidPetDTO.setName("Firulais");
         invalidPetDTO.setSpecies("Dog");
-        // Falta breed, sex, size, temperament, photo
-        invalidPetDTO.setShelterId(shelter.getId());
+        invalidPetDTO.setShelterId(shelterId);
 
         mockMvc.perform(post("/pets")
                 .contentType(MediaType.APPLICATION_JSON)
