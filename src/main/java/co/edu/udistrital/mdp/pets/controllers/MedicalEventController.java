@@ -31,13 +31,13 @@ public class MedicalEventController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<MedicalEventDTO> findAll(
+    public List<MedicalEventDetailDTO> findAll(
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         LocalDate start = startDate != null ? startDate : LocalDate.of(1900, 1, 1);
         LocalDate end = endDate != null ? endDate : LocalDate.now();
         return medicalEventService.searchMedicalEvents(start, end)
-                .stream().map(MedicalEventDTO::new).toList();
+                .stream().map(MedicalEventDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{eventId}")

@@ -32,9 +32,9 @@ public class ShelterMediaController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<ShelterMediaDTO> findByShelter(@RequestParam Long shelterId) {
+    public List<ShelterMediaDetailDTO> findByShelter(@RequestParam Long shelterId) {
         return shelterMediaService.searchShelterMediasByShelterId(shelterId)
-                .stream().map(ShelterMediaDTO::new).toList();
+                .stream().map(ShelterMediaDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{mediaId}")

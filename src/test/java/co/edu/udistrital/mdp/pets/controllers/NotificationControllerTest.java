@@ -69,7 +69,7 @@ class NotificationControllerTest {
         initializeTestData();
         notificationController.create(notificationDTO);
 
-        List<NotificationDTO> notifications = notificationController.findAll(null);
+        List<NotificationDetailDTO> notifications = notificationController.findAll(null);
         assertNotNull(notifications);
         assertFalse(notifications.isEmpty());
     }

@@ -1,5 +1,6 @@
 package co.edu.udistrital.mdp.pets.dto;
 
+import co.edu.udistrital.mdp.pets.entities.MedicationEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -13,4 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class MedicationDetailDTO extends MedicationDTO {
     // Extend with nested objects (e.g., MedicalHistoryDTO) once MedicationEntity is created.
+    public MedicationDetailDTO(MedicationEntity entity) {
+        super(entity);
+    }
 }

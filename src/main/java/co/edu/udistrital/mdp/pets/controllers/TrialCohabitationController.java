@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.TrialCohabitationDTO;
 import co.edu.udistrital.mdp.pets.dto.TrialCohabitationDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.TrialCohabitationService;
@@ -30,9 +29,9 @@ public class TrialCohabitationController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<TrialCohabitationDTO> findAll() {
+    public List<TrialCohabitationDetailDTO> findAll() {
         return trialCohabitationService.searchTrialCohabitations().stream()
-                .map(TrialCohabitationDTO::new).toList();
+                .map(TrialCohabitationDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{trialId}")
@@ -55,7 +54,7 @@ public class TrialCohabitationController {
     @ResponseStatus(code = HttpStatus.OK)
     public TrialCohabitationDetailDTO update(@PathVariable Long trialId,
             @RequestBody TrialCohabitationDTO trialDTO) throws EntityNotFoundException {
-        TrialCohabitationEntity updated = trialDTO.toTrialEntity();
+        var updated = trialDTO.toTrialEntity();
         return new TrialCohabitationDetailDTO(
                 trialCohabitationService.updateTrialCohabitation(trialId, updated));
     }

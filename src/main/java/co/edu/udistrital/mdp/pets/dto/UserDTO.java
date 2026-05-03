@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.UserEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +39,11 @@ public class UserDTO {
         entity.setPhoneNumber(this.phoneNumber);
         entity.setProfileImageUrl(this.profileImageUrl);
         entity.setRegisterDate(this.registerDate);
+    }
+
+    public UserEntity toAdopterEntity() {
+        UserEntity entity = new AdopterEntity();
+        copyToEntity(entity);
+        return entity;
     }
 }

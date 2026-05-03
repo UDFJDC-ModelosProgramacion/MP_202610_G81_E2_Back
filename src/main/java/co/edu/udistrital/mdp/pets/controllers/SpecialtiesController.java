@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.SpecialtiesDTO;
 import co.edu.udistrital.mdp.pets.dto.SpecialtiesDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.VetSpecialityEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.SpecialityService;
@@ -33,9 +32,9 @@ public class SpecialtiesController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<SpecialtiesDTO> findAll(@RequestParam(required = false) String name) {
-        List<VetSpecialityEntity> specialities = specialityService.searchSpecialities(name);
-        return specialities.stream().map(SpecialtiesDTO::new).toList();
+    public List<SpecialtiesDetailDTO> findAll(@RequestParam(required = false) String name) {
+        var specialities = specialityService.searchSpecialities(name);
+        return specialities.stream().map(SpecialtiesDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{specialtyId}")

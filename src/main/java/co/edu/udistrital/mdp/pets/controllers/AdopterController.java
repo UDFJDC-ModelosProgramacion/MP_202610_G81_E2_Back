@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.AdopterDTO;
 import co.edu.udistrital.mdp.pets.dto.AdopterDetailDTO;
-import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.AdopterService;
@@ -31,13 +30,13 @@ public class AdopterController {
 
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
-    public List<AdopterDTO> findAll(@RequestParam(required = false) String name,
+    public List<AdopterDetailDTO> findAll(@RequestParam(required = false) String name,
             @RequestParam(required = false) String email,
             @RequestParam(required = false) String status) {
-        List<AdopterEntity> adopters = (name != null || email != null || status != null)
+        var adopters = (name != null || email != null || status != null)
                 ? adopterService.searchAdopters(name, email, status)
                 : adopterService.searchAdopters();
-        return adopters.stream().map(AdopterDTO::new).toList();
+        return adopters.stream().map(AdopterDetailDTO::new).toList();
     }
 
     @GetMapping(value = "/{adopterId}")

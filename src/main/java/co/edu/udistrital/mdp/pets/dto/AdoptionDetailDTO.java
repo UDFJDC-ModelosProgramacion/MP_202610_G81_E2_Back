@@ -11,14 +11,16 @@ import lombok.NoArgsConstructor;
 public class AdoptionDetailDTO extends AdoptionDTO {
     private AdopterDTO adopter;
     private PetDTO pet;
-    private Long trialCohabitationId;
+    private TrialCohabitationDTO trialCohabitation;
 
     public AdoptionDetailDTO(AdoptionEntity entity) {
         super(entity);
         if (entity != null) {
             if (entity.getAdopter() != null) this.adopter = new AdopterDTO(entity.getAdopter());
             if (entity.getPet() != null) this.pet = new PetDTO(entity.getPet());
-            if (entity.getTrialCohabitation() != null) this.trialCohabitationId = entity.getTrialCohabitation().getId();
+            if (entity.getTrialCohabitation() != null) {
+                this.trialCohabitation = new TrialCohabitationDTO(entity.getTrialCohabitation());
+            }
         }
     }
 }

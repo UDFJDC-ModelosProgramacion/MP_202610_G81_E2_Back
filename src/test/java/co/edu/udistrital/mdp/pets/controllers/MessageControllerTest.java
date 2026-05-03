@@ -75,7 +75,7 @@ class MessageControllerTest {
         initializeTestData();
         messageController.create(messageDTO);
 
-        List<MessageDTO> messages = messageController.findAll();
+        List<MessageDetailDTO> messages = messageController.findAll();
         assertNotNull(messages);
         assertFalse(messages.isEmpty());
     }

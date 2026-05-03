@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.udistrital.mdp.pets.dto.InfectionDTO;
-import co.edu.udistrital.mdp.pets.entities.InfectionEntity;
+import co.edu.udistrital.mdp.pets.dto.InfectionDetailDTO;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
 import co.edu.udistrital.mdp.pets.services.InfectionService;
@@ -28,30 +28,30 @@ public class InfectionController {
     private InfectionService infectionService;
 
     @GetMapping
-    public ResponseEntity<List<InfectionDTO>> getAllInfections() {
-        List<InfectionEntity> entities = infectionService.searchInfections();
-        List<InfectionDTO> dtos = entities.stream()
-                .map(InfectionDTO::new).toList();
+    public ResponseEntity<List<InfectionDetailDTO>> getAllInfections() {
+        var entities = infectionService.searchInfections();
+        var dtos = entities.stream()
+                .map(InfectionDetailDTO::new).toList();
         return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<InfectionDTO> getInfectionById(@PathVariable("id") Long id) throws EntityNotFoundException {
-        InfectionEntity entity = infectionService.searchInfection(id);
-        return new ResponseEntity<>(new InfectionDTO(entity), HttpStatus.OK);
+    public ResponseEntity<InfectionDetailDTO> getInfectionById(@PathVariable("id") Long id) throws EntityNotFoundException {
+        var entity = infectionService.searchInfection(id);
+        return new ResponseEntity<>(new InfectionDetailDTO(entity), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<InfectionDTO> createInfection(@RequestBody InfectionDTO infectionDTO) throws IllegalOperationException {
-        InfectionEntity entity = infectionDTO.toEntity();
-        InfectionEntity createdEntity = infectionService.createInfection(entity);
+        var entity = infectionDTO.toEntity();
+        var createdEntity = infectionService.createInfection(entity);
         return new ResponseEntity<>(new InfectionDTO(createdEntity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<InfectionDTO> updateInfection(@PathVariable("id") Long id, @RequestBody InfectionDTO infectionDTO) throws EntityNotFoundException{
-        InfectionEntity entity = infectionDTO.toEntity();
-        InfectionEntity updatedEntity = infectionService.updateInfection(id, entity);
+        var entity = infectionDTO.toEntity();
+        var updatedEntity = infectionService.updateInfection(id, entity);
         return new ResponseEntity<>(new InfectionDTO(updatedEntity), HttpStatus.OK);
     }
 
