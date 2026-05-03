@@ -13,6 +13,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/pets")
+@CrossOrigin(origins = "*") // <--- ¡Esta es la solución a tus problemas de conexión!
 public class PetController {
 
     private final PetService petService;

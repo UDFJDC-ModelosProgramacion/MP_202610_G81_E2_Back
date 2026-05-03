@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import co.edu.udistrital.mdp.pets.dto.ShelterDTO;
 import co.edu.udistrital.mdp.pets.dto.ShelterDetailDTO;
@@ -22,6 +23,7 @@ import co.edu.udistrital.mdp.pets.services.ShelterService;
 
 @RestController
 @RequestMapping("/shelters")
+@CrossOrigin(origins = "*") // <--- ¡Esta es la solución a tus problemas de conexión!
 public class ShelterController {
 
     private final ShelterService shelterService;
