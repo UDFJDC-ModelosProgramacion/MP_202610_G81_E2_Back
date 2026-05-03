@@ -8,6 +8,7 @@ import co.edu.udistrital.mdp.pets.dto.PetRelationsDetailDTO;
 import co.edu.udistrital.mdp.pets.services.PetService;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
+import jakarta.validation.Valid;
 
 import java.util.*;
 
@@ -28,11 +29,8 @@ public class PetController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public PetDTO createPet(@RequestBody PetDTO petDto)
+    public PetDTO createPet(@Valid @RequestBody PetDTO petDto)
             throws IllegalOperationException, EntityNotFoundException {
-        if (petDto.getShelterId() == null) {
-            throw new IllegalOperationException("shelterId is required");
-        }
         var pet = petDto.toEntity();
 
         return new PetDTO(petService.createPet(petDto.getShelterId(), pet));
