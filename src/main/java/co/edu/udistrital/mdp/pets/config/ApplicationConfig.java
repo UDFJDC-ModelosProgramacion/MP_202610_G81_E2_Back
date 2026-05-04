@@ -15,11 +15,12 @@ public class ApplicationConfig {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        // Agregamos el puerto 5173 de Vite
-                        .allowedOrigins("http://localhost:5173", "http://localhost:4200", "http://localhost:8080")
+                        // Permitir cualquier puerto en localhost para desarrollo
+                        .allowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*", "http://192.168.68.*:*")
                         // Agregamos OPTIONS (vital para CORS) y PATCH
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD")
                         .allowedHeaders("*")
+                        .exposedHeaders("*")
                         .allowCredentials(true)
                         .maxAge(3600);
             }
