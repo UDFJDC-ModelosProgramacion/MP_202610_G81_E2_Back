@@ -1,6 +1,9 @@
 package co.edu.udistrital.mdp.pets.dto;
 
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
+import co.edu.udistrital.mdp.pets.entities.AdoptionProcessEntity;
 import co.edu.udistrital.mdp.pets.entities.ReviewEntity;
+import co.edu.udistrital.mdp.pets.entities.ShelterEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,6 +36,21 @@ public class ReviewDTO {
         entity.setRating(this.rating);
         entity.setComment(this.comment);
         entity.setIsSuccessStory(this.isSuccessStory);
+        if (this.adopterId != null) {
+            AdopterEntity adopter = new AdopterEntity();
+            adopter.setId(this.adopterId);
+            entity.setAdopter(adopter);
+        }
+        if (this.adoptionProcessId != null) {
+            co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity process = new co.edu.udistrital.mdp.pets.entities.TrialCohabitationEntity();
+            process.setId(this.adoptionProcessId);
+            entity.setAdoptionProcess(process);
+        }
+        if (this.shelterId != null) {
+            ShelterEntity shelter = new ShelterEntity();
+            shelter.setId(this.shelterId);
+            entity.setShelter(shelter);
+        }
         return entity;
     }
 }
