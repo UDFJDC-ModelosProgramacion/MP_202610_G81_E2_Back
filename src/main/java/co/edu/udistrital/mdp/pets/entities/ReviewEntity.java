@@ -1,5 +1,7 @@
 package co.edu.udistrital.mdp.pets.entities;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -14,6 +16,7 @@ public class ReviewEntity extends BaseEntity{
     private Integer rating;
     private String comment;
     private Boolean isSuccessStory;
+    private LocalDate reviewDate;
 
     @ManyToOne
     @JoinColumn(name = "adopter_id")
