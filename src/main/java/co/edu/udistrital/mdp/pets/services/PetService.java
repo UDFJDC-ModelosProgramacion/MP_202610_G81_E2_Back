@@ -80,6 +80,7 @@ public class PetService {
                     pet.setSpecificNeeds(updatedPet.getSpecificNeeds());
                     pet.setOriginLocation(updatedPet.getOriginLocation());
                     pet.setIsRescued(updatedPet.getIsRescued());
+                    pet.setPhoto(updatedPet.getPhoto());
 
                     return petRepository.save(pet);
           }
