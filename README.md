@@ -1,5 +1,4 @@
 # Proyecto base para el Backend - Plataforma de Adopción de Mascotas
-(Curso Modelos de Programación)
 
 ## ⚠️ Arquitectura Full-Stack (¡Importante!)
 Este proyecto expone una API REST. Para que puedas ver e interactuar con la aplicación de forma gráfica, **es obligatorio descargar, instalar y ejecutar ambos repositorios simultáneamente**:
