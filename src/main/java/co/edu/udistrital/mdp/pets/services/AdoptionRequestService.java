@@ -6,9 +6,13 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import co.edu.udistrital.mdp.pets.entities.AdopterEntity;
 import co.edu.udistrital.mdp.pets.entities.AdoptionRequestEntity;
+import co.edu.udistrital.mdp.pets.entities.PetEntity;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
+import co.edu.udistrital.mdp.pets.repositories.AdopterRepository;
 import co.edu.udistrital.mdp.pets.repositories.AdoptionRequestRepository;
+import co.edu.udistrital.mdp.pets.repositories.PetRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -22,7 +26,13 @@ public class AdoptionRequestService {
     @Autowired
     private AdoptionRequestRepository adoptionRequestRepository;
 
-    public AdoptionRequestEntity createAdoptionRequest(AdoptionRequestEntity adoptionRequest) throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
+    @Autowired
+    private AdopterRepository adopterRepository;
+
+    @Autowired
+    private PetRepository petRepository;
+
+    public AdoptionRequestEntity createAdoptionRequest(AdoptionRequestEntity adoptionRequest) throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException, EntityNotFoundException {
 
         log.info("Create adoption request");
 
@@ -34,13 +44,23 @@ public class AdoptionRequestService {
             throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Request date can't be null");
         }
 
-        if(adoptionRequest.getPet() == null){
+        if(adoptionRequest.getPet() == null || adoptionRequest.getPet().getId() == null){
             throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Adoption request must have a pet");
         }
 
-        if(adoptionRequest.getAdopter() == null){
+        if(adoptionRequest.getAdopter() == null || adoptionRequest.getAdopter().getId() == null){
             throw new co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException("Adoption request must have an adopter");
         }
+
+        // Buscar el adopter real en la BD para evitar violación de FK
+        AdopterEntity adopter = adopterRepository.findById(adoptionRequest.getAdopter().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Adopter not found with id: " + adoptionRequest.getAdopter().getId()));
+        adoptionRequest.setAdopter(adopter);
+
+        // Buscar la mascota real en la BD para evitar violación de FK
+        PetEntity pet = petRepository.findById(adoptionRequest.getPet().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Pet not found with id: " + adoptionRequest.getPet().getId()));
+        adoptionRequest.setPet(pet);
 
         return adoptionRequestRepository.save(adoptionRequest);
     }

@@ -90,7 +90,7 @@ class AdoptionRequestServiceTest {
     }
 
     @Test
-    void testCreateAdoptionRequest() throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException {
+    void testCreateAdoptionRequest() throws co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException, co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException {
         AdoptionRequestEntity newReq = new AdoptionRequestEntity();
         newReq.setRequestDate(LocalDate.now());
         newReq.setPet(pet);
