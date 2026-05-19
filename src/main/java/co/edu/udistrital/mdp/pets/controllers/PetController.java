@@ -4,7 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import co.edu.udistrital.mdp.pets.dto.PetDetailDTO;
 import co.edu.udistrital.mdp.pets.dto.PetDTO;
-import co.edu.udistrital.mdp.pets.dto.PetRelationsDetailDTO;
+import co.edu.udistrital.mdp.pets.dto.VaccineDTO;
+import co.edu.udistrital.mdp.pets.dto.MedicalHistoryDetailDTO;
 import co.edu.udistrital.mdp.pets.services.PetService;
 import co.edu.udistrital.mdp.pets.exceptions.EntityNotFoundException;
 import co.edu.udistrital.mdp.pets.exceptions.IllegalOperationException;
@@ -17,10 +18,6 @@ import java.util.*;
 public class PetController {
 
     private final PetService petService;
-
-    // Mantenemos tus asociaciones en memoria para no borrarlas
-    private final Map<Long, List<Map<String, Object>>> medicalHistory = new HashMap<>();
-    private final Map<Long, List<Map<String, Object>>> vaccines = new HashMap<>();
 
     public PetController(PetService petService) {
         this.petService = petService;
@@ -48,6 +45,12 @@ public class PetController {
         return new PetDetailDTO(petService.getPet(id));
     }
 
+    /**
+     * HU09 – Ver detalle de mascota.
+     * Retorna toda la información básica de la mascota, información del refugio,
+     * historia clínica completa (vacunas + eventos médicos) desde la base de datos,
+     * y los IDs de los procesos de adopción asociados.
+     */
     @GetMapping("/{id}/detail")
     public PetDetailDTO getPetDetail(@PathVariable Long id) throws EntityNotFoundException {
         return new PetDetailDTO(petService.getPet(id));
@@ -66,28 +69,30 @@ public class PetController {
         petService.deletePet(id);
     }
 
-    // --- Mantenemos tus asociaciones de Historia Clínica y Vacunas ---
+    /**
+     * Retorna la historia clínica completa de una mascota desde la base de datos real,
+     * incluyendo eventos médicos y vacunas.
+     */
     @GetMapping("/{id}/medical-history")
-    public PetRelationsDetailDTO getMedicalHistory(@PathVariable Long id) {
-        return new PetRelationsDetailDTO(medicalHistory.getOrDefault(id, new ArrayList<>()));
+    public MedicalHistoryDetailDTO getMedicalHistory(@PathVariable Long id) throws EntityNotFoundException {
+        var pet = petService.getPet(id);
+        if (pet.getMedicalHistory() == null) {
+            return new MedicalHistoryDetailDTO();
+        }
+        return new MedicalHistoryDetailDTO(pet.getMedicalHistory());
     }
 
-    @PostMapping("/{id}/medical-history")
-    public List<Map<String, Object>> addMedicalEvent(@PathVariable Long id, @RequestBody Map<String, Object> event) {
-        medicalHistory.putIfAbsent(id, new ArrayList<>());
-        medicalHistory.get(id).add(event);
-        return medicalHistory.get(id);
-    }
-
-    @PostMapping("/{id}/vaccines")
-    public List<Map<String, Object>> addVaccine(@PathVariable Long id, @RequestBody Map<String, Object> vaccine) {
-        vaccines.putIfAbsent(id, new ArrayList<>());
-        vaccines.get(id).add(vaccine);
-        return vaccines.get(id);
-    }
-
+    /**
+     * Retorna la lista de vacunas de una mascota desde la base de datos real.
+     */
     @GetMapping("/{id}/vaccines")
-    public PetRelationsDetailDTO getVaccines(@PathVariable Long id) {
-        return new PetRelationsDetailDTO(vaccines.getOrDefault(id, new ArrayList<>()));
+    public List<VaccineDTO> getVaccines(@PathVariable Long id) throws EntityNotFoundException {
+        var pet = petService.getPet(id);
+        if (pet.getMedicalHistory() == null || pet.getMedicalHistory().getVaccineEntries() == null) {
+            return new ArrayList<>();
+        }
+        return pet.getMedicalHistory().getVaccineEntries().stream()
+                .map(VaccineDTO::new)
+                .toList();
     }
 }

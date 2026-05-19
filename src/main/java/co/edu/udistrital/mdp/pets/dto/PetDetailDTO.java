@@ -9,20 +9,25 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
- * Detail DTO for a Pet, including medical history and adoption request IDs.
+ * Detail DTO for a Pet, including full medical history (vaccines + events),
+ * shelter information, and adoption request IDs.
  */
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class PetDetailDTO extends PetDTO {
-    private MedicalHistoryDTO medicalHistory;
+    private MedicalHistoryDetailDTO medicalHistory;
+    private ShelterDTO shelter;
     private List<Long> adoptionRequestIds = new ArrayList<>();
 
     public PetDetailDTO(PetEntity entity) {
         super(entity);
         if (entity != null) {
             if (entity.getMedicalHistory() != null) {
-                this.medicalHistory = new MedicalHistoryDTO(entity.getMedicalHistory());
+                this.medicalHistory = new MedicalHistoryDetailDTO(entity.getMedicalHistory());
+            }
+            if (entity.getShelter() != null) {
+                this.shelter = new ShelterDTO(entity.getShelter());
             }
             if (entity.getAdoptionRequests() != null) {
                 entity.getAdoptionRequests().forEach(req -> adoptionRequestIds.add(req.getId()));
